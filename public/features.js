@@ -103,7 +103,23 @@ const STADIUM_GUIDE = {
 };
 
 // 3. TACTICAL XI SOCIAL GRAPHIC EXPORTER (CANVAS TO IMAGE)
-function generateStartingXIGraphic(lineup, formation, players, options = {}) {
+function generateStartingXIGraphic(lineupOrConfig, formationOrBench, playersList, options = {}) {
+  let formation = formationOrBench;
+  let players = playersList || [];
+  let lineup = lineupOrConfig;
+  let bench = [];
+  let opponent = "Matchday Opponent";
+  let matchDate = new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+  // Support object config parameter
+  if (lineupOrConfig && typeof lineupOrConfig === "object" && !Array.isArray(lineupOrConfig) && lineupOrConfig.starters) {
+    const config = lineupOrConfig;
+    formation = { name: config.formationName || "4-3-3", positions: [] };
+    opponent = config.opponent || opponent;
+    matchDate = config.matchDate || matchDate;
+    bench = config.bench || [];
+  }
+
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1350; // High-res 4:5 Instagram / Twitter portrait format
@@ -119,29 +135,29 @@ function generateStartingXIGraphic(lineup, formation, players, options = {}) {
 
   // Pitch Grass Stripes
   ctx.fillStyle = "rgba(255, 255, 255, 0.025)";
-  for (let y = 140; y < canvas.height - 180; y += 120) {
-    ctx.fillRect(40, y, canvas.width - 80, 60);
+  for (let y = 140; y < canvas.height - 240; y += 110) {
+    ctx.fillRect(40, y, canvas.width - 80, 55);
   }
 
   // Pitch Boundary
   ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
   ctx.lineWidth = 4;
-  ctx.strokeRect(60, 160, canvas.width - 120, canvas.height - 340);
+  ctx.strokeRect(60, 160, canvas.width - 120, canvas.height - 420);
 
   // Halfway line & Center Circle
-  const centerY = (160 + canvas.height - 180) / 2;
+  const centerY = (160 + canvas.height - 260) / 2;
   ctx.beginPath();
   ctx.moveTo(60, centerY);
   ctx.lineTo(canvas.width - 60, centerY);
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, centerY, 100, 0, Math.PI * 2);
+  ctx.arc(canvas.width / 2, centerY, 90, 0, Math.PI * 2);
   ctx.stroke();
 
   // Penalty Boxes (Top and Bottom)
-  ctx.strokeRect(canvas.width / 2 - 200, 160, 400, 160);
-  ctx.strokeRect(canvas.width / 2 - 200, canvas.height - 340, 400, 160);
+  ctx.strokeRect(canvas.width / 2 - 180, 160, 360, 140);
+  ctx.strokeRect(canvas.width / 2 - 180, canvas.height - 400, 360, 140);
 
   // Header Banner
   ctx.fillStyle = "#0F1A15";
@@ -151,90 +167,152 @@ function generateStartingXIGraphic(lineup, formation, players, options = {}) {
 
   // Header Typography
   ctx.fillStyle = "#F3C64C";
-  ctx.font = "bold 38px 'Space Grotesk', sans-serif";
-  ctx.fillText("NANTWICH TOWN FC", 60, 60);
+  ctx.font = "bold 36px 'Space Grotesk', sans-serif";
+  ctx.fillText("NANTWICH TOWN FC", 60, 58);
 
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "bold 24px 'DM Sans', sans-serif";
-  ctx.fillText(`MATCHDAY STARTING XI · ${formation.name}`, 60, 100);
-
-  ctx.fillStyle = "#AAB8AE";
-  ctx.font = "18px 'DM Sans', sans-serif";
-  ctx.textAlign = "right";
-  ctx.fillText(`Manager: Luke Goddard · Swansway Stadium`, canvas.width - 60, 65);
-  ctx.fillText(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }), canvas.width - 60, 98);
-  ctx.textAlign = "left";
-
-  // Draw Position Players
-  const pitchTop = 180;
-  const pitchHeight = canvas.height - 400;
-
-  formation.positions.forEach((pos) => {
-    const assignedId = lineup[pos.id];
-    const player = players.find((p) => p.id === assignedId);
-
-    const x = (pos.left / 100) * (canvas.width - 160) + 80;
-    const y = pitchTop + (pos.top / 100) * pitchHeight;
-
-    // Player Circle Glow
-    ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
-    ctx.shadowBlur = 12;
-
-    // Jersey Circle
-    ctx.beginPath();
-    ctx.arc(x, y, 36, 0, Math.PI * 2);
-    ctx.fillStyle = player ? "#0F1A15" : "rgba(15, 26, 21, 0.7)";
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = player ? "#F3C64C" : "rgba(255, 255, 255, 0.4)";
-    ctx.stroke();
-
-    ctx.shadowBlur = 0; // reset
-
-    // Number or Icon
-    ctx.fillStyle = player ? "#F3C64C" : "#FFFFFF";
-    ctx.font = "bold 22px 'Space Grotesk', sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(player ? `#${player.number || ""}` : pos.label, x, y + 8);
-
-    // Name Plate Pill
-    if (player) {
-      const surname = player.name.split(" ").pop().toUpperCase();
-      ctx.fillStyle = "rgba(13, 24, 19, 0.95)";
-      ctx.fillRect(x - 65, y + 42, 130, 26);
-      ctx.strokeStyle = "rgba(243, 198, 76, 0.4)";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(x - 65, y + 42, 130, 26);
-
-      ctx.fillStyle = "#FFFFFF";
-      ctx.font = "bold 15px 'DM Sans', sans-serif";
-      ctx.fillText(surname, x, y + 60);
-
-      // Pos label
-      ctx.fillStyle = "#F3C64C";
-      ctx.font = "bold 11px 'DM Sans', sans-serif";
-      ctx.fillText(pos.label, x, y - 42);
-    }
-  });
-
-  // Footer Banner
-  ctx.fillStyle = "#0F1A15";
-  ctx.fillRect(0, canvas.height - 130, canvas.width, 130);
-  ctx.fillStyle = "#F3C64C";
-  ctx.fillRect(0, canvas.height - 130, canvas.width, 3);
-
-  ctx.fillStyle = "#F3C64C";
-  ctx.font = "bold 20px 'Space Grotesk', sans-serif";
-  ctx.fillText("#UPTHEDABBERS", 60, canvas.height - 75);
+  ctx.font = "bold 22px 'DM Sans', sans-serif";
+  const formName = (typeof formation === "object" && formation?.name) ? formation.name : "Matchday XI";
+  ctx.fillText(`STARTING XI · ${formName} · vs ${opponent}`, 60, 98);
 
   ctx.fillStyle = "#AAB8AE";
   ctx.font = "16px 'DM Sans', sans-serif";
-  ctx.fillText("Northern Premier League Division One West · Nantwich Town FC", 60, canvas.height - 45);
+  ctx.textAlign = "right";
+  ctx.fillText(`Swansway Stadium · Luke Goddard`, canvas.width - 60, 62);
+  ctx.fillText(matchDate, canvas.width - 60, 96);
+  ctx.textAlign = "left";
+
+  // Draw Position Players if array or mapping exists
+  const pitchTop = 175;
+  const pitchHeight = canvas.height - 470;
+
+  if (Array.isArray(lineupOrConfig?.starters)) {
+    // Drawn from starters object list
+    const posCounts = { GK: [], DEF: [], MID: [], FWD: [] };
+    lineupOrConfig.starters.forEach((st) => {
+      const cat = st.category || "MID";
+      if (posCounts[cat]) posCounts[cat].push(st);
+      else posCounts.MID.push(st);
+    });
+
+    const lines = [
+      { cat: "FWD", top: 0.16, list: posCounts.FWD },
+      { cat: "MID", top: 0.44, list: posCounts.MID },
+      { cat: "DEF", top: 0.70, list: posCounts.DEF },
+      { cat: "GK", top: 0.88, list: posCounts.GK },
+    ];
+
+    lines.forEach(({ top, list }) => {
+      list.forEach((st, idx) => {
+        const x = ((idx + 1) / (list.length + 1)) * (canvas.width - 160) + 80;
+        const y = pitchTop + top * pitchHeight;
+
+        ctx.beginPath();
+        ctx.arc(x, y, 32, 0, Math.PI * 2);
+        ctx.fillStyle = "#0F1A15";
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#F3C64C";
+        ctx.stroke();
+
+        ctx.fillStyle = "#F3C64C";
+        ctx.font = "bold 20px 'Space Grotesk', sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(`#${st.number || ""}`, x, y + 7);
+
+        const surname = (st.name || "").split(" ").pop().toUpperCase();
+        ctx.fillStyle = "rgba(13, 24, 19, 0.95)";
+        ctx.fillRect(x - 60, y + 38, 120, 24);
+        ctx.strokeStyle = "rgba(243, 198, 76, 0.4)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x - 60, y + 38, 120, 24);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "bold 13px 'DM Sans', sans-serif";
+        ctx.fillText(surname, x, y + 54);
+      });
+    });
+  } else if (formation && formation.positions) {
+    formation.positions.forEach((pos) => {
+      const assignedId = lineup ? lineup[pos.id] : null;
+      const player = players.find((p) => p.id === assignedId);
+
+      const x = (pos.left / 100) * (canvas.width - 160) + 80;
+      const y = pitchTop + (pos.top / 100) * pitchHeight;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 32, 0, Math.PI * 2);
+      ctx.fillStyle = player ? "#0F1A15" : "rgba(15, 26, 21, 0.7)";
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = player ? "#F3C64C" : "rgba(255, 255, 255, 0.4)";
+      ctx.stroke();
+
+      ctx.fillStyle = player ? "#F3C64C" : "#FFFFFF";
+      ctx.font = "bold 20px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(player ? `#${player.number || ""}` : pos.label, x, y + 7);
+
+      if (player) {
+        const surname = player.name.split(" ").pop().toUpperCase();
+        ctx.fillStyle = "rgba(13, 24, 19, 0.95)";
+        ctx.fillRect(x - 60, y + 38, 120, 24);
+        ctx.strokeStyle = "rgba(243, 198, 76, 0.4)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(x - 60, y + 38, 120, 24);
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.font = "bold 13px 'DM Sans', sans-serif";
+        ctx.fillText(surname, x, y + 54);
+      }
+    });
+  }
+
+  // Substitutes Strip (Up to 10 Bench players)
+  const benchList = bench || [];
+  ctx.fillStyle = "#0c1813";
+  ctx.fillRect(0, canvas.height - 210, canvas.width, 95);
+  ctx.fillStyle = "rgba(243, 198, 76, 0.3)";
+  ctx.fillRect(0, canvas.height - 210, canvas.width, 1.5);
+
+  ctx.fillStyle = "#F3C64C";
+  ctx.font = "bold 13px 'Space Grotesk', sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText(`SUBSTITUTES (BENCH · ${benchList.length}/10):`, 50, canvas.height - 185);
+
+  if (benchList.length > 0) {
+    const subsStr = benchList
+      .slice(0, 10)
+      .map((p) => (typeof p === "string" ? p : `#${p.number || ""} ${(p.name || "").split(" ").pop()}`))
+      .join("  ·  ");
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "14px 'DM Sans', sans-serif";
+    ctx.fillText(subsStr, 50, canvas.height - 150);
+  } else {
+    ctx.fillStyle = "#AAB8AE";
+    ctx.font = "italic 13px 'DM Sans', sans-serif";
+    ctx.fillText("No substitutes designated for today's match sheet", 50, canvas.height - 150);
+  }
+
+  // Footer Banner
+  ctx.fillStyle = "#0F1A15";
+  ctx.fillRect(0, canvas.height - 115, canvas.width, 115);
+  ctx.fillStyle = "#F3C64C";
+  ctx.fillRect(0, canvas.height - 115, canvas.width, 3);
+
+  ctx.fillStyle = "#F3C64C";
+  ctx.font = "bold 19px 'Space Grotesk', sans-serif";
+  ctx.fillText("#UPTHEDABBERS", 50, canvas.height - 65);
+
+  ctx.fillStyle = "#AAB8AE";
+  ctx.font = "15px 'DM Sans', sans-serif";
+  ctx.fillText("Northern Premier League Division One West · Nantwich Town FC", 50, canvas.height - 38);
 
   ctx.fillStyle = "#F3C64C";
   ctx.textAlign = "right";
-  ctx.font = "bold 16px 'DM Sans', sans-serif";
-  ctx.fillText("Official Dabbers Matchday Companion", canvas.width - 60, canvas.height - 60);
+  ctx.font = "bold 15px 'DM Sans', sans-serif";
+  ctx.fillText("The Dabbers Official Matchday Companion", canvas.width - 50, canvas.height - 52);
 
   return canvas.toDataURL("image/png");
 }

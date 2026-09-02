@@ -188,7 +188,7 @@ const FORMATIONS = {
 const PREVIOUS_MATCH_SQUAD = {
   opponent: "Witton Albion",
   competition: "NPL West Division",
-  date: "26 Aug 2024",
+  date: "Latest Matchday",
   score: "2 - 1 (W)",
   starters: {
     "4-3-3": {
@@ -257,7 +257,18 @@ const PREVIOUS_MATCH_SQUAD = {
       rst: "callum-saunders",
     },
   },
-  bench: ["yusuf-mersin", "perry-bircumshaw", "fenton-lloyd-green", "liam-james-fitzpatrick", "oliver-james-pope"],
+  bench: [
+    "yusuf-mersin",
+    "perry-bircumshaw",
+    "fenton-lloyd-green",
+    "liam-james-fitzpatrick",
+    "oliver-james-pope",
+    "eddie-serino",
+    "kelvin-mellor",
+    "callum-saunders",
+    "joel-connolly",
+    "matthew-bell",
+  ],
 };
 
 function getPreviousMatchLineup(formationKey = "4-3-3") {
@@ -606,74 +617,76 @@ function renderLive() {
               ${icon("youtube", "h-5 w-5 text-rose-500")} The Dabbers TV Highlights
             </h3>
           </div>
-          <a href="https://www.youtube.com/@TheDabbersTV" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-rose-500/20 border border-rose-500/30 px-2.5 py-1 text-xs font-bold text-rose-300 hover:bg-rose-500/30 transition">
-            Channel ${icon("arrow", "h-3 w-3 inline")}
-          </a>
+          <div class="flex items-center gap-2">
+            <a href="https://www.youtube.com/@TheDabbersTV/videos" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-rose-500/20 border border-rose-500/30 px-2.5 py-1 text-xs font-bold text-rose-300 hover:bg-rose-500/30 transition">
+              Latest Videos ${icon("arrow", "h-3 w-3 inline")}
+            </a>
+          </div>
         </div>
 
         <!-- Featured Highlights Grid -->
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          ${((media?.highlights) || [
+          ${(Array.isArray(media?.highlights) && media.highlights.length > 0 ? media.highlights : (Array.isArray(media?.featuredVideos) && media.featuredVideos.length > 0 ? media.featuredVideos : [
             {
               id: "hl-1",
-              title: "Nantwich Town 2 - 1 Witton Albion | Highlights & Goals",
+              title: "Nantwich Town vs Witton Albion | Derby Highlights & Goals",
               opponent: "Witton Albion",
               score: "2 - 1",
-              date: "26 Aug 2024",
+              date: "Latest Matchday",
               competition: "NPL West Division",
-              duration: "8:45",
+              duration: "08:45",
               url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Witton+Albion+highlights+The+Dabbers+TV",
-              description: "Full match action and goals from the thrilling bank holiday derby victory at The Swansway Stadium.",
+              description: "Full match action and goals from the thrilling derby clash at The Swansway Stadium.",
               category: "Match Highlights"
             },
             {
               id: "hl-2",
-              title: "Stalybridge Celtic 1 - 2 Nantwich Town | Dramatic Comeback",
+              title: "Stalybridge Celtic vs Nantwich Town | Dramatic League Clash",
               opponent: "Stalybridge Celtic",
               score: "1 - 2",
-              date: "17 Aug 2024",
+              date: "Recent Match",
               competition: "NPL West Division",
-              duration: "9:12",
+              duration: "09:12",
               url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Stalybridge+Celtic+highlights+The+Dabbers+TV",
-              description: "Late drama as the Dabbers secured all three points away at Bower Fold.",
+              description: "Late drama as the Dabbers secured all three points on the road.",
               category: "Match Highlights"
             },
             {
               id: "hl-3",
-              title: "Nantwich Town 3 - 0 Shifnal Town | FA Cup Highlights",
+              title: "Nantwich Town vs Shifnal Town | Emirates FA Cup Highlights",
               opponent: "Shifnal Town",
               score: "3 - 0",
-              date: "31 Aug 2024",
+              date: "Cup Matchday",
               competition: "Emirates FA Cup",
-              duration: "7:20",
+              duration: "07:20",
               url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Shifnal+Town+FA+Cup+highlights+The+Dabbers+TV",
-              description: "Superb attacking display sees the Dabbers cruise through in the FA Cup preliminary round.",
+              description: "Superb attacking display sees the Dabbers advance in the FA Cup preliminary round.",
               category: "Cup Highlights"
             },
             {
               id: "hl-4",
-              title: "Bootle FC 0 - 0 Nantwich Town | Tactical Battle Highlights",
-              opponent: "Bootle",
-              score: "0 - 0",
-              date: "20 Aug 2024",
+              title: "Nantwich Town vs Vauxhall Motors | Floodlit Match Highlights",
+              opponent: "Vauxhall Motors",
+              score: "3 - 3",
+              date: "Recent Result",
               competition: "NPL West Division",
-              duration: "6:50",
-              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Bootle+highlights+The+Dabbers+TV",
-              description: "Solid defensive performance and great saves earn a well-deserved point on the road.",
+              duration: "07:55",
+              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Vauxhall+Motors+highlights+The+Dabbers+TV",
+              description: "Six goals and sensational moments under the floodlights at Water Lode.",
               category: "Match Highlights"
             }
-          ]).map((item) => `
-            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="group block rounded-xl border border-white/10 bg-white/5 p-3.5 hover:border-gold/50 hover:bg-gold/5 transition">
+          ])).slice(0, 4).map((item) => `
+            <a href="${item.url || item.youtubeUrl || "https://www.youtube.com/@TheDabbersTV/videos"}" target="_blank" rel="noopener noreferrer" class="group block rounded-xl border border-white/10 bg-white/5 p-3.5 hover:border-gold/50 hover:bg-gold/5 transition">
               <div class="flex items-center justify-between text-[10px] font-bold text-gold uppercase">
                 <span class="rounded bg-rose-500/20 px-1.5 py-0.5 text-rose-400 border border-rose-500/30 flex items-center gap-1">
                   ${icon("youtube", "h-3 w-3")} ${escapeHtml(item.category || "Highlights")}
                 </span>
-                <span class="text-[#AAB8AE] font-mono">${escapeHtml(item.duration || "Full Match")} · ${escapeHtml(item.date)}</span>
+                <span class="text-[#AAB8AE] font-mono">${escapeHtml(item.duration || "Highlights")} · ${escapeHtml(item.date || "Matchday")}</span>
               </div>
               <h4 class="display mt-2 text-sm font-bold text-white group-hover:text-gold transition line-clamp-2 leading-snug">${escapeHtml(item.title)}</h4>
-              <p class="mt-1 text-[11px] text-[#AAB8AE] line-clamp-2">${escapeHtml(item.description)}</p>
+              <p class="mt-1 text-[11px] text-[#AAB8AE] line-clamp-2">${escapeHtml(item.description || item.desc || "")}</p>
               <div class="mt-3 flex items-center justify-between text-[11px] text-gold font-bold border-t border-white/10 pt-2">
-                <span class="flex items-center gap-1">${icon("youtube", "h-3.5 w-3.5 text-rose-400")} Watch on YouTube</span>
+                <span class="flex items-center gap-1">${icon("youtube", "h-3.5 w-3.5 text-rose-400")} Watch on Dabbers TV</span>
                 <span>${icon("external", "h-3 w-3")}</span>
               </div>
             </a>
@@ -686,7 +699,7 @@ function renderLive() {
             <span class="text-xs font-bold text-[#D5E8D9] flex items-center gap-1.5">
               ${icon("shield", "h-3.5 w-3.5 text-gold")} Previous Encounters & Rivalry Highlights
             </span>
-            <span class="text-[10px] text-[#AAB8AE]">Searchable across all 22 NPL clubs</span>
+            <span class="text-[10px] text-[#AAB8AE]">Searchable across all NPL clubs</span>
           </div>
           <div class="mt-2.5 flex flex-wrap gap-1.5">
             ${["Witton Albion", "Stalybridge Celtic", "Bootle", "Hednesford Town", "Vauxhall Motors", "Mossley", "Kidsgrove Athletic"].map((club) => `
@@ -969,21 +982,21 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
         }).join("")}
       </div>
 
-      <!-- Substitutes Bench (Up to 5 subs) -->
+      <!-- Substitutes Bench (Up to 10 subs) -->
       <div class="rounded-2xl border border-charcoal-border bg-[#15251E] p-4 text-white">
         <div class="mb-3 flex items-center justify-between">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Substitutes Bench (${benchPlayers.length}/5)</span>
-          <span class="text-[10px] text-[#AAB8AE]">Matchday squad depth</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Substitutes Bench (${benchPlayers.length}/10)</span>
+          <span class="text-[10px] text-[#AAB8AE]">Matchday squad depth (10 substitutes)</span>
         </div>
 
-        <div class="grid grid-cols-5 gap-2">
-          ${Array.from({ length: 5 }).map((_, index) => {
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-5">
+          ${Array.from({ length: 10 }).map((_, index) => {
             const player = benchPlayers[index];
             return player ? `
               <div data-bench-slot="${index}" class="cursor-pointer rounded-xl bg-white/5 p-2 text-center border border-white/10 hover:border-gold transition">
                 <span class="block text-[9px] font-bold text-gold">SUB ${index + 1}</span>
                 <strong class="mt-1 block truncate text-[10px] text-white">${escapeHtml(player.name.split(" ").pop())}</strong>
-                <span class="text-[8px] text-[#AAB8AE]">#${player.number} · ${player.position}</span>
+                <span class="text-[8px] text-[#AAB8AE]">#${player.number || "—"} · ${player.position || "SUB"}</span>
               </div>
             ` : `
               <div data-add-bench="${index}" class="cursor-pointer rounded-xl border border-dashed border-white/20 p-2 text-center text-[#AAB8AE] hover:border-gold hover:text-gold transition">
@@ -1794,9 +1807,14 @@ function autoPickBestXI() {
     }
   });
 
+  // Pick best remaining players for the 10-player substitutes bench
+  const remaining = players.filter((p) => !used.has(p.id)).sort((a, b) => (b.stats?.rating || 0) - (a.stats?.rating || 0));
+  state.bench = remaining.slice(0, 10).map((p) => p.id);
+
   state.lineup = newLineup;
   localStorage.setItem("dabbers-lineup", JSON.stringify(state.lineup));
-  showToast("Auto-picked best XI lineup!");
+  localStorage.setItem("dabbers-bench", JSON.stringify(state.bench));
+  showToast("Auto-picked optimal Starting XI & 10-player bench!");
   render();
 }
 
@@ -1978,18 +1996,20 @@ function renderShell(content) {
 // EVENT BINDINGS
 // =======================================================================
 function bindEvents() {
-  // Tabs
+  // Tabs (Live Matchday, Fixtures, Table, Squad, Media & Ground Hub)
   document.querySelectorAll("[data-tab]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.activeTab = btn.dataset.tab;
+      window.scrollTo({ top: 0, behavior: "smooth" });
       render();
     });
   });
 
-  // Squad Sub-tabs
+  // Squad Sub-tabs (Squad Builder / Roster)
   document.querySelectorAll("[data-squad-tab]").forEach((btn) => {
     btn.addEventListener("click", () => {
       state.squadSubTab = btn.dataset.squadTab;
+      window.scrollTo({ top: 0, behavior: "smooth" });
       render();
     });
   });
