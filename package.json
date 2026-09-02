@@ -4,6 +4,9 @@
   "description": "Matchday companion app for Nantwich Town FC (The Dabbers) — live scores, table, fixtures and squad, scraped from Football Web Pages and the NPL.",
   "main": "server.js",
   "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'Build complete'",
+    "lint": "node --check server.js",
     "start": "node server.js"
   },
   "engines": {

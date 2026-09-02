@@ -2,9 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#101713" />
-    <meta name="description" content="Nantwich Town FC fixtures, table, squad and live scores." />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#0d1813" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="description" content="Nantwich Town FC (The Dabbers) matchday companion — live scores, league table, fixtures, tactical squad builder, and player stats." />
     <title>The Dabbers | Nantwich Town FC</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,14 +14,20 @@
         theme: {
           extend: {
             colors: {
-              forest: "#1B4D3E",
-              "forest-dark": "#12382d",
+              forest: "#164E3D",
+              "forest-light": "#1E6852",
+              "forest-dark": "#0D2E24",
               gold: "#F3C64C",
-              charcoal: "#101713",
-              canvas: "#F5F7F3",
-              ink: "#1A241F",
-              mist: "#DDE7DF",
-              slate: "#738078",
+              "gold-dark": "#D6A728",
+              "gold-light": "#FBE696",
+              charcoal: "#0F1A15",
+              "charcoal-card": "#15251E",
+              "charcoal-border": "#21392E",
+              canvas: "#F4F7F4",
+              "canvas-card": "#FFFFFF",
+              ink: "#121E18",
+              mist: "#D7E3DB",
+              slate: "#687D72",
             },
             fontFamily: {
               display: ["Space Grotesk", "ui-sans-serif", "system-ui"],
@@ -31,27 +39,98 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
     <style>
-      :root { color-scheme: dark; }
-      body { min-width: 320px; background: #101713; font-family: "DM Sans", sans-serif; }
-      h1, h2, h3, .display { font-family: "Space Grotesk", sans-serif; }
-      .safe-bottom { padding-bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
-      .safe-dock { padding-bottom: env(safe-area-inset-bottom); }
-      .tab-button[aria-selected="true"] .tab-pill { background: #f3c64c; color: #101713; }
-      .tab-button[aria-selected="true"] .tab-label { color: #f3c64c; font-weight: 700; }
-      .tab-button:focus-visible, button:focus-visible { outline: 3px solid rgba(243,198,76,.6); outline-offset: 2px; }
-      .skeleton { position: relative; overflow: hidden; background: #dfe8e0; }
-      .skeleton::after { position: absolute; inset: 0; content: ""; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent); animation: shimmer 1.3s infinite; }
-      @keyframes shimmer { to { transform: translateX(100%); } }
-      @media (prefers-reduced-motion: reduce) {
-        *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      :root { color-scheme: light dark; }
+      body {
+        min-width: 320px;
+        background: #0D1813;
+        font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
-      @media (min-width: 768px) { .safe-bottom { padding-bottom: 2rem; } }
+      h1, h2, h3, h4, .display { font-family: "Space Grotesk", sans-serif; }
+      .safe-bottom { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+      .safe-dock { padding-bottom: env(safe-area-inset-bottom); }
+      
+      .tab-button[aria-selected="true"] .tab-pill {
+        background: #F3C64C;
+        color: #0F1A15;
+        box-shadow: 0 4px 12px rgba(243, 198, 76, 0.28);
+      }
+      .tab-button[aria-selected="true"] .tab-label {
+        color: #F3C64C;
+        font-weight: 700;
+      }
+      .tab-button:focus-visible, button:focus-visible {
+        outline: 2px solid #F3C64C;
+        outline-offset: 2px;
+      }
+
+      /* Football pitch patterns */
+      .pitch-board {
+        background: linear-gradient(180deg, #144636 0%, #175441 25%, #144636 50%, #175441 75%, #144636 100%);
+        background-size: 100% 80px;
+        box-shadow: inset 0 0 40px rgba(0,0,0,0.4), 0 10px 25px rgba(0,0,0,0.25);
+      }
+      
+      .pitch-line {
+        border-color: rgba(255, 255, 255, 0.42);
+      }
+
+      /* Shimmer skeleton */
+      .skeleton {
+        position: relative;
+        overflow: hidden;
+        background: #192D24;
+      }
+      .skeleton::after {
+        position: absolute;
+        inset: 0;
+        content: "";
+        transform: translateX(-100%);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+        animation: shimmer 1.4s infinite;
+      }
+      @keyframes shimmer { to { transform: translateX(100%); } }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.25); }
+
+      /* Animation for modal bottom-sheet */
+      @keyframes slideUp {
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .animate-slide-up {
+        animation: slideUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      /* Toast animation */
+      @keyframes toastIn {
+        from { transform: translate(-50%, 20px); opacity: 0; }
+        to { transform: translate(-50%, 0); opacity: 1; }
+      }
+      .animate-toast {
+        animation: toastIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     </style>
   </head>
-  <body>
+  <body class="text-ink antialiased">
     <div id="app"></div>
+    <script src="/features.js" defer></script>
     <script src="/app.js" defer></script>
   </body>
 </html>
