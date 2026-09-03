@@ -287,7 +287,7 @@ const state = {
   activeH2HData: null,
   graphicDataUrl: null,
 
-  // Squad Builder State — automatically loads the previous match squad if none saved
+  // Squad Builder State
   squadSubTab: "builder", // "builder" | "roster"
   selectedFormation: localStorage.getItem("dabbers-formation") || "4-3-3",
   lineup: (() => {
@@ -1987,11 +1987,6 @@ function bindEvents() {
     state.selectedFormation = e.target.value;
     localStorage.setItem("dabbers-formation", state.selectedFormation);
     render();
-  });
-
-  // Auto-load Previous Match XI
-  document.querySelector("[data-load-previous-match]")?.addEventListener("click", () => {
-    loadPreviousMatchSquadAction(false);
   });
 
   // Auto-pick Best XI

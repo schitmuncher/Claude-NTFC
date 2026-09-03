@@ -364,9 +364,11 @@ async function scrapeFullSquad() {
 }
 
 // -----------------------------------------------------------------------
-// Verified Player Position & Role Directory
-// Maps verified Nantwich Town FC squad players to their tactical position
-// categories (GK, DEF, MID, FWD) without any fabricated attributes or fake stats.
+// Player Position & Role Directory
+// Maps Nantwich Town FC squad players to their tactical position
+// categories (GK, DEF, MID, FWD).
+// NOTE: Squad numbers below are unverified guesses for squad builder visualization
+// and need manual cross-checking against the official club page once available.
 // -----------------------------------------------------------------------
 const KNOWN_PLAYER_POSITIONS = {
   // Goalkeepers
@@ -381,14 +383,14 @@ const KNOWN_PLAYER_POSITIONS = {
   "harry davis": { category: "DEF", categoryName: "Defender", position: "CB", number: 5 },
   "joe davis": { category: "DEF", categoryName: "Defender", position: "CB", number: 6 },
   "troy bourne": { category: "DEF", categoryName: "Defender", position: "CB", number: 12 },
-  "courtney meppen-walters": { category: "DEF", categoryName: "Defender", position: "CB", number: 14 },
+  "courtney meppen-walters": { category: "DEF", categoryName: "Defender", position: "CB", number: 23 },
   "james baillie": { category: "DEF", categoryName: "Defender", position: "RB", number: 15 },
   "perry bircumshaw": { category: "DEF", categoryName: "Defender", position: "LB", number: 16 },
   "luke enright": { category: "DEF", categoryName: "Defender", position: "CB", number: 17 },
   // Midfielders
   "josh hancock": { category: "MID", categoryName: "Midfielder", position: "CAM", number: 10 },
   "iwan roberts": { category: "MID", categoryName: "Midfielder", position: "CM", number: 8 },
-  "ethan hartshorn": { category: "MID", categoryName: "Midfielder", position: "CDM", number: 4 },
+  "ethan hartshorn": { category: "MID", categoryName: "Midfielder", position: "CDM", number: 24 },
   "fenton lloyd green": { category: "MID", categoryName: "Midfielder", position: "CM", number: 7 },
   "byron moore": { category: "MID", categoryName: "Midfielder", position: "RW", number: 11 },
   "liam james fitzpatrick": { category: "MID", categoryName: "Midfielder", position: "LW", number: 18 },
@@ -507,14 +509,22 @@ const OFFLINE_FALLBACK_SQUAD = [
   { id: "harry-davis", name: "Harry Davis", number: 5, category: "DEF", categoryName: "Defender", position: "CB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "joe-davis", name: "Joe Davis", number: 6, category: "DEF", categoryName: "Defender", position: "CB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "troy-bourne", name: "Troy Bourne", number: 12, category: "DEF", categoryName: "Defender", position: "CB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "courtney-meppen-walters", name: "Courtney Meppen-Walters", number: 23, category: "DEF", categoryName: "Defender", position: "CB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "james-baillie", name: "James Baillie", number: 15, category: "DEF", categoryName: "Defender", position: "RB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "perry-bircumshaw", name: "Perry Bircumshaw", number: 16, category: "DEF", categoryName: "Defender", position: "LB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "luke-enright", name: "Luke Enright", number: 17, category: "DEF", categoryName: "Defender", position: "CB", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "josh-hancock", name: "Josh Hancock", number: 10, category: "MID", categoryName: "Midfielder", position: "CAM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "iwan-roberts", name: "Iwan Roberts", number: 8, category: "MID", categoryName: "Midfielder", position: "CM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
-  { id: "ethan-hartshorn", name: "Ethan Hartshorn", number: 4, category: "MID", categoryName: "Midfielder", position: "CDM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "ethan-hartshorn", name: "Ethan Hartshorn", number: 24, category: "MID", categoryName: "Midfielder", position: "CDM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "fenton-lloyd-green", name: "Fenton Lloyd Green", number: 7, category: "MID", categoryName: "Midfielder", position: "CM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "byron-moore", name: "Byron Moore", number: 11, category: "MID", categoryName: "Midfielder", position: "RW", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "liam-james-fitzpatrick", name: "Liam James Fitzpatrick", number: 18, category: "MID", categoryName: "Midfielder", position: "LW", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "mason-michael-mckay", name: "Mason Michael Mckay", number: 19, category: "MID", categoryName: "Midfielder", position: "CM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "sean-cooke", name: "Sean Cooke", number: 20, category: "MID", categoryName: "Midfielder", position: "CAM", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "oliver-james-pope", name: "Oliver James Pope", number: 9, category: "FWD", categoryName: "Forward", position: "ST", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "joe-piggott", name: "Joe Piggott", number: 14, category: "FWD", categoryName: "Forward", position: "ST", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
   { id: "callum-saunders", name: "Callum Saunders", number: 21, category: "FWD", categoryName: "Forward", position: "ST", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
+  { id: "kai-evans", name: "Kai Evans", number: 22, category: "FWD", categoryName: "Forward", position: "LW", appearances: 0, goals: 0, stats: { appearances: 0, goals: 0 }, status: "Available" },
 ];
 
 app.get("/api/squad", async (req, res) => {
@@ -615,12 +625,108 @@ function parseLive(html) {
   return matches;
 }
 
+function isFixtureToday(fixtureDateStr, now = new Date()) {
+  if (!fixtureDateStr) return false;
+  const parts = fixtureDateStr.trim().split(/\s+/);
+  if (parts.length < 3) return false;
+  const day = parseInt(parts[1], 10);
+  const monthAbbr = parts[2].toLowerCase();
+
+  const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const currentMonthAbbr = months[now.getMonth()];
+  const currentDay = now.getDate();
+
+  return day === currentDay && monthAbbr === currentMonthAbbr;
+}
+
+function parseKickoffTime(timeStr, now = new Date()) {
+  if (!timeStr) return null;
+  const s = timeStr.toLowerCase().trim();
+
+  const pmAmMatch = s.match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)$/);
+  if (pmAmMatch) {
+    let hours = parseInt(pmAmMatch[1], 10);
+    const minutes = pmAmMatch[2] ? parseInt(pmAmMatch[2], 10) : 0;
+    const meridian = pmAmMatch[3];
+    if (meridian === "pm" && hours < 12) hours += 12;
+    if (meridian === "am" && hours === 12) hours = 0;
+
+    const kickoff = new Date(now);
+    kickoff.setHours(hours, minutes, 0, 0);
+    return kickoff;
+  }
+
+  const hr24Match = s.match(/^(\d{1,2})[:.](\d{2})$/);
+  if (hr24Match) {
+    const hours = parseInt(hr24Match[1], 10);
+    const minutes = parseInt(hr24Match[2], 10);
+    const kickoff = new Date(now);
+    kickoff.setHours(hours, minutes, 0, 0);
+    return kickoff;
+  }
+
+  return null;
+}
+
+function checkLiveMatch(fixture, now = new Date()) {
+  if (!fixture || !fixture.date) return null;
+  if (!isFixtureToday(fixture.date, now)) return null;
+
+  const scoreOrStatus = String(fixture.scoreOrStatus || "").trim();
+  // Already scored?
+  if (/\d+\s*-\s*\d+/.test(scoreOrStatus)) return null;
+  // Postponed?
+  if (/p\s*-\s*p/i.test(scoreOrStatus) || scoreOrStatus.toLowerCase().includes("postponed")) return null;
+
+  const kickoff = parseKickoffTime(scoreOrStatus, now);
+  if (!kickoff) return null;
+
+  const elapsedMs = now.getTime() - kickoff.getTime();
+  const maxMatchDurationMs = 130 * 60 * 1000; // ~2h 10m
+
+  if (elapsedMs >= 0 && elapsedMs <= maxMatchDurationMs) {
+    const isHome = fixture.isHome ?? (fixture.venue === "H");
+    return {
+      homeTeam: isHome ? "Nantwich Town" : fixture.opponent,
+      awayTeam: isHome ? fixture.opponent : "Nantwich Town",
+      score: "Live",
+      status: `Kicked off ${scoreOrStatus} — score not yet available from this source`,
+      isFallback: true,
+    };
+  }
+
+  return null;
+}
+
+async function getLiveMatchesFallback() {
+  try {
+    const fixtures = await withCache("fixtures", 60_000, async () =>
+      parseFixtures(await fetchHtml(sources.fixtures)),
+    );
+    const now = new Date();
+    for (const fixture of fixtures) {
+      const match = checkLiveMatch(fixture, now);
+      if (match) return [match];
+    }
+  } catch (e) {
+    // If fixtures fetch fails, silent fallback
+  }
+  return [];
+}
+
 app.get("/api/live", async (req, res) => {
   try {
-    // Short TTL — live scores should feel close to real-time on matchday
-    const matches = await withCache("live", 20_000, async () => parseLive(await fetchHtml(sources.live)));
-    return res.json(matches);
+    // Real scrape attempt stays in case NPL ever adds server-rendered content or fixes the page
+    let matches = await withCache("live", 20_000, async () => parseLive(await fetchHtml(sources.live))).catch(() => []);
+    if (!Array.isArray(matches) || matches.length === 0) {
+      matches = await getLiveMatchesFallback();
+    }
+    return res.json(matches || []);
   } catch (error) {
+    try {
+      const fallback = await getLiveMatchesFallback();
+      if (fallback && fallback.length > 0) return res.json(fallback);
+    } catch (_) {}
     return scrapeError(res, "live", error);
   }
 });
