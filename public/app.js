@@ -184,95 +184,90 @@ const FORMATIONS = {
   },
 };
 
-// Previous match squad data for auto-populating Starting XI
-const PREVIOUS_MATCH_SQUAD = {
-  opponent: "Witton Albion",
-  competition: "NPL West Division",
-  date: "Latest Matchday",
-  score: "2 - 1 (W)",
-  starters: {
-    "4-3-3": {
-      gk: "ben-garratt",
-      lb: "joe-collins",
-      lcb: "patrick-peter-kennedy",
-      rcb: "harry-davis",
-      rb: "aidan-william-roxburgh",
-      cdm: "ethan-hartshorn",
-      lcm: "iwan-roberts",
-      rcm: "josh-hancock",
-      lw: "kai-evans",
-      st: "joe-piggott",
-      rw: "byron-moore",
-    },
-    "4-4-2": {
-      gk: "ben-garratt",
-      lb: "joe-collins",
-      lcb: "patrick-peter-kennedy",
-      rcb: "harry-davis",
-      rb: "aidan-william-roxburgh",
-      lm: "kai-evans",
-      lcm: "ethan-hartshorn",
-      rcm: "iwan-roberts",
-      rm: "byron-moore",
-      lst: "joe-piggott",
-      rst: "callum-saunders",
-    },
-    "4-2-3-1": {
-      gk: "ben-garratt",
-      lb: "joe-collins",
-      lcb: "patrick-peter-kennedy",
-      rcb: "harry-davis",
-      rb: "aidan-william-roxburgh",
-      ldm: "ethan-hartshorn",
-      rdm: "iwan-roberts",
-      lam: "kai-evans",
-      cam: "josh-hancock",
-      ram: "byron-moore",
-      st: "joe-piggott",
-    },
-    "3-5-2": {
-      gk: "ben-garratt",
-      lcb: "patrick-peter-kennedy",
-      cb: "harry-davis",
-      rcb: "troy-bourne",
-      lwb: "joe-collins",
-      lcm: "ethan-hartshorn",
-      cam: "josh-hancock",
-      rcm: "iwan-roberts",
-      rwb: "aidan-william-roxburgh",
-      lst: "joe-piggott",
-      rst: "callum-saunders",
-    },
-    "5-3-2": {
-      gk: "ben-garratt",
-      lwb: "joe-collins",
-      lcb: "patrick-peter-kennedy",
-      cb: "harry-davis",
-      rcb: "troy-bourne",
-      rwb: "aidan-william-roxburgh",
-      lcm: "ethan-hartshorn",
-      cm: "iwan-roberts",
-      rcm: "josh-hancock",
-      lst: "joe-piggott",
-      rst: "callum-saunders",
-    },
+// Default starting lineup presets for tactical formations
+const DEFAULT_STARTING_PRESETS = {
+  "4-3-3": {
+    gk: "yusuf-mersin",
+    lb: "joe-collins",
+    lcb: "patrick-peter-kennedy",
+    rcb: "harry-davis",
+    rb: "aidan-william-roxburgh",
+    cdm: "ethan-hartshorn",
+    lcm: "iwan-roberts",
+    rcm: "josh-hancock",
+    lw: "kai-evans",
+    st: "joe-piggott",
+    rw: "byron-moore",
   },
-  bench: [
-    "yusuf-mersin",
-    "perry-bircumshaw",
-    "fenton-lloyd-green",
-    "liam-james-fitzpatrick",
-    "oliver-james-pope",
-    "eddie-serino",
-    "kelvin-mellor",
-    "callum-saunders",
-    "joel-connolly",
-    "matthew-bell",
-  ],
+  "4-4-2": {
+    gk: "yusuf-mersin",
+    lb: "joe-collins",
+    lcb: "patrick-peter-kennedy",
+    rcb: "harry-davis",
+    rb: "aidan-william-roxburgh",
+    lm: "kai-evans",
+    lcm: "ethan-hartshorn",
+    rcm: "iwan-roberts",
+    rm: "byron-moore",
+    lst: "joe-piggott",
+    rst: "callum-saunders",
+  },
+  "4-2-3-1": {
+    gk: "yusuf-mersin",
+    lb: "joe-collins",
+    lcb: "patrick-peter-kennedy",
+    rcb: "harry-davis",
+    rb: "aidan-william-roxburgh",
+    ldm: "ethan-hartshorn",
+    rdm: "iwan-roberts",
+    lam: "kai-evans",
+    cam: "josh-hancock",
+    ram: "byron-moore",
+    st: "joe-piggott",
+  },
+  "3-5-2": {
+    gk: "yusuf-mersin",
+    lcb: "patrick-peter-kennedy",
+    cb: "harry-davis",
+    rcb: "troy-bourne",
+    lwb: "joe-collins",
+    lcm: "ethan-hartshorn",
+    cam: "josh-hancock",
+    rcm: "iwan-roberts",
+    rwb: "aidan-william-roxburgh",
+    lst: "joe-piggott",
+    rst: "callum-saunders",
+  },
+  "5-3-2": {
+    gk: "yusuf-mersin",
+    lwb: "joe-collins",
+    lcb: "patrick-peter-kennedy",
+    cb: "harry-davis",
+    rcb: "troy-bourne",
+    rwb: "aidan-william-roxburgh",
+    lcm: "ethan-hartshorn",
+    cm: "iwan-roberts",
+    rcm: "josh-hancock",
+    lst: "joe-piggott",
+    rst: "callum-saunders",
+  },
 };
 
-function getPreviousMatchLineup(formationKey = "4-3-3") {
-  return PREVIOUS_MATCH_SQUAD.starters[formationKey] || PREVIOUS_MATCH_SQUAD.starters["4-3-3"];
+const DEFAULT_BENCH_PRESET = [
+  "ben-garratt",
+  "perry-bircumshaw",
+  "fenton-lloyd-green",
+  "liam-james-fitzpatrick",
+  "oliver-james-pope",
+  "callum-saunders",
+  "luke-enright",
+  "courtney-meppen-walters",
+  "james-baillie",
+  "mason-michael-mckay",
+];
+
+function getPresetLineup(formationKey = "4-3-3") {
+  return DEFAULT_STARTING_PRESETS[formationKey] || DEFAULT_STARTING_PRESETS["4-3-3"];
 }
 
 // Application state
@@ -300,20 +295,20 @@ const state = {
     if (saved && saved !== "{}" && Object.keys(JSON.parse(saved || "{}")).length > 0) {
       try { return JSON.parse(saved); } catch (e) {}
     }
-    return { ...getPreviousMatchLineup(localStorage.getItem("dabbers-formation") || "4-3-3") };
+    return { ...getPresetLineup(localStorage.getItem("dabbers-formation") || "4-3-3") };
   })(),
   bench: (() => {
     const saved = localStorage.getItem("dabbers-bench");
     if (saved && saved !== "[]" && JSON.parse(saved || "[]").length > 0) {
       try { return JSON.parse(saved); } catch (e) {}
     }
-    return [...PREVIOUS_MATCH_SQUAD.bench];
+    return [...DEFAULT_BENCH_PRESET];
   })(),
   
   // Squad Roster filters
   squadFilterCategory: "ALL", // "ALL" | "GK" | "DEF" | "MID" | "FWD"
   squadSearchQuery: "",
-  squadSortBy: "rating", // "rating" | "apps" | "goals" | "number" | "name"
+  squadSortBy: "apps", // "apps" | "goals" | "number" | "name"
   
   // Fixtures filter
   fixtureFilter: "ALL", // "ALL" | "UPCOMING" | "RESULTS" | "HOME"
@@ -415,8 +410,26 @@ function getPlayerById(id) {
   return getPlayersList().find((p) => p.id === id || p.name === id);
 }
 
+function cleanScore(score) {
+  if (!score || typeof score !== "string") return "";
+  let s = score.trim();
+  // Strip half-time score brackets and double numbers e.g. "(0)0 - 3(3)" -> "0 - 3", "(0) 3 - 3 (2)" -> "3 - 3"
+  s = s.replace(/^\s*\(\d+\)\s*/, "").replace(/\s*\(\d+\)\s*$/, "").trim();
+  // Strip redundant nested brackets e.g. "((0 - 3))" -> "0 - 3"
+  s = s.replace(/^\s*\(\s*\((.*?)\)\s*\)\s*$/, "$1").trim();
+  return s;
+}
+
+function sanitizeHighlightTitle(title) {
+  if (!title || typeof title !== "string") return "";
+  return title
+    .replace(/\(\s*\((\d+)\)(\d+)\s*-\s*(\d+)\((\d+)\)\s*\)/g, "($2 - $3)")
+    .replace(/\(\s*\(([^()]+)\)\s*\)/g, "($1)")
+    .replace(/\(\s*\(\s*(\d+\s*-\s*\d+)\s*\)\s*\)/g, "($1)");
+}
+
 function completed(fixture) {
-  return /\d+\s*-\s*\d+/.test(fixture.scoreOrStatus || "");
+  return /\d+\s*-\s*\d+/.test(cleanScore(fixture?.scoreOrStatus || ""));
 }
 
 function isHomeFixture(fixture) {
@@ -582,7 +595,7 @@ function renderLive() {
               ${isHomeFixture(next) ? `Nantwich Town <span class="text-gold">vs</span> ${escapeHtml(next.opponent)}` : `${escapeHtml(next.opponent)} <span class="text-gold">vs</span> Nantwich Town`}
             </h3>
             <p class="mt-2 inline-flex items-center gap-2 rounded-lg bg-forest/40 px-3 py-1 text-xs font-bold text-[#F3C64C]">
-              ${icon("calendar", "h-3.5 w-3.5")} ${escapeHtml(next.date)} · ${escapeHtml(next.scoreOrStatus || "Kick-off 15:00")}
+              ${icon("calendar", "h-3.5 w-3.5")} ${escapeHtml(next.date)} · ${escapeHtml(cleanScore(next.scoreOrStatus) || "Kick-off 15:00")}
             </p>
           </div>
 
@@ -626,56 +639,7 @@ function renderLive() {
 
         <!-- Featured Highlights Grid -->
         <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          ${(Array.isArray(media?.highlights) && media.highlights.length > 0 ? media.highlights : (Array.isArray(media?.featuredVideos) && media.featuredVideos.length > 0 ? media.featuredVideos : [
-            {
-              id: "hl-1",
-              title: "Nantwich Town vs Witton Albion | Derby Highlights & Goals",
-              opponent: "Witton Albion",
-              score: "2 - 1",
-              date: "Latest Matchday",
-              competition: "NPL West Division",
-              duration: "08:45",
-              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Witton+Albion+highlights+The+Dabbers+TV",
-              description: "Full match action and goals from the thrilling derby clash at The Swansway Stadium.",
-              category: "Match Highlights"
-            },
-            {
-              id: "hl-2",
-              title: "Stalybridge Celtic vs Nantwich Town | Dramatic League Clash",
-              opponent: "Stalybridge Celtic",
-              score: "1 - 2",
-              date: "Recent Match",
-              competition: "NPL West Division",
-              duration: "09:12",
-              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Stalybridge+Celtic+highlights+The+Dabbers+TV",
-              description: "Late drama as the Dabbers secured all three points on the road.",
-              category: "Match Highlights"
-            },
-            {
-              id: "hl-3",
-              title: "Nantwich Town vs Shifnal Town | Emirates FA Cup Highlights",
-              opponent: "Shifnal Town",
-              score: "3 - 0",
-              date: "Cup Matchday",
-              competition: "Emirates FA Cup",
-              duration: "07:20",
-              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Shifnal+Town+FA+Cup+highlights+The+Dabbers+TV",
-              description: "Superb attacking display sees the Dabbers advance in the FA Cup preliminary round.",
-              category: "Cup Highlights"
-            },
-            {
-              id: "hl-4",
-              title: "Nantwich Town vs Vauxhall Motors | Floodlit Match Highlights",
-              opponent: "Vauxhall Motors",
-              score: "3 - 3",
-              date: "Recent Result",
-              competition: "NPL West Division",
-              duration: "07:55",
-              url: "https://www.youtube.com/results?search_query=Nantwich+Town+vs+Vauxhall+Motors+highlights+The+Dabbers+TV",
-              description: "Six goals and sensational moments under the floodlights at Water Lode.",
-              category: "Match Highlights"
-            }
-          ])).slice(0, 4).map((item) => `
+          ${(Array.isArray(media?.highlights) && media.highlights.length > 0 ? media.highlights : (Array.isArray(media?.featuredVideos) && media.featuredVideos.length > 0 ? media.featuredVideos : [])).slice(0, 6).map((item) => `
             <a href="${item.url || item.youtubeUrl || "https://www.youtube.com/@TheDabbersTV/videos"}" target="_blank" rel="noopener noreferrer" class="group block rounded-xl border border-white/10 bg-white/5 p-3.5 hover:border-gold/50 hover:bg-gold/5 transition">
               <div class="flex items-center justify-between text-[10px] font-bold text-gold uppercase">
                 <span class="rounded bg-rose-500/20 px-1.5 py-0.5 text-rose-400 border border-rose-500/30 flex items-center gap-1">
@@ -683,7 +647,7 @@ function renderLive() {
                 </span>
                 <span class="text-[#AAB8AE] font-mono">${escapeHtml(item.duration || "Highlights")} · ${escapeHtml(item.date || "Matchday")}</span>
               </div>
-              <h4 class="display mt-2 text-sm font-bold text-white group-hover:text-gold transition line-clamp-2 leading-snug">${escapeHtml(item.title)}</h4>
+              <h4 class="display mt-2 text-sm font-bold text-white group-hover:text-gold transition line-clamp-2 leading-snug">${escapeHtml(sanitizeHighlightTitle(item.title))}</h4>
               <p class="mt-1 text-[11px] text-[#AAB8AE] line-clamp-2">${escapeHtml(item.description || item.desc || "")}</p>
               <div class="mt-3 flex items-center justify-between text-[11px] text-gold font-bold border-t border-white/10 pt-2">
                 <span class="flex items-center gap-1">${icon("youtube", "h-3.5 w-3.5 text-rose-400")} Watch on Dabbers TV</span>
@@ -819,21 +783,8 @@ function renderSquad() {
     .map((pos) => getPlayerById(state.lineup[pos.id]))
     .filter(Boolean);
 
-  const avgRating = assignedPlayers.length
-    ? (assignedPlayers.reduce((sum, p) => sum + (p.stats?.rating || 7.5), 0) / assignedPlayers.length).toFixed(1)
-    : "—";
-
-  const totalGoals = assignedPlayers.reduce((sum, p) => sum + (p.stats?.goals || 0), 0);
-  const totalApps = assignedPlayers.reduce((sum, p) => sum + (p.stats?.appearances || 0), 0);
-
-  // Attack, Midfield, Defence ratings
-  const fwds = assignedPlayers.filter((p) => p.category === "FWD");
-  const mids = assignedPlayers.filter((p) => p.category === "MID");
-  const defs = assignedPlayers.filter((p) => p.category === "DEF" || p.category === "GK");
-
-  const atkScore = fwds.length ? Math.round(fwds.reduce((s, p) => s + (p.attributes?.shooting || 75), 0) / fwds.length) : 75;
-  const midScore = mids.length ? Math.round(mids.reduce((s, p) => s + (p.attributes?.passing || 75), 0) / mids.length) : 76;
-  const defScore = defs.length ? Math.round(defs.reduce((s, p) => s + (p.attributes?.defending || 75), 0) / defs.length) : 78;
+  const totalGoals = assignedPlayers.reduce((sum, p) => sum + (p.goals || p.stats?.goals || 0), 0);
+  const totalApps = assignedPlayers.reduce((sum, p) => sum + (p.appearances || p.stats?.appearances || 0), 0);
 
   return `
     <div class="space-y-5">
@@ -861,20 +812,20 @@ function renderSquad() {
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
           <span class="text-[11px] text-[#AAB8AE]">
-            Live Web Sync: <strong class="text-emerald-300 font-semibold">${players.length} Profiles & Stats</strong> (${syncDateFormatted})
+            Live Web Sync: <strong class="text-emerald-300 font-semibold">${players.length} Verified Profiles & Stats</strong> (${syncDateFormatted})
           </span>
         </div>
         <button data-refresh-all class="inline-flex items-center gap-1 text-[11px] font-bold text-gold hover:underline">
-          ${icon("refresh", "h-3 w-3")} Sync Stats
+          ${icon("refresh", "h-3 w-3")} Sync Records
         </button>
       </div>
 
-      ${state.squadSubTab === "builder" ? renderTacticalBuilder(currentFormation, assignedPlayers, avgRating, totalGoals, totalApps, atkScore, midScore, defScore) : renderSquadRoster(players)}
+      ${state.squadSubTab === "builder" ? renderTacticalBuilder(currentFormation, assignedPlayers, totalGoals, totalApps) : renderSquadRoster(players)}
     </div>
   `;
 }
 
-function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals, totalApps, atkScore, midScore, defScore) {
+function renderTacticalBuilder(formation, assignedPlayers, totalGoals, totalApps) {
   const benchPlayers = state.bench.map(getPlayerById).filter(Boolean);
 
   return `
@@ -891,19 +842,19 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
         </div>
 
         <div class="flex flex-wrap items-center gap-1.5">
-          <button data-load-previous-match class="inline-flex items-center gap-1 rounded-xl bg-emerald-500/20 px-2.5 py-1.5 text-xs font-bold text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 transition" title="Auto-populate with squad from previous match (${PREVIOUS_MATCH_SQUAD.opponent})">
-            ${icon("refresh", "h-3.5 w-3.5")} Last Match XI
+          <button data-auto-pick class="inline-flex items-center gap-1 rounded-xl bg-gold px-2.5 py-1.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition shadow" title="Auto-pick players with most appearances this season">
+            ${icon("magic", "h-3.5 w-3.5")} Auto-Pick XI
           </button>
-          <button data-export-graphic class="inline-flex items-center gap-1 rounded-xl bg-gold px-2.5 py-1.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition shadow">
+          <button data-load-preset class="inline-flex items-center gap-1 rounded-xl bg-forest px-2.5 py-1.5 text-xs font-bold text-gold border border-gold/30 hover:bg-forest-light transition" title="Load default tactical shape">
+            ${icon("refresh", "h-3.5 w-3.5")} Preset Shape
+          </button>
+          <button data-export-graphic class="inline-flex items-center gap-1 rounded-xl bg-white/10 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-white/15 transition shadow">
             ${icon("download", "h-3.5 w-3.5")} Graphic
-          </button>
-          <button data-auto-pick class="inline-flex items-center gap-1 rounded-xl bg-forest px-2.5 py-1.5 text-xs font-bold text-gold border border-gold/30 hover:bg-forest-light">
-            ${icon("magic", "h-3.5 w-3.5")} Best XI
           </button>
           <button data-share-squad class="inline-flex items-center gap-1 rounded-xl bg-white/10 px-2.5 py-1.5 text-xs font-bold text-white hover:bg-white/15">
             ${icon("share", "h-3.5 w-3.5")} Text
           </button>
-          <button data-reset-lineup class="inline-flex items-center gap-1 rounded-xl bg-white/5 px-2 py-1.5 text-xs font-bold text-[#AAB8AE] hover:text-rose-400" title="Reset Lineup">
+          <button data-reset-lineup class="inline-flex items-center gap-1 rounded-xl bg-white/5 px-2 py-1.5 text-xs font-bold text-[#AAB8AE] hover:text-rose-400" title="Clear Lineup">
             ${icon("trash", "h-3.5 w-3.5")}
           </button>
         </div>
@@ -912,26 +863,25 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
       <!-- Tactical Analytics Bar -->
       <div class="grid grid-cols-4 gap-2 rounded-2xl border border-charcoal-border bg-[#15251E] p-3 text-center">
         <div>
-          <span class="block text-[9px] uppercase font-bold text-[#AAB8AE]">Team Rating</span>
-          <strong class="display text-lg font-bold text-gold">${avgRating}</strong>
+          <span class="block text-[9px] uppercase font-bold text-[#AAB8AE]">Total Apps</span>
+          <strong class="display text-lg font-bold text-gold">${totalApps}</strong>
         </div>
         <div>
-          <span class="block text-[9px] uppercase font-bold text-rose-300">Attack</span>
-          <strong class="display text-lg font-bold text-white">${atkScore}</strong>
+          <span class="block text-[9px] uppercase font-bold text-emerald-300">Total Goals</span>
+          <strong class="display text-lg font-bold text-white">${totalGoals}</strong>
         </div>
         <div>
-          <span class="block text-[9px] uppercase font-bold text-emerald-300">Midfield</span>
-          <strong class="display text-lg font-bold text-white">${midScore}</strong>
+          <span class="block text-[9px] uppercase font-bold text-blue-300">Starting XI</span>
+          <strong class="display text-lg font-bold text-white">${assignedPlayers.length}/11</strong>
         </div>
         <div>
-          <span class="block text-[9px] uppercase font-bold text-blue-300">Defence</span>
-          <strong class="display text-lg font-bold text-white">${defScore}</strong>
+          <span class="block text-[9px] uppercase font-bold text-purple-300">Subs Bench</span>
+          <strong class="display text-lg font-bold text-white">${benchPlayers.length}/10</strong>
         </div>
       </div>
 
       <!-- Tactical Football Pitch -->
       <div class="relative w-full overflow-hidden rounded-3xl border-2 border-[#1E6852] pitch-board p-4 text-white shadow-2xl" style="height: 520px;">
-        <!-- Pitch Markings -->
         <!-- Center circle -->
         <div class="pointer-events-none absolute left-1/2 top-1/2 h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border pitch-line"></div>
         <div class="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/40"></div>
@@ -962,7 +912,6 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
                 <div class="group relative flex flex-col items-center">
                   <div class="relative flex h-11 w-11 items-center justify-center rounded-full bg-[#101713] border-2 border-gold text-gold font-bold shadow-lg transition-transform group-hover:scale-110 active:scale-95">
                     <span class="text-xs">#${player.number || ""}</span>
-                    <span class="absolute -right-1 -top-1 rounded-full bg-forest px-1 text-[8px] font-bold text-white border border-white/20">${player.stats?.rating || "7.5"}</span>
                   </div>
                   <div class="mt-1 rounded-md bg-[#0D1813]/90 px-1.5 py-0.5 text-[9px] font-bold text-white shadow truncate max-w-[70px] border border-white/10">
                     ${escapeHtml(player.name.split(" ").pop())}
@@ -982,7 +931,7 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
         }).join("")}
       </div>
 
-      <!-- Substitutes Bench (Up to 10 subs) -->
+      <!-- Substitutes Bench (10 slots) -->
       <div class="rounded-2xl border border-charcoal-border bg-[#15251E] p-4 text-white">
         <div class="mb-3 flex items-center justify-between">
           <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Substitutes Bench (${benchPlayers.length}/10)</span>
@@ -1013,35 +962,33 @@ function renderTacticalBuilder(formation, assignedPlayers, avgRating, totalGoals
 
 // =======================================================================
 // RENDER: SQUAD ROSTER & FULL DATABASE
+// Displays verified player appearance and goal statistics from official records.
+// Zero fabricated attributes or fake rating scores.
 // =======================================================================
 function renderSquadRoster(players) {
-  // Filter by category
   let filtered = players;
   if (state.squadFilterCategory !== "ALL") {
     filtered = filtered.filter((p) => p.category === state.squadFilterCategory);
   }
 
-  // Filter by search
   if (state.squadSearchQuery) {
     const q = state.squadSearchQuery.toLowerCase();
     filtered = filtered.filter((p) => p.name.toLowerCase().includes(q) || (p.position || "").toLowerCase().includes(q));
   }
 
-  // Sort
+  // Sort by verified metrics
   filtered = [...filtered].sort((a, b) => {
     switch (state.squadSortBy) {
-      case "rating":
-        return (b.stats?.rating || 0) - (a.stats?.rating || 0);
       case "apps":
-        return (b.stats?.appearances || 0) - (a.stats?.appearances || 0);
+        return (b.appearances || b.stats?.appearances || 0) - (a.appearances || a.stats?.appearances || 0);
       case "goals":
-        return (b.stats?.goals || 0) - (a.stats?.goals || 0);
+        return (b.goals || b.stats?.goals || 0) - (a.goals || a.stats?.goals || 0);
       case "number":
         return (a.number || 99) - (b.number || 99);
       case "name":
         return a.name.localeCompare(b.name);
       default:
-        return 0;
+        return (b.appearances || 0) - (a.appearances || 0);
     }
   });
 
@@ -1074,8 +1021,7 @@ function renderSquadRoster(players) {
           <div class="flex items-center gap-1.5">
             <span class="text-[10px] uppercase text-[#AAB8AE]">Sort:</span>
             <select data-sort-squad class="rounded-lg border border-white/15 bg-charcoal px-2 py-1 text-xs text-white focus:outline-none">
-              <option value="rating" ${state.squadSortBy === "rating" ? "selected" : ""}>Rating</option>
-              <option value="apps" ${state.squadSortBy === "apps" ? "selected" : ""}>Apps</option>
+              <option value="apps" ${state.squadSortBy === "apps" ? "selected" : ""}>Appearances</option>
               <option value="goals" ${state.squadSortBy === "goals" ? "selected" : ""}>Goals</option>
               <option value="number" ${state.squadSortBy === "number" ? "selected" : ""}>Squad #</option>
               <option value="name" ${state.squadSortBy === "name" ? "selected" : ""}>Name</option>
@@ -1087,10 +1033,8 @@ function renderSquadRoster(players) {
       <!-- Player Cards Grid -->
       <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
         ${filtered.map((player) => {
-          const stats = player.stats || {};
-          const attrs = player.attributes || {};
-          const isAssigned = Object.values(state.lineup).includes(player.id);
-          const isBench = state.bench.includes(player.id);
+          const apps = player.appearances || player.stats?.appearances || 0;
+          const goals = player.goals || player.stats?.goals || 0;
 
           return `
             <article class="group rounded-2xl border border-charcoal-border bg-[#15251E] p-4 text-white shadow-lg transition hover:border-gold/50">
@@ -1103,86 +1047,37 @@ function renderSquadRoster(players) {
                     <h3 class="display text-base font-bold text-white group-hover:text-gold transition">${escapeHtml(player.name)}</h3>
                     <div class="flex items-center gap-1.5 mt-0.5">
                       <span class="rounded px-1.5 py-0.5 text-[9px] font-bold ${posBadgeClass(player.category)}">${player.position}</span>
-                      <span class="text-[10px] text-[#AAB8AE]">${player.height || ""} · ${player.preferredFoot ? `${player.preferredFoot} Foot` : ""}</span>
+                      <span class="text-[10px] text-[#AAB8AE]">${player.categoryName || ""}</span>
                     </div>
                   </div>
                 </div>
                 <div class="text-right">
-                  <span class="display text-lg font-bold text-gold">${stats.rating || "7.5"}</span>
-                  <span class="block text-[8px] uppercase tracking-wider text-[#AAB8AE]">Rating</span>
+                  <span class="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[9px] font-bold text-emerald-300 border border-emerald-500/30">
+                    Available
+                  </span>
                 </div>
               </div>
 
-              <!-- Form & Status Row -->
-              <div class="mt-2.5 flex items-center justify-between rounded-lg bg-black/30 px-2.5 py-1.5 text-[10px]">
-                <span class="flex items-center gap-1 text-gold font-bold">
-                  ${icon("flame", "h-3 w-3 text-gold")} Form: ${(stats.rating || 7.5).toFixed(1)}
-                </span>
-                <span class="flex items-center gap-1 text-emerald-400 font-medium">
-                  🟢 ${player.fitness || "Match Fit"}
-                </span>
-                <span class="flex items-center gap-1 text-amber-300 font-medium">
-                  🟨 ${player.yellowCards || Math.floor((player.number || 3) % 4)}/5 Cards
-                </span>
-              </div>
-
-              <!-- Key Stats Row -->
-              <div class="my-2.5 grid grid-cols-4 gap-1.5 rounded-xl bg-black/20 p-2 text-center text-xs">
+              <!-- Official Season Statistics -->
+              <div class="my-3 grid grid-cols-2 gap-2 rounded-xl bg-black/25 p-2.5 text-center text-xs">
                 <div>
-                  <span class="block text-[9px] uppercase text-[#AAB8AE]">Apps</span>
-                  <strong class="font-bold">${stats.appearances || 0}</strong>
+                  <span class="block text-[9px] uppercase tracking-wider text-[#AAB8AE]">Season Apps</span>
+                  <strong class="display text-base font-bold text-gold">${apps}</strong>
                 </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-[#AAB8AE]">Goals</span>
-                  <strong class="font-bold text-emerald-400">${stats.goals || 0}</strong>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-[#AAB8AE]">Assists</span>
-                  <strong class="font-bold">${stats.assists || 0}</strong>
-                </div>
-                <div>
-                  <span class="block text-[9px] uppercase text-[#AAB8AE]">Clean S.</span>
-                  <strong class="font-bold text-blue-400">${stats.cleanSheets || 0}</strong>
-                </div>
-              </div>
-
-              <!-- Radar Stat Bars -->
-              <div class="grid grid-cols-3 gap-x-3 gap-y-1.5 text-[10px] text-[#AAB8AE]">
-                <div>
-                  <div class="flex justify-between"><span>PAC</span><span class="font-bold text-white">${attrs.pace || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-gold rounded-full" style="width: ${attrs.pace || 70}%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between"><span>SHO</span><span class="font-bold text-white">${attrs.shooting || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-rose-400 rounded-full" style="width: ${attrs.shooting || 70}%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between"><span>PAS</span><span class="font-bold text-white">${attrs.passing || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-emerald-400 rounded-full" style="width: ${attrs.passing || 70}%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between"><span>DRI</span><span class="font-bold text-white">${attrs.dribbling || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-amber-400 rounded-full" style="width: ${attrs.dribbling || 70}%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between"><span>DEF</span><span class="font-bold text-white">${attrs.defending || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width: ${attrs.defending || 70}%"></div></div>
-                </div>
-                <div>
-                  <div class="flex justify-between"><span>PHY</span><span class="font-bold text-white">${attrs.physical || 70}</span></div>
-                  <div class="h-1 rounded-full bg-white/10 overflow-hidden"><div class="h-full bg-purple-400 rounded-full" style="width: ${attrs.physical || 70}%"></div></div>
+                <div class="border-l border-white/10">
+                  <span class="block text-[9px] uppercase tracking-wider text-[#AAB8AE]">Season Goals</span>
+                  <strong class="display text-base font-bold text-emerald-400">${goals}</strong>
                 </div>
               </div>
 
               <!-- Card Actions -->
-              <div class="mt-3 flex items-center justify-between border-t border-white/10 pt-3">
-                <button data-open-player="${player.id}" class="inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline">
-                  ${icon("info", "h-3.5 w-3.5")} Full Profile
+              <div class="flex items-center justify-between border-t border-white/10 pt-2.5 text-xs">
+                <button data-open-player="${player.id}" class="inline-flex items-center gap-1 font-bold text-gold hover:underline">
+                  ${icon("info", "h-3.5 w-3.5")} Player Profile
                 </button>
-                <div class="flex items-center gap-1.5">
-                  ${isAssigned ? '<span class="rounded bg-gold/20 px-2 py-0.5 text-[9px] font-bold text-gold">In XI</span>' : ""}
-                  ${isBench ? '<span class="rounded bg-white/10 px-2 py-0.5 text-[9px] font-bold text-white">On Bench</span>' : ""}
-                </div>
+                <a href="https://www.youtube.com/results?search_query=Nantwich+Town+${encodeURIComponent(player.name)}+The+Dabbers+TV" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[11px] text-rose-300 hover:text-rose-200">
+                  ${icon("youtube", "h-3 w-3 text-rose-400")} Dabbers TV Footage
+                </a>
               </div>
             </article>
           `;
@@ -1269,8 +1164,8 @@ function renderFixtures() {
 
                 <!-- Score / Time -->
                 <div class="shrink-0 text-right">
-                  <span class="display block text-sm font-bold ${isDone ? "text-gold" : "text-white"}">${escapeHtml(fixture.scoreOrStatus)}</span>
-                  <span class="text-[9px] uppercase tracking-wider text-[#AAB8AE]">${isDone ? "Full Time" : "Kick-off"}</span>
+                  <span class="display block text-sm font-bold ${isDone ? "text-gold" : "text-white"}">${escapeHtml(cleanScore(fixture.scoreOrStatus))}</span>
+                  ${isDone && fixture.halfTime ? `<span class="block text-[10px] text-[#AAB8AE] font-mono">HT ${escapeHtml(cleanScore(fixture.halfTime))}</span>` : `<span class="text-[9px] uppercase tracking-wider text-[#AAB8AE]">${isDone ? "Full Time" : "Kick-off"}</span>`}
                 </div>
               </div>
 
@@ -1389,14 +1284,15 @@ function renderTable() {
 function renderH2HModal() {
   if (state.activeModal !== "h2h_preview" || !state.activeH2HOpponent) return "";
   const h2h = state.activeH2HData;
+  const opp = state.activeH2HOpponent;
 
   return `
     <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
       <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-6 text-white shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
         <div class="flex items-center justify-between border-b border-white/10 pb-3">
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Head-to-Head Record</span>
-            <h3 class="display text-xl font-bold">Nantwich Town vs ${escapeHtml(state.activeH2HOpponent)}</h3>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Season Encounters & Footage</span>
+            <h3 class="display text-xl font-bold">Nantwich Town vs ${escapeHtml(opp)}</h3>
           </div>
           <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20">
             ${icon("close", "h-4 w-4")}
@@ -1405,254 +1301,59 @@ function renderH2HModal() {
 
         ${h2h ? `
           <div class="mt-4 space-y-4">
-            <!-- Record Summary Counters -->
-            <div class="grid grid-cols-4 gap-2 text-center text-xs">
-              <div class="rounded-xl bg-forest p-3">
-                <span class="block text-[9px] uppercase text-gold">Total Pld</span>
-                <strong class="display text-lg font-bold text-white">${h2h.played}</strong>
-              </div>
-              <div class="rounded-xl bg-emerald-500/20 p-3 border border-emerald-500/30">
-                <span class="block text-[9px] uppercase text-emerald-300">Dabbers Wins</span>
-                <strong class="display text-lg font-bold text-emerald-300">${h2h.nantwichWins}</strong>
-              </div>
-              <div class="rounded-xl bg-white/5 p-3 border border-white/10">
-                <span class="block text-[9px] uppercase text-[#AAB8AE]">Draws</span>
-                <strong class="display text-lg font-bold text-white">${h2h.draws}</strong>
-              </div>
-              <div class="rounded-xl bg-rose-500/20 p-3 border border-rose-500/30">
-                <span class="block text-[9px] uppercase text-rose-300">Opponent Wins</span>
-                <strong class="display text-lg font-bold text-rose-300">${h2h.opponentWins}</strong>
-              </div>
-            </div>
-
-            <!-- Goals Summary -->
-            <div class="rounded-xl bg-black/30 p-3 text-center text-xs flex justify-around">
-              <div>
-                <span class="text-[#AAB8AE] block text-[9px] uppercase">Dabbers Goals Scored</span>
-                <strong class="display text-base font-bold text-gold">${h2h.goalsFor}</strong>
-              </div>
-              <div class="border-r border-white/10"></div>
-              <div>
-                <span class="text-[#AAB8AE] block text-[9px] uppercase">Goals Conceded</span>
-                <strong class="display text-base font-bold text-white">${h2h.goalsAgainst}</strong>
-              </div>
-            </div>
-
-            <!-- Recent Encounters -->
+            <!-- Season Fixtures / Matches List -->
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Recent Encounters & Highlights</span>
-              <div class="space-y-2">
-                ${(h2h.recentMatches || []).map((m) => {
-                  let badge = '<span class="rounded bg-white/10 px-1.5 py-0.5 text-[9px] font-bold text-white">D</span>';
-                  if (m.result === "W") badge = '<span class="rounded bg-emerald-500 px-1.5 py-0.5 text-[9px] font-bold text-charcoal">W</span>';
-                  else if (m.result === "L") badge = '<span class="rounded bg-rose-500 px-1.5 py-0.5 text-[9px] font-bold text-white">L</span>';
-
-                  const hlUrl = m.highlightsUrl || `https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(state.activeH2HOpponent)}+${encodeURIComponent(m.date || "")}+highlights+The+Dabbers+TV`;
-
-                  return `
-                    <div class="flex items-center justify-between rounded-xl bg-white/5 p-2.5 text-xs">
-                      <div class="flex items-center gap-2">
-                        ${badge}
+              <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">2024/25 Season Encounters</span>
+              ${Array.isArray(h2h.seasonMatches) && h2h.seasonMatches.length > 0 ? `
+                <div class="space-y-2">
+                  ${h2h.seasonMatches.map((m) => `
+                    <div class="rounded-xl bg-white/5 p-3 text-xs border border-white/10">
+                      <div class="flex items-center justify-between">
                         <div>
                           <strong class="text-white">${escapeHtml(m.venue)}</strong>
-                          <span class="text-[10px] text-[#AAB8AE] ml-1.5">${escapeHtml(m.date)}</span>
+                          <span class="text-[10px] text-[#AAB8AE] ml-2">${escapeHtml(m.date)}</span>
+                        </div>
+                        <div class="text-right">
+                          <span class="display font-bold text-gold">${escapeHtml(cleanScore(m.scoreOrStatus))}</span>
+                          ${m.halfTime ? `<span class="block text-[10px] text-[#AAB8AE] font-mono">HT ${escapeHtml(cleanScore(m.halfTime))}</span>` : ""}
                         </div>
                       </div>
-                      <div class="flex items-center gap-2">
-                        <span class="display font-bold text-gold">${escapeHtml(m.score)}</span>
-                        <a href="${hlUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-rose-500/20 border border-rose-500/30 px-2 py-0.5 text-[10px] font-bold text-rose-300 hover:bg-rose-500/30 transition">
-                          ${icon("youtube", "h-2.5 w-2.5")} Highlights
+                      ${m.notesAndScorers ? `
+                        <div class="mt-1.5 text-[10px] text-[#AAB8AE]">
+                          <strong class="text-[#D5E8D9]">Details:</strong> ${escapeHtml(m.notesAndScorers)}
+                        </div>
+                      ` : ""}
+                      <div class="mt-2.5 flex items-center gap-2 border-t border-white/10 pt-2">
+                        <a href="${m.highlightsUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-rose-500/20 border border-rose-500/30 px-2 py-1 text-[10px] font-bold text-rose-300 hover:bg-rose-500/30 transition">
+                          ${icon("youtube", "h-3 w-3 text-rose-400")} Dabbers TV Highlights
+                        </a>
+                        <a href="${m.ticketUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 rounded-lg bg-emerald-500/20 border border-emerald-500/30 px-2 py-1 text-[10px] font-bold text-emerald-300 hover:bg-emerald-500/30 transition">
+                          ${icon("ticket", "h-3 w-3")} Tickets
                         </a>
                       </div>
                     </div>
-                  `;
-                }).join("")}
-              </div>
+                  `).join("")}
+                </div>
+              ` : `
+                <div class="rounded-xl bg-white/5 p-4 text-center text-xs text-[#AAB8AE]">
+                  No recorded encounters with ${escapeHtml(opp)} in the current season database. Check upcoming fixtures on the Fixtures tab!
+                </div>
+              `}
             </div>
 
             <!-- YouTube Highlights Link for Encounter -->
-            <a href="https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(state.activeH2HOpponent)}+highlights+The+Dabbers+TV" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-rose-500/20 border border-rose-500/30 py-2.5 text-xs font-bold text-rose-300 hover:bg-rose-500/30 transition">
-              ${icon("youtube", "h-4 w-4 text-rose-400")} Search All Highlights vs ${escapeHtml(state.activeH2HOpponent)} on YouTube
+            <a href="${h2h.youtubeSearchUrl || `https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(opp)}+The+Dabbers+TV`}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-rose-500/20 border border-rose-500/30 py-2.5 text-xs font-bold text-rose-300 hover:bg-rose-500/30 transition">
+              ${icon("youtube", "h-4 w-4 text-rose-400")} Search Match Highlights vs ${escapeHtml(opp)} on YouTube
             </a>
 
-            <!-- Historical Trivia -->
-            <div class="rounded-xl bg-gold/10 p-3 border border-gold/30 text-xs">
-              <span class="block text-[10px] font-bold uppercase tracking-wider text-gold mb-1">Matchday Fact</span>
-              <p class="text-[#D5E8D9]">${escapeHtml(h2h.trivia || "High-intensity rivalry in the NPL West Division.")}</p>
-            </div>
+            <!-- Tickets Link -->
+            <a href="${h2h.ticketUrl || TICKETING_URL}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-gold/20 border border-gold/30 py-2 text-xs font-bold text-gold hover:bg-gold/30 transition">
+              ${icon("ticket", "h-4 w-4")} Matchday Tickets Portal
+            </a>
           </div>
         ` : `
-          <div class="p-8 text-center text-xs text-[#AAB8AE]">Loading head-to-head statistics...</div>
+          <div class="p-8 text-center text-xs text-[#AAB8AE]">Loading encounters...</div>
         `}
-      </div>
-    </div>
-  `;
-}
-
-function renderStadiumGuideModal() {
-  if (state.activeModal !== "stadium_guide") return "";
-  const guide = window.DabbersStadiumGuide || {};
-
-  return `
-    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
-      <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-6 text-white shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
-        <div class="flex items-center justify-between border-b border-white/10 pb-3">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Matchday Visitors Hub</span>
-            <h3 class="display text-xl font-bold">The Swansway Stadium Guide</h3>
-          </div>
-          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20">
-            ${icon("close", "h-4 w-4")}
-          </button>
-        </div>
-
-        <div class="mt-4 space-y-4">
-          <!-- Stadium Admission Pricing Table -->
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Matchday Admission & Turnstiles</span>
-            <div class="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
-              ${(guide.pricing || []).map((p) => `
-                <div class="rounded-xl bg-forest p-2.5 text-center">
-                  <span class="block text-[9px] uppercase text-gold">${escapeHtml(p.cat)}</span>
-                  <strong class="display text-base font-bold text-white">${escapeHtml(p.price)}</strong>
-                  <span class="block text-[8px] text-[#AAB8AE]">${escapeHtml(p.info)}</span>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-
-          <!-- Turnstiles & Gates -->
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Turnstiles & Entry Points</span>
-            <div class="space-y-2">
-              ${(guide.turnstiles || []).map((t) => `
-                <div class="rounded-xl border border-white/10 bg-white/5 p-3 text-xs">
-                  <div class="flex items-center justify-between">
-                    <strong class="text-gold font-bold">${escapeHtml(t.name)}</strong>
-                    <span class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[8px] font-bold text-emerald-300">Contactless / Cash</span>
-                  </div>
-                  <p class="mt-1 text-[11px] text-[#D5E8D9]">${escapeHtml(t.desc)}</p>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-
-          <!-- Ground Facilities & Bar -->
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Matchday Amenities & Refreshments</span>
-            <div class="space-y-2">
-              ${(guide.facilities || []).map((f) => `
-                <div class="rounded-xl bg-black/20 p-3 text-xs">
-                  <strong class="text-white block font-bold">${escapeHtml(f.title)}</strong>
-                  <p class="mt-0.5 text-[11px] text-[#AAB8AE]">${escapeHtml(f.desc)}</p>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-
-          <!-- Directions Action -->
-          <div class="pt-2">
-            <a href="https://www.google.com/maps/dir/?api=1&destination=Swansway+Stadium+Nantwich+Town+FC+Water+Lode+CW5+5BS" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-gold py-2.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition">
-              ${icon("mapPin", "h-4 w-4")} Open GPS Navigation to Stadium
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderGraphicExportModal() {
-  if (state.activeModal !== "graphic_export" || !state.graphicDataUrl) return "";
-
-  return `
-    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4" data-close-modal>
-      <div class="w-full max-w-md rounded-3xl border border-gold/40 bg-[#0F1A15] p-5 text-white shadow-2xl animate-slide-up max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
-        <div class="flex items-center justify-between border-b border-white/10 pb-3">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Matchday Graphic</span>
-            <h3 class="display text-lg font-bold">Starting XI Social Poster</h3>
-          </div>
-          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20">
-            ${icon("close", "h-4 w-4")}
-          </button>
-        </div>
-
-        <div class="my-4 overflow-hidden rounded-2xl border border-gold/30 shadow-2xl">
-          <img src="${state.graphicDataUrl}" alt="Nantwich Town FC Starting XI Graphic" class="w-full object-contain" />
-        </div>
-
-        <div class="flex gap-2">
-          <a href="${state.graphicDataUrl}" download="NantwichTownFC_StartingXI.png" class="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gold py-2.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition">
-            ${icon("download", "h-4 w-4")} Download Image (PNG)
-          </a>
-          <button data-share-image class="rounded-xl border border-white/20 bg-white/10 px-4 py-2.5 text-xs font-bold text-white hover:bg-white/20 transition">
-            ${icon("share", "h-4 w-4")}
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// =======================================================================
-// RENDER: MODAL BOTTOM-SHEETS
-// =======================================================================
-function renderPositionPickerModal() {
-  if (state.activeModal !== "pos_picker" || !state.activePickingSlot) return "";
-  const { posId, label, category } = state.activePickingSlot;
-  const players = getPlayersList();
-
-  // Filter players compatible with this position or matching category
-  const filtered = players.filter((p) => {
-    if (category === "GK") return p.category === "GK";
-    if (category === "DEF") return p.category === "DEF" || p.position === label;
-    if (category === "MID") return p.category === "MID" || p.position === label;
-    if (category === "FWD") return p.category === "FWD" || p.position === label;
-    return true;
-  });
-
-  return `
-    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
-      <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-5 text-white shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
-        <div class="flex items-center justify-between border-b border-white/10 pb-3">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Assign Position</span>
-            <h3 class="display text-lg font-bold">Select Player for ${escapeHtml(label)}</h3>
-          </div>
-          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20">
-            ${icon("close", "h-4 w-4")}
-          </button>
-        </div>
-
-        <div class="mt-4 space-y-2">
-          ${filtered.map((player) => {
-            const isSelected = state.lineup[posId] === player.id;
-
-            return `
-              <div
-                data-select-player-slot="${player.id}"
-                class="flex cursor-pointer items-center justify-between rounded-xl border p-3 transition ${isSelected ? "border-gold bg-gold/20" : "border-white/10 bg-white/5 hover:border-gold/50"}"
-              >
-                <div class="flex items-center gap-3">
-                  <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-forest text-xs font-bold text-gold">
-                    #${player.number || ""}
-                  </span>
-                  <div>
-                    <h4 class="text-sm font-bold text-white">${escapeHtml(player.name)}</h4>
-                    <span class="text-[10px] text-[#AAB8AE]">${player.position} · Rating: ${player.stats?.rating || "7.5"}</span>
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-[#AAB8AE]">${player.stats?.appearances || 0} apps</span>
-                  <button class="rounded-lg bg-gold px-3 py-1 text-xs font-bold text-charcoal">
-                    ${isSelected ? "Remove" : "Pick"}
-                  </button>
-                </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
       </div>
     </div>
   `;
@@ -1663,8 +1364,8 @@ function renderPlayerProfileModal() {
   const player = getPlayerById(state.activePlayerModalId);
   if (!player) return "";
 
-  const stats = player.stats || {};
-  const attrs = player.attributes || {};
+  const apps = player.appearances || player.stats?.appearances || 0;
+  const goals = player.goals || player.stats?.goals || 0;
 
   return `
     <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
@@ -1679,7 +1380,7 @@ function renderPlayerProfileModal() {
               <h3 class="display text-xl font-bold text-white">${escapeHtml(player.name)}</h3>
               <div class="flex items-center gap-2 mt-1">
                 <span class="rounded px-2 py-0.5 text-[10px] font-bold ${posBadgeClass(player.category)}">${player.position}</span>
-                <span class="text-xs text-[#AAB8AE]">${player.categoryName}</span>
+                <span class="text-xs text-[#AAB8AE]">${player.categoryName || ""}</span>
               </div>
             </div>
           </div>
@@ -1688,79 +1389,317 @@ function renderPlayerProfileModal() {
           </button>
         </div>
 
-        <!-- Bio & Overview -->
-        <div class="my-4">
-          <p class="text-xs leading-relaxed text-[#D5E8D9]">${escapeHtml(player.bio || "First-team squad member at Nantwich Town FC.")}</p>
+        <!-- Verified Record Overview -->
+        <div class="my-4 rounded-xl bg-forest/30 border border-forest-light p-3 text-xs text-[#D5E8D9]">
+          <div class="flex items-center gap-1.5 font-bold text-gold mb-1">
+            ${icon("shield", "h-3.5 w-3.5")} Official First-Team Record
+          </div>
+          <p class="text-[11px] text-[#AAB8AE]">Nantwich Town FC first-team squad player. Sourced and kept synchronized with official Football Web Pages records.</p>
         </div>
 
-        <!-- Physical & Profile Details -->
-        <div class="grid grid-cols-3 gap-2 rounded-xl bg-white/5 p-3 text-center text-xs">
-          <div>
-            <span class="block text-[9px] uppercase text-[#AAB8AE]">Height</span>
-            <strong class="font-bold text-white">${player.height || "5'11\""}</strong>
-          </div>
-          <div>
-            <span class="block text-[9px] uppercase text-[#AAB8AE]">Preferred Foot</span>
-            <strong class="font-bold text-white">${player.preferredFoot || "Right"}</strong>
-          </div>
-          <div>
-            <span class="block text-[9px] uppercase text-[#AAB8AE]">Joined</span>
-            <strong class="font-bold text-white">${player.joined || "2024"}</strong>
-          </div>
-        </div>
-
-        <!-- Season Stats Grid -->
+        <!-- Official Season Match Stats -->
         <div class="mt-4">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Season Match Stats</span>
-          <div class="mt-2 grid grid-cols-4 gap-2 text-center text-xs">
-            <div class="rounded-xl bg-forest p-2.5">
-              <span class="block text-[9px] uppercase text-gold">Appearances</span>
-              <strong class="display text-base font-bold">${stats.appearances || 0}</strong>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Season Match Statistics</span>
+          <div class="mt-2 grid grid-cols-2 gap-2 text-center text-xs">
+            <div class="rounded-xl bg-forest p-3">
+              <span class="block text-[9px] uppercase tracking-wider text-gold">Appearances</span>
+              <strong class="display text-2xl font-bold text-white">${apps}</strong>
             </div>
-            <div class="rounded-xl bg-forest p-2.5">
-              <span class="block text-[9px] uppercase text-emerald-300">Goals</span>
-              <strong class="display text-base font-bold text-emerald-300">${stats.goals || 0}</strong>
-            </div>
-            <div class="rounded-xl bg-forest p-2.5">
-              <span class="block text-[9px] uppercase text-blue-300">Assists</span>
-              <strong class="display text-base font-bold text-blue-300">${stats.assists || 0}</strong>
-            </div>
-            <div class="rounded-xl bg-forest p-2.5">
-              <span class="block text-[9px] uppercase text-amber-300">Rating</span>
-              <strong class="display text-base font-bold text-amber-300">${stats.rating || "7.5"}</strong>
+            <div class="rounded-xl bg-forest p-3">
+              <span class="block text-[9px] uppercase tracking-wider text-emerald-300">Goals</span>
+              <strong class="display text-2xl font-bold text-emerald-300">${goals}</strong>
             </div>
           </div>
         </div>
 
-        <!-- Full Attribute Radar/Bars -->
-        <div class="mt-4">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Player Ratings & Attributes</span>
-          <div class="mt-2 grid grid-cols-2 gap-3 text-xs">
+        <!-- Verified Quick Links -->
+        <div class="mt-4 space-y-2">
+          <a href="https://www.youtube.com/results?search_query=Nantwich+Town+${encodeURIComponent(player.name)}+The+Dabbers+TV" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-rose-500/20 border border-rose-500/30 py-2.5 text-xs font-bold text-rose-300 hover:bg-rose-500/30 transition">
+            ${icon("youtube", "h-4 w-4 text-rose-400")} Search Dabbers TV Footage
+          </a>
+          <a href="https://www.footballwebpages.co.uk/nantwich-town/appearances" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-white/5 border border-white/10 py-2 text-xs font-bold text-[#D5E8D9] hover:bg-white/10 transition">
+            ${icon("external", "h-3.5 w-3.5")} Official League Appearance Records
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPositionPickerModal() {
+  if (state.activeModal !== "pos_picker" || !state.activePickingSlot) return "";
+  const { posId, label, category } = state.activePickingSlot;
+  const isBench = posId.startsWith("bench_");
+  const currentAssignedId = isBench
+    ? state.bench[Number.parseInt(posId.replace("bench_", ""), 10)]
+    : state.lineup[posId];
+  const currentAssignedPlayer = getPlayerById(currentAssignedId);
+
+  const players = getPlayersList();
+
+  // Sort players: category matches first, then by appearances and goals
+  const sortedPlayers = [...players].sort((a, b) => {
+    const aMatch = (category === "ALL" || a.category === category) ? 1 : 0;
+    const bMatch = (category === "ALL" || b.category === category) ? 1 : 0;
+    if (aMatch !== bMatch) return bMatch - aMatch;
+    const appsDiff = (b.appearances || b.stats?.appearances || 0) - (a.appearances || a.stats?.appearances || 0);
+    if (appsDiff !== 0) return appsDiff;
+    return (b.goals || b.stats?.goals || 0) - (a.goals || a.stats?.goals || 0);
+  });
+
+  return `
+    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
+      <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-6 text-white shadow-2xl animate-slide-up max-h-[85vh] flex flex-col" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-shrink-0">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Assign Position</span>
+            <h3 class="display text-xl font-bold">
+              ${isBench ? `Select Substitute (${label})` : `Select Starting XI: ${label} (${category})`}
+            </h3>
+          </div>
+          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20" aria-label="Close modal">
+            ${icon("close", "h-4 w-4")}
+          </button>
+        </div>
+
+        <!-- Currently Assigned & Clear Action -->
+        ${currentAssignedPlayer ? `
+          <div class="my-3 flex items-center justify-between rounded-xl border border-gold/30 bg-gold/10 p-3 flex-shrink-0">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-forest border border-gold text-xs font-bold text-gold flex-shrink-0">
+                #${currentAssignedPlayer.number || "—"}
+              </span>
+              <div class="min-w-0">
+                <span class="text-[10px] uppercase font-bold text-gold">Currently Assigned</span>
+                <strong class="block truncate text-xs text-white">${escapeHtml(currentAssignedPlayer.name)}</strong>
+              </div>
+            </div>
+            <button
+              data-select-player-slot="${currentAssignedPlayer.id}"
+              class="rounded-lg bg-rose-500/20 border border-rose-500/30 px-2.5 py-1 text-[11px] font-bold text-rose-300 hover:bg-rose-500/30 transition flex-shrink-0"
+            >
+              Remove
+            </button>
+          </div>
+        ` : `
+          <p class="my-2 text-[11px] text-[#AAB8AE] flex-shrink-0">
+            Select a player from the squad below to assign to this position slot.
+          </p>
+        `}
+
+        <!-- Player List -->
+        <div class="mt-2 space-y-2 overflow-y-auto pr-1 flex-1">
+          ${sortedPlayers.map((player) => {
+            const isCurrent = player.id === currentAssignedId;
+            const inStartingXI = Object.values(state.lineup).includes(player.id);
+            const inBench = state.bench.includes(player.id);
+            const apps = player.appearances || player.stats?.appearances || 0;
+            const goals = player.goals || player.stats?.goals || 0;
+            const isCatMatch = category === "ALL" || player.category === category;
+
+            return `
+              <div class="flex items-center justify-between rounded-xl border ${isCurrent ? "border-gold bg-gold/15" : isCatMatch ? "border-white/10 bg-white/5 hover:border-gold/50" : "border-white/5 bg-black/20 opacity-70 hover:opacity-100"} p-2.5 transition">
+                <div class="flex items-center gap-2.5 min-w-0">
+                  <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-[#101713] border border-white/20 text-xs font-bold ${isCatMatch ? "text-gold" : "text-white/70"} flex-shrink-0">
+                    #${player.number || "—"}
+                  </span>
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <strong class="truncate text-xs text-white font-bold">${escapeHtml(player.name)}</strong>
+                      <span class="rounded px-1 py-0.2 text-[8px] font-bold ${posBadgeClass(player.category)}">${player.position}</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-[10px] text-[#AAB8AE] mt-0.5">
+                      <span>${apps} Apps</span>
+                      <span>·</span>
+                      <span>${goals} Goals</span>
+                      ${inStartingXI && !isCurrent ? `
+                        <span class="text-[9px] text-amber-300 font-medium">(In Starting XI)</span>
+                      ` : inBench && !isCurrent ? `
+                        <span class="text-[9px] text-blue-300 font-medium">(On Bench)</span>
+                      ` : ""}
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  data-select-player-slot="${player.id}"
+                  class="rounded-lg ${isCurrent ? "bg-gold text-charcoal font-bold" : "bg-forest hover:bg-forest-light border border-gold/40 text-gold font-semibold"} px-3 py-1.5 text-xs transition flex-shrink-0"
+                >
+                  ${isCurrent ? "Selected" : "Select"}
+                </button>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderStadiumGuideModal() {
+  if (state.activeModal !== "stadium_guide") return "";
+  const guide = window.DabbersStadiumGuide || {
+    name: "The Swansway Stadium (The Weaver Stadium)",
+    address: "Water Lode, Nantwich, Cheshire, CW5 5BS",
+    capacity: "3,500 (500 seated, fully covered stands)",
+    pitchType: "High-spec 3G GrassMaster surface",
+    turnstiles: [
+      { name: "Turnstile A (Main Entrance)", desc: "Direct access to Main Stand, Club Shop & Dabbers Bar (Water Lode)", cardAccepted: true },
+      { name: "Turnstile B (Away / Swansway End)", desc: "Designated visiting supporters entry with separate covered terrace", cardAccepted: true },
+    ],
+    pricing: [
+      { cat: "Adults", price: "£12.00", info: "Standard admission" },
+      { cat: "Concessions (60+)", price: "£8.00", info: "Valid ID required" },
+      { cat: "Under 16s", price: "£3.00", info: "Youth admission" },
+      { cat: "Under 12s", price: "FREE", info: "When accompanied by a paying adult" },
+    ],
+    facilities: [
+      { title: "The Dabbers Bar & Function Suite", desc: "Open before, during, and after every match. Serves local real ales, draught beers, and hot bar snacks with live TV." },
+      { title: "Matchday Tea Hut", desc: "Famous Cheshire meat pies, hot chips, sausage rolls, Bovril, tea, coffee, and soft drinks." },
+      { title: "Macron Club Shop", desc: "Matchday programmes, green & white scarves, replica home/away shirts, pin badges, and teamwear." },
+      { title: "Travel & Parking", desc: "Free on-site parking at Water Lode (CW5 5BS). Nantwich Railway Station is a pleasant 10-minute stroll through town." },
+    ],
+  };
+
+  return `
+    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
+      <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-6 text-white shadow-2xl animate-slide-up max-h-[85vh] overflow-y-auto" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Fan & Visitor Information</span>
+            <h3 class="display text-xl font-bold">${escapeHtml(guide.name)}</h3>
+          </div>
+          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20" aria-label="Close modal">
+            ${icon("close", "h-4 w-4")}
+          </button>
+        </div>
+
+        <div class="mt-4 space-y-4 text-xs">
+          <!-- Key Specs -->
+          <div class="grid grid-cols-2 gap-2 rounded-2xl border border-charcoal-border bg-[#15251E] p-3 text-center">
             <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Pace</span><strong class="text-white">${attrs.pace || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-gold rounded-full" style="width: ${attrs.pace || 70}%"></div></div>
+              <span class="block text-[9px] uppercase font-bold text-[#AAB8AE]">Capacity</span>
+              <strong class="display text-base font-bold text-gold">${escapeHtml(guide.capacity)}</strong>
             </div>
             <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Shooting</span><strong class="text-white">${attrs.shooting || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-rose-400 rounded-full" style="width: ${attrs.shooting || 70}%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Passing</span><strong class="text-white">${attrs.passing || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-emerald-400 rounded-full" style="width: ${attrs.passing || 70}%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Dribbling</span><strong class="text-white">${attrs.dribbling || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-amber-400 rounded-full" style="width: ${attrs.dribbling || 70}%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Defending</span><strong class="text-white">${attrs.defending || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-blue-400 rounded-full" style="width: ${attrs.defending || 70}%"></div></div>
-            </div>
-            <div>
-              <div class="flex justify-between text-[#AAB8AE]"><span>Physicality</span><strong class="text-white">${attrs.physical || 70}</strong></div>
-              <div class="h-1.5 rounded-full bg-white/10 overflow-hidden mt-1"><div class="h-full bg-purple-400 rounded-full" style="width: ${attrs.physical || 70}%"></div></div>
+              <span class="block text-[9px] uppercase font-bold text-emerald-300">Pitch Surface</span>
+              <strong class="display text-base font-bold text-white">${escapeHtml(guide.pitchType)}</strong>
             </div>
           </div>
+
+          <!-- Admission Pricing -->
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Matchday Admission Prices</span>
+            <div class="grid grid-cols-2 gap-2">
+              ${guide.pricing.map((p) => `
+                <div class="rounded-xl bg-white/5 border border-white/10 p-2.5">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-xs font-bold">${escapeHtml(p.cat)}</strong>
+                    <span class="display font-bold text-gold text-sm">${escapeHtml(p.price)}</span>
+                  </div>
+                  <span class="text-[10px] text-[#AAB8AE]">${escapeHtml(p.info)}</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Turnstiles & Access -->
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Turnstiles & Entry</span>
+            <div class="space-y-2">
+              ${guide.turnstiles.map((t) => `
+                <div class="rounded-xl bg-white/5 border border-white/10 p-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <strong class="text-white font-bold">${escapeHtml(t.name)}</strong>
+                    ${t.cardAccepted ? '<span class="rounded bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 text-[9px] font-bold border border-emerald-500/30">Card / Cash</span>' : ""}
+                  </div>
+                  <p class="text-[11px] text-[#AAB8AE]">${escapeHtml(t.desc)}</p>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Facilities -->
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold mb-2 block">Ground Facilities</span>
+            <div class="space-y-2">
+              ${guide.facilities.map((f) => `
+                <div class="rounded-xl bg-white/5 border border-white/10 p-2.5">
+                  <strong class="text-white block font-bold mb-0.5">${escapeHtml(f.title)}</strong>
+                  <p class="text-[11px] text-[#AAB8AE]">${escapeHtml(f.desc)}</p>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row gap-2 pt-2 border-t border-white/10">
+            <a
+              href="https://maps.google.com/?q=${encodeURIComponent(guide.name + ' ' + guide.address)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-forest border border-gold/40 py-2.5 text-xs font-bold text-gold hover:bg-forest-light transition"
+            >
+              ${icon("directions", "h-4 w-4")} Directions & Map
+            </a>
+            <a
+              href="${TICKETING_URL}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gold py-2.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition"
+            >
+              ${icon("ticket", "h-4 w-4")} Buy Tickets Online
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderGraphicExportModal() {
+  if (state.activeModal !== "graphic_export" || !state.graphicDataUrl) return "";
+
+  return `
+    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/70 backdrop-blur-sm" data-close-modal>
+      <div class="w-full max-w-lg rounded-t-3xl border-t border-gold/40 bg-[#0F1A15] p-6 text-white shadow-2xl animate-slide-up max-h-[90vh] flex flex-col" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex items-center justify-between border-b border-white/10 pb-3 flex-shrink-0">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Matchday Tactical Graphic</span>
+            <h3 class="display text-xl font-bold">Starting XI Match Card</h3>
+          </div>
+          <button data-close-modal class="rounded-full bg-white/10 p-1.5 text-white hover:bg-white/20" aria-label="Close modal">
+            ${icon("close", "h-4 w-4")}
+          </button>
+        </div>
+
+        <!-- Graphic Preview -->
+        <div class="my-4 overflow-y-auto flex-1 text-center">
+          <img
+            src="${state.graphicDataUrl}"
+            alt="Nantwich Town FC Starting XI"
+            class="rounded-2xl border border-white/20 shadow-2xl mx-auto max-h-[55vh] object-contain"
+          />
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 pt-2 border-t border-white/10 flex-shrink-0">
+          <a
+            href="${state.graphicDataUrl}"
+            download="NantwichTown_StartingXI.png"
+            class="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-gold py-2.5 text-xs font-bold text-charcoal hover:bg-gold-dark transition shadow"
+          >
+            ${icon("download", "h-4 w-4")} Download Graphic
+          </a>
+          <button
+            data-share-image
+            class="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-forest border border-gold/40 py-2.5 text-xs font-bold text-gold hover:bg-forest-light transition shadow"
+          >
+            ${icon("share", "h-4 w-4")} Share Lineup
+          </button>
         </div>
       </div>
     </div>
@@ -1770,14 +1709,14 @@ function renderPlayerProfileModal() {
 // =======================================================================
 // SQUAD BUILDER ACTIONS
 // =======================================================================
-function loadPreviousMatchSquadAction(silent = false) {
+function loadPresetSquadAction(silent = false) {
   const formationKey = state.selectedFormation || "4-3-3";
-  state.lineup = { ...getPreviousMatchLineup(formationKey) };
-  state.bench = [...PREVIOUS_MATCH_SQUAD.bench];
+  state.lineup = { ...getPresetLineup(formationKey) };
+  state.bench = [...DEFAULT_BENCH_PRESET];
   localStorage.setItem("dabbers-lineup", JSON.stringify(state.lineup));
   localStorage.setItem("dabbers-bench", JSON.stringify(state.bench));
   if (!silent) {
-    showToast(`Loaded XI from last match (${PREVIOUS_MATCH_SQUAD.opponent} - ${PREVIOUS_MATCH_SQUAD.score})!`);
+    showToast(`Loaded preset lineup for ${FORMATIONS[formationKey]?.name || "4-3-3"}!`);
   }
   render();
 }
@@ -1789,7 +1728,7 @@ function autoPickBestXI() {
   const used = new Set();
 
   currentFormation.positions.forEach((pos) => {
-    // Find best candidate for this position
+    // Find candidate with highest appearances for this category
     const candidates = players
       .filter((p) => !used.has(p.id))
       .filter((p) => {
@@ -1799,7 +1738,11 @@ function autoPickBestXI() {
         if (pos.category === "FWD") return p.category === "FWD";
         return true;
       })
-      .sort((a, b) => (b.stats?.rating || 0) - (a.stats?.rating || 0));
+      .sort((a, b) => {
+        const appsDiff = (b.appearances || b.stats?.appearances || 0) - (a.appearances || a.stats?.appearances || 0);
+        if (appsDiff !== 0) return appsDiff;
+        return (b.goals || b.stats?.goals || 0) - (a.goals || a.stats?.goals || 0);
+      });
 
     if (candidates[0]) {
       newLineup[pos.id] = candidates[0].id;
@@ -1807,14 +1750,20 @@ function autoPickBestXI() {
     }
   });
 
-  // Pick best remaining players for the 10-player substitutes bench
-  const remaining = players.filter((p) => !used.has(p.id)).sort((a, b) => (b.stats?.rating || 0) - (a.stats?.rating || 0));
-  state.bench = remaining.slice(0, 10).map((p) => p.id);
+  // Pick remaining top-appearance players for the 10-player substitutes bench
+  const remaining = players
+    .filter((p) => !used.has(p.id))
+    .sort((a, b) => {
+      const appsDiff = (b.appearances || b.stats?.appearances || 0) - (a.appearances || a.stats?.appearances || 0);
+      if (appsDiff !== 0) return appsDiff;
+      return (b.goals || b.stats?.goals || 0) - (a.goals || a.stats?.goals || 0);
+    });
 
+  state.bench = remaining.slice(0, 10).map((p) => p.id);
   state.lineup = newLineup;
   localStorage.setItem("dabbers-lineup", JSON.stringify(state.lineup));
   localStorage.setItem("dabbers-bench", JSON.stringify(state.bench));
-  showToast("Auto-picked optimal Starting XI & 10-player bench!");
+  showToast("Auto-picked XI & 10 substitutes based on season appearances!");
   render();
 }
 
