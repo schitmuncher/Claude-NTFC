@@ -1,0 +1,16 @@
+{
+  "name": "Nantwich Town FC — The Dabbers",
+  "short_name": "Dabbers",
+  "description": "Matchday companion for Nantwich Town FC — live scores, league table, fixtures, and squad.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1813",
+  "theme_color": "#0d1813",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

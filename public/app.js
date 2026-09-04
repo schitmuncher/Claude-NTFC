@@ -270,6 +270,18 @@ function getPresetLineup(formationKey = "4-3-3") {
   return DEFAULT_STARTING_PRESETS[formationKey] || DEFAULT_STARTING_PRESETS["4-3-3"];
 }
 
+// PWA Install Prompt State
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  if (typeof render === "function") render();
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  if (typeof render === "function") render();
+});
+
 // Application state
 const state = {
   activeTab: "live",
@@ -1858,6 +1870,13 @@ function renderShell(content) {
             <button data-refresh-all class="flex h-8 w-8 items-center justify-center rounded-lg border border-gold/40 bg-gold/10 text-gold transition hover:bg-gold hover:text-charcoal ml-1" aria-label="Reload matchday data" title="Reload live data">
               <span class="${state.refreshing ? "animate-spin" : ""}">${icon("refresh", "h-3.5 w-3.5")}</span>
             </button>
+
+            ${deferredInstallPrompt ? `
+              <button data-install-pwa class="flex h-8 items-center gap-1.5 rounded-lg border border-gold/40 bg-gold/20 px-2.5 text-xs font-bold text-gold transition hover:bg-gold hover:text-charcoal ml-1" title="Install App to Home Screen">
+                ${icon("download", "h-3.5 w-3.5")}
+                <span class="hidden sm:inline">Install</span>
+              </button>
+            ` : ""}
           </div>
         </div>
 
@@ -1876,6 +1895,23 @@ function renderShell(content) {
       <!-- Main Content Container -->
       <main class="safe-bottom px-4 pt-4 pb-8 sm:px-6">
         ${content}
+
+        ${deferredInstallPrompt ? `
+          <div class="mt-8 flex items-center justify-between gap-3 rounded-2xl border border-gold/40 bg-[#15251E] p-4 text-white shadow-lg">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest border border-gold/40 text-gold">
+                ${icon("download", "h-5 w-5")}
+              </div>
+              <div class="truncate">
+                <p class="font-bold text-white text-sm truncate">Install The Dabbers App</p>
+                <p class="text-xs text-[#AAB8AE] truncate">Add to Home Screen for fast matchday scores</p>
+              </div>
+            </div>
+            <button data-install-pwa class="shrink-0 rounded-xl bg-gold px-3.5 py-2 text-xs font-bold text-charcoal hover:bg-gold-dark transition shadow-md">
+              Install
+            </button>
+          </div>
+        ` : ""}
 
         <!-- Club Official Channels Footer -->
         <footer class="mt-10 rounded-2xl border border-charcoal-border bg-[#15251E] p-5 text-white shadow-xl">
@@ -2199,6 +2235,23 @@ function bindEvents() {
   document.querySelector("[data-refresh-live]")?.addEventListener("click", loadLive);
   document.querySelector("[data-retry]")?.addEventListener("click", loadData);
 
+  // PWA Install Prompt Handler
+  document.querySelectorAll("[data-install-pwa]").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const { outcome } = await deferredInstallPrompt.userChoice;
+        if (outcome === "accepted") {
+          deferredInstallPrompt = null;
+          showToast("Installing Nantwich Town FC App...");
+          render();
+        }
+      } else {
+        showToast("Tap your browser menu (⋮) and choose 'Install app' or 'Add to Home Screen'");
+      }
+    });
+  });
+
   // Load X / Twitter widget script
   loadTwitterWidgets();
 }
@@ -2319,6 +2372,15 @@ function startLiveRefresh() {
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden && state.activeTab === "live") loadLive();
+  });
+}
+
+// Service Worker Registration for PWA
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch((err) => {
+      console.warn("Service worker registration failed:", err);
+    });
   });
 }
 
