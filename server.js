@@ -331,15 +331,7 @@ function formatFixtureOutwardDate(dateStr, timeStr = "09:00:00") {
   const mm = String(monthNum).padStart(2, "0");
   const dd = String(dayNum).padStart(2, "0");
 
-  // Check if date is in the past; if so, fallback to today to prevent Trainline search failures
-  const fixtureDateObj = new Date(`${yyyy}-${mm}-${dd}T23:59:59`);
-  if (fixtureDateObj < now) {
-    const todayY = now.getFullYear();
-    const todayM = String(now.getMonth() + 1).padStart(2, "0");
-    const todayD = String(now.getDate()).padStart(2, "0");
-    return `${todayY}-${todayM}-${todayD}T${timeStr}`;
-  }
-
+  // Keep the exact match date for the journey
   return `${yyyy}-${mm}-${dd}T${timeStr}`;
 }
 
