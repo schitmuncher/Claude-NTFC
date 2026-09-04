@@ -66,7 +66,7 @@ const OPPONENT_TICKET_PORTALS = {
 
 // -----------------------------------------------------------------------
 // Trainline Station URNs & Ground Railway Mapping
-// Sourced from Trainline Live API (/api/locations-search/v2/search)
+// Verified from Trainline Location Reference Search (en-GB)
 // Origin: Nantwich (CRS: NAN, Trainline Location URN: urn:trainline:generic:loc:NAN1247gb)
 // -----------------------------------------------------------------------
 const NANTWICH_STATION = {
@@ -77,139 +77,210 @@ const NANTWICH_STATION = {
 };
 const NANTWICH_TRAINLINE_URN = NANTWICH_STATION.urn;
 
-// Verified nearest UK railway stations and live Trainline URNs for all 21 NPL Division One West opponents
+// Verified nearest UK railway stations and live Trainline alphanumeric URNs for all NPL opponents
 const AWAY_GROUND_STATIONS = {
   "Bootle": {
     stationName: "Aintree",
     crs: "AIN",
+    stationId: "AIN2125gb",
     urn: "urn:trainline:generic:loc:AIN2125gb",
     ground: "Berry Street Garage Stadium (Vesty Road)",
   },
   "Shifnal Town": {
     stationName: "Shifnal",
     crs: "SFN",
+    stationId: "SFN4619gb",
     urn: "urn:trainline:generic:loc:SFN4619gb",
     ground: "Acoustafoam Stadium (Coppice Green Lane)",
   },
   "Wythenshawe": {
     stationName: "Gatley",
     crs: "GTY",
+    stationId: "GTY2953gb",
     urn: "urn:trainline:generic:loc:GTY2953gb",
     ground: "Hollyhedge Park (Sharston)",
   },
   "Wythenshawe Town": {
     stationName: "Gatley",
     crs: "GTY",
+    stationId: "GTY2953gb",
     urn: "urn:trainline:generic:loc:GTY2953gb",
     ground: "Hollyhedge Park (Sharston)",
   },
   "Witton Albion": {
     stationName: "Lostock Gralam",
     crs: "LTG",
+    stationId: "LTG2307gb",
     urn: "urn:trainline:generic:loc:LTG2307gb",
     ground: "The U Lock It Stadium (Wincham)",
   },
   "Stafford Rangers": {
     stationName: "Stafford",
     crs: "STA",
+    stationId: "STA1268gb",
     urn: "urn:trainline:generic:loc:STA1268gb",
     ground: "Stan Robinson Stadium (Marston Road)",
   },
   "Prescot Cables": {
     stationName: "Prescot",
     crs: "PSC",
+    stationId: "PSC2337gb",
     urn: "urn:trainline:generic:loc:PSC2337gb",
     ground: "Valerie Park (Hope Street)",
   },
   "Runcorn Linnets": {
     stationName: "Runcorn East",
     crs: "RUE",
+    stationId: "RUE2294gb",
     urn: "urn:trainline:generic:loc:RUE2294gb",
     ground: "The APEC Taxis Stadium (Murdishaw Avenue)",
   },
   "Hanley Town": {
     stationName: "Stoke-on-Trent",
     crs: "SOT",
+    stationId: "SOT1314gb",
     urn: "urn:trainline:generic:loc:SOT1314gb",
     ground: "Potteries Park (Abbey Lane, Bucknall)",
   },
   "Vauxhall Motors": {
     stationName: "Overpool",
     crs: "OVE",
+    stationId: "OVE2157gb",
     urn: "urn:trainline:generic:loc:OVE2157gb",
     ground: "The VanEupen Arena (Rivacre Road)",
   },
   "Stalybridge Celtic": {
     stationName: "Stalybridge",
     crs: "SYB",
+    stationId: "SYB2983gb",
     urn: "urn:trainline:generic:loc:SYB2983gb",
     ground: "Bower Fold (Mottram Road)",
   },
   "Atherton Collieries": {
     stationName: "Atherton",
     crs: "ATN",
+    stationId: "ATN2584gb",
     urn: "urn:trainline:generic:loc:ATN2584gb",
     ground: "The Skuna Stadium (Alder Street)",
   },
   "Clitheroe": {
     stationName: "Clitheroe",
     crs: "CLH",
+    stationId: "CLH2574gb",
     urn: "urn:trainline:generic:loc:CLH2574gb",
     ground: "EcoGiants Stadium (Shawbridge)",
   },
   "Lower Breck": {
     stationName: "Kirkdale",
     crs: "KKD",
+    stationId: "KKD2245gb",
     urn: "urn:trainline:generic:loc:KKD2245gb",
     ground: "Anfield Sports & Community Centre (Lower Breck Road)",
   },
   "Chasetown": {
     stationName: "Cannock",
     crs: "CAO",
+    stationId: "CAO1016gb",
     urn: "urn:trainline:generic:loc:CAO1016gb",
     ground: "The Scholars Ground (Church Street)",
   },
   "Padiham": {
     stationName: "Rose Grove",
     crs: "RSG",
+    stationId: "RSG2722gb",
     urn: "urn:trainline:generic:loc:RSG2722gb",
     ground: "The Arbories (Well Street)",
   },
   "1874 Northwich": {
     stationName: "Greenbank",
     crs: "GBK",
+    stationId: "GBK2325gb",
     urn: "urn:trainline:generic:loc:GBK2325gb",
     ground: "The Townfield Ground (Barnton)",
   },
   "Newcastle Town": {
     stationName: "Stoke-on-Trent",
     crs: "SOT",
+    stationId: "SOT1314gb",
     urn: "urn:trainline:generic:loc:SOT1314gb",
     ground: "The Lyme Valley Stadium (Clayton)",
   },
   "Mossley": {
     stationName: "Mossley (Manchester)",
     crs: "MSL",
+    stationId: "MSL2903gb",
     urn: "urn:trainline:generic:loc:MSL2903gb",
     ground: "Seel Park (Market Street)",
   },
   "Kidsgrove Athletic": {
     stationName: "Kidsgrove",
     crs: "KDG",
+    stationId: "KDG1229gb",
     urn: "urn:trainline:generic:loc:KDG1229gb",
     ground: "Autonet Insurance Stadium (Hollinwood Road)",
   },
   "Congleton Town": {
     stationName: "Congleton",
     crs: "CNG",
+    stationId: "CNG1227gb",
     urn: "urn:trainline:generic:loc:CNG1227gb",
     ground: "The Cleric Stadium (Booth Street)",
   },
   "Lichfield City": {
     stationName: "Lichfield City",
     crs: "LIC",
+    stationId: "LIC1177gb",
     urn: "urn:trainline:generic:loc:LIC1177gb",
     ground: "Trade Tyre Community Stadium (Brownsfield Park)",
+  },
+  "Trafford": {
+    stationName: "Urmston",
+    crs: "URM",
+    stationId: "URM2938gb",
+    urn: "urn:trainline:generic:loc:URM2938gb",
+    ground: "Shawe View (Pennybridge Lane, Flixton)",
+  },
+  "Widnes": {
+    stationName: "Widnes",
+    crs: "WID",
+    stationId: "WID2391gb",
+    urn: "urn:trainline:generic:loc:WID2391gb",
+    ground: "DCBL Stadium (Lower House Lane)",
+  },
+  "Wellingborough Town": {
+    stationName: "Wellingborough",
+    crs: "WEL",
+    stationId: "WEL1940gb",
+    urn: "urn:trainline:generic:loc:WEL1940gb",
+    ground: "Dog & Duck Ground (London Road)",
+  },
+  "Hednesford Town": {
+    stationName: "Hednesford",
+    crs: "HNF",
+    stationId: "HNF1148gb",
+    urn: "urn:trainline:generic:loc:HNF1148gb",
+    ground: "Keys Park (Hednesford)",
+  },
+  "Sporting Khalsa": {
+    stationName: "Wolverhampton",
+    crs: "WVH",
+    stationId: "WVH1218gb",
+    urn: "urn:trainline:generic:loc:WVH1218gb",
+    ground: "Aspray Arena (Noose Lane, Willenhall)",
+  },
+  "City of Liverpool": {
+    stationName: "Kirkdale",
+    crs: "KKD",
+    stationId: "KKD2245gb",
+    urn: "urn:trainline:generic:loc:KKD2245gb",
+    ground: "Anfield Sports & Community Centre / Vesty Road",
+  },
+  "Avro": {
+    stationName: "Manchester Victoria",
+    crs: "MCV",
+    stationId: "MCV2970gb",
+    urn: "urn:trainline:generic:loc:MCV2970gb",
+    ground: "Vestacare Stadium (White Bank Road, Oldham)",
   },
 };
 
@@ -273,71 +344,100 @@ function formatFixtureOutwardDate(dateStr, timeStr = "09:00:00") {
 }
 
 function getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus) {
-  let kickoffLabel = "3:00pm";
-  let arriveBeforeTime = "12:30:00"; // 2.5h before 3:00pm
-  let arriveBeforeDisplay = "12:30 PM";
+  let kickoffHours = null;
+  let kickoffMinutes = 0;
 
-  const status = String(kickoffOrStatus || "").toLowerCase();
-  const dateLow = String(dateStr || "").toLowerCase();
-  const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+  const rawStatus = String(kickoffOrStatus || "").trim();
 
-  if (status.includes("7.45") || status.includes("19:45")) {
-    kickoffLabel = "7:45pm";
-    arriveBeforeTime = "17:15:00";
-    arriveBeforeDisplay = "5:15 PM";
-  } else if (status.includes("7.30") || status.includes("19:30")) {
-    kickoffLabel = "7:30pm";
-    arriveBeforeTime = "17:00:00";
-    arriveBeforeDisplay = "5:00 PM";
-  } else if (status.includes("8.00") || status.includes("20:00") || status.includes("8pm")) {
-    kickoffLabel = "8:00pm";
-    arriveBeforeTime = "17:30:00";
-    arriveBeforeDisplay = "5:30 PM";
-  } else if (status.includes("7.00") || status.includes("19:00") || status.includes("7pm")) {
-    kickoffLabel = "7:00pm";
-    arriveBeforeTime = "16:30:00";
-    arriveBeforeDisplay = "4:30 PM";
-  } else if (status.includes("2.00") || status.includes("14:00") || status.includes("2pm")) {
-    kickoffLabel = "2:00pm";
-    arriveBeforeTime = "11:30:00";
-    arriveBeforeDisplay = "11:30 AM";
-  } else if (status.includes("1.00") || status.includes("13:00") || status.includes("1pm")) {
-    kickoffLabel = "1:00pm";
-    arriveBeforeTime = "10:30:00";
-    arriveBeforeDisplay = "10:30 AM";
-  } else if (status.includes("3.00") || status.includes("15:00") || status.includes("3pm")) {
-    kickoffLabel = "3:00pm";
-    arriveBeforeTime = "12:30:00";
-    arriveBeforeDisplay = "12:30 PM";
-  } else if (isMidweek) {
-    // Standard midweek non-league match kicks off at 7:45pm
-    kickoffLabel = "7:45pm";
-    arriveBeforeTime = "17:15:00";
-    arriveBeforeDisplay = "5:15 PM";
-  } else {
-    // Standard weekend kickoff is 3:00pm
-    kickoffLabel = "3:00pm";
-    arriveBeforeTime = "12:30:00";
-    arriveBeforeDisplay = "12:30 PM";
+  // Try parsing kickoff time dynamically from status string (e.g., "3:00pm", "7.45pm", "19:45", "12:30pm", "5:30pm", "2pm", "14:00")
+  if (rawStatus) {
+    // 1. Check for 12-hour time with meridian e.g. "7:45pm", "3.00pm", "12:30 pm", "3pm", "11:30am"
+    const meridianMatch = rawStatus.match(/(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)/i);
+    if (meridianMatch) {
+      let h = parseInt(meridianMatch[1], 10);
+      const m = meridianMatch[2] ? parseInt(meridianMatch[2], 10) : 0;
+      const mer = meridianMatch[3].toLowerCase();
+      if (mer === "pm" && h < 12) h += 12;
+      if (mer === "am" && h === 12) h = 0;
+      kickoffHours = h;
+      kickoffMinutes = m;
+    } else {
+      // 2. Check for 24-hour format or dot notation e.g. "19:45", "15:00", "19.45", "15.00", "14:00"
+      const timeMatch = rawStatus.match(/\b(\d{1,2})[:.](\d{2})\b/);
+      if (timeMatch) {
+        let h = parseInt(timeMatch[1], 10);
+        const m = parseInt(timeMatch[2], 10);
+        if (h >= 1 && h <= 10) h += 12; // Afternoon/evening match default if meridian omitted
+        if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+          kickoffHours = h;
+          kickoffMinutes = m;
+        }
+      }
+    }
   }
 
-  return { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay };
+  // If no time was found in status, infer from date (midweek matches kick off at 7:45pm, weekends at 3:00pm)
+  if (kickoffHours === null) {
+    const dateLow = String(dateStr || "").toLowerCase();
+    const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+    if (isMidweek) {
+      kickoffHours = 19;
+      kickoffMinutes = 45;
+    } else {
+      kickoffHours = 15;
+      kickoffMinutes = 0;
+    }
+  }
+
+  const dispHour = kickoffHours % 12 || 12;
+  const dispMeridian = kickoffHours >= 12 ? "pm" : "am";
+  const kickoffLabel = `${dispHour}:${String(kickoffMinutes).padStart(2, "0")}${dispMeridian}`;
+
+  // Plan departure ~3 hours and 15 minutes (195 minutes) before kickoff
+  // Allowing fans ample buffer to travel, change trains, and comfortably reach the away ground with time to spare.
+  let totalMinutes = kickoffHours * 60 + kickoffMinutes - 195;
+  if (totalMinutes < 0) totalMinutes += 24 * 60;
+
+  const departH = Math.floor(totalMinutes / 60);
+  const departM = totalMinutes % 60;
+  const departTime = `${String(departH).padStart(2, "0")}:${String(departM).padStart(2, "0")}:00`;
+
+  const departDispHour = departH % 12 || 12;
+  const departDispMeridian = departH >= 12 ? "PM" : "AM";
+  const departDisplay = `${departDispHour}:${String(departM).padStart(2, "0")} ${departDispMeridian}`;
+
+  return { kickoffLabel, departTime, departDisplay, arriveBeforeDisplay: departDisplay };
 }
 
 function buildTrainlineUrl(opponent, dateStr, kickoffOrStatus = null) {
-  const { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay } = getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus);
-  const outwardDate = formatFixtureOutwardDate(dateStr, arriveBeforeTime);
+  const { kickoffLabel, departTime, departDisplay } = getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus);
+  const outwardDate = formatFixtureOutwardDate(dateStr, departTime);
   const station = getOpponentTrainStation(opponent);
 
+  // Exact parameter structure matching Trainline's verified live deep link schema:
+  // - journeySearchType: "openReturn"
+  // - origin: alphanumeric location URN (e.g. urn:trainline:generic:loc:NAN1247gb)
+  // - destination: alphanumeric location URN (e.g. urn:trainline:generic:loc:STA1268gb)
+  // - outwardDate: departure time ISO format
+  // - outwardDateType: "departAfter"
+  // - selectedTab: "train"
+  // - splitSave: "true"
+  // - lang: "en"
+  // - transportModes[]: "mixed"
+  // - directSearch: "false"
   const params = new URLSearchParams();
-  params.set("journeySearchType", "open-return");
+  params.set("journeySearchType", "openReturn");
   params.set("origin", NANTWICH_TRAINLINE_URN);
   if (station && station.urn) {
     params.set("destination", station.urn);
   }
   params.set("outwardDate", outwardDate);
-  params.set("outwardDateType", "arriveBefore");
-  params.set("passengers[]", "1996-01-01");
+  params.set("outwardDateType", "departAfter");
+  params.set("selectedTab", "train");
+  params.set("splitSave", "true");
+  params.set("lang", "en");
+  params.set("transportModes[]", "mixed");
+  params.set("directSearch", "false");
 
   const url = `https://www.thetrainline.com/book/results?${params.toString()}`;
 
@@ -349,9 +449,9 @@ function buildTrainlineUrl(opponent, dateStr, kickoffOrStatus = null) {
       crs: station.crs,
       isFullyPreFilled: true,
       outwardDate,
-      journeySearchType: "open-return",
-      outwardDateType: "arriveBefore",
-      arriveBeforeDisplay,
+      journeySearchType: "openReturn",
+      departDisplay,
+      arriveBeforeDisplay: departDisplay,
       kickoffLabel,
     };
   }
@@ -363,9 +463,9 @@ function buildTrainlineUrl(opponent, dateStr, kickoffOrStatus = null) {
     crs: null,
     isFullyPreFilled: false,
     outwardDate,
-    journeySearchType: "open-return",
-    outwardDateType: "arriveBefore",
-    arriveBeforeDisplay,
+    journeySearchType: "openReturn",
+    departDisplay,
+    arriveBeforeDisplay: departDisplay,
     kickoffLabel,
   };
 }

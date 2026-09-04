@@ -511,7 +511,7 @@ const state = {
   activeTab: "live",
   loading: true,
   refreshing: false,
-  data: { live: null, table: null, fixtures: null, squad: null, media: null },
+  data: { live: null, table: null, fixtures: null, squad: null, media: null, stations: null },
   errors: {},
   lastUpdated: null,
   lastLiveChecked: null,
@@ -546,8 +546,8 @@ const state = {
   squadSearchQuery: "",
   squadSortBy: "apps", // "apps" | "goals" | "number" | "name"
   
-  // Fixtures filter
-  fixtureFilter: "ALL", // "ALL" | "UPCOMING" | "RESULTS" | "HOME"
+  // Fixtures filter (default to UPCOMING)
+  fixtureFilter: "UPCOMING", // "UPCOMING" | "RESULTS" | "ALL" | "HOME" | "AWAY"
   
   // UI Modals & Popups
   activeModal: null, // null | "player_profile" | "pos_picker" | "stadium_guide" | "h2h_preview" | "graphic_export" | "club_menu"
@@ -637,42 +637,20 @@ function icon(name, className = "h-5 w-5") {
 }
 
 // -----------------------------------------------------------------------
-// Trainline Station URNs & Ground Railway Mapping
-// Sourced from Trainline Live API (/api/locations-search/v2/search)
-// Origin: Nantwich (CRS: NAN, Trainline Location URN: urn:trainline:generic:loc:NAN1247gb)
+// Trainline Station Helpers & Match Arrival Calculation
+// Station data is provided dynamically by the server via /api/stations
 // -----------------------------------------------------------------------
-const NANTWICH_TRAINLINE_URN = "urn:trainline:generic:loc:NAN1247gb";
-
-const AWAY_GROUND_STATIONS = {
-  "bootle": { stationName: "Aintree", crs: "AIN", urn: "urn:trainline:generic:loc:AIN2125gb", ground: "Berry Street Garage Stadium" },
-  "shifnal town": { stationName: "Shifnal", crs: "SFN", urn: "urn:trainline:generic:loc:SFN4619gb", ground: "Acoustafoam Stadium" },
-  "wythenshawe": { stationName: "Gatley", crs: "GTY", urn: "urn:trainline:generic:loc:GTY2953gb", ground: "Hollyhedge Park" },
-  "wythenshawe town": { stationName: "Gatley", crs: "GTY", urn: "urn:trainline:generic:loc:GTY2953gb", ground: "Hollyhedge Park" },
-  "witton albion": { stationName: "Lostock Gralam", crs: "LTG", urn: "urn:trainline:generic:loc:LTG2307gb", ground: "The U Lock It Stadium" },
-  "stafford rangers": { stationName: "Stafford", crs: "STA", urn: "urn:trainline:generic:loc:STA1268gb", ground: "Stan Robinson Stadium" },
-  "prescot cables": { stationName: "Prescot", crs: "PSC", urn: "urn:trainline:generic:loc:PSC2337gb", ground: "Valerie Park" },
-  "runcorn linnets": { stationName: "Runcorn East", crs: "RUE", urn: "urn:trainline:generic:loc:RUE2294gb", ground: "The APEC Taxis Stadium" },
-  "hanley town": { stationName: "Stoke-on-Trent", crs: "SOT", urn: "urn:trainline:generic:loc:SOT1314gb", ground: "Potteries Park" },
-  "vauxhall motors": { stationName: "Overpool", crs: "OVE", urn: "urn:trainline:generic:loc:OVE2157gb", ground: "The VanEupen Arena" },
-  "stalybridge celtic": { stationName: "Stalybridge", crs: "SYB", urn: "urn:trainline:generic:loc:SYB2983gb", ground: "Bower Fold" },
-  "atherton collieries": { stationName: "Atherton", crs: "ATN", urn: "urn:trainline:generic:loc:ATN2584gb", ground: "The Skuna Stadium" },
-  "clitheroe": { stationName: "Clitheroe", crs: "CLH", urn: "urn:trainline:generic:loc:CLH2574gb", ground: "EcoGiants Stadium" },
-  "lower breck": { stationName: "Kirkdale", crs: "KKD", urn: "urn:trainline:generic:loc:KKD2245gb", ground: "Anfield Sports & Community Centre" },
-  "chasetown": { stationName: "Cannock", crs: "CAO", urn: "urn:trainline:generic:loc:CAO1016gb", ground: "The Scholars Ground" },
-  "padiham": { stationName: "Rose Grove", crs: "RSG", urn: "urn:trainline:generic:loc:RSG2722gb", ground: "The Arbories" },
-  "1874 northwich": { stationName: "Greenbank", crs: "GBK", urn: "urn:trainline:generic:loc:GBK2325gb", ground: "The Townfield Ground" },
-  "newcastle town": { stationName: "Stoke-on-Trent", crs: "SOT", urn: "urn:trainline:generic:loc:SOT1314gb", ground: "The Lyme Valley Stadium" },
-  "mossley": { stationName: "Mossley (Manchester)", crs: "MSL", urn: "urn:trainline:generic:loc:MSL2903gb", ground: "Seel Park" },
-  "kidsgrove athletic": { stationName: "Kidsgrove", crs: "KDG", urn: "urn:trainline:generic:loc:KDG1229gb", ground: "Autonet Insurance Stadium" },
-  "congleton town": { stationName: "Congleton", crs: "CNG", urn: "urn:trainline:generic:loc:CNG1227gb", ground: "The Cleric Stadium" },
-  "lichfield city": { stationName: "Lichfield City", crs: "LIC", urn: "urn:trainline:generic:loc:LIC1177gb", ground: "Trade Tyre Community Stadium" },
-};
+function getNantwichOriginUrn() {
+  return state.data?.stations?.origin?.urn || "urn:trainline:generic:loc:NAN1247gb";
+}
 
 function getOpponentStation(opponent) {
   if (!opponent) return null;
+  const stations = state.data?.stations?.stations || {};
   const clean = String(opponent).toLowerCase().replace(/\bfc\b|\bafc\b/g, "").replace(/\s+/g, " ").trim();
-  for (const [key, station] of Object.entries(AWAY_GROUND_STATIONS)) {
-    if (clean.includes(key) || key.includes(clean)) {
+  for (const [key, station] of Object.entries(stations)) {
+    const k = key.toLowerCase();
+    if (clean.includes(k) || k.includes(clean)) {
       return station;
     }
   }
@@ -726,74 +704,100 @@ function formatFixtureOutwardDate(dateStr, timeStr = "09:00:00") {
 }
 
 function getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus) {
-  let kickoffLabel = "3:00pm";
-  let arriveBeforeTime = "12:30:00"; // 2.5h before 3:00pm
-  let arriveBeforeDisplay = "12:30 PM";
+  let kickoffHours = null;
+  let kickoffMinutes = 0;
 
-  const status = String(kickoffOrStatus || "").toLowerCase();
-  const dateLow = String(dateStr || "").toLowerCase();
-  const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+  const rawStatus = String(kickoffOrStatus || "").trim();
 
-  if (status.includes("7.45") || status.includes("19:45")) {
-    kickoffLabel = "7:45pm";
-    arriveBeforeTime = "17:15:00";
-    arriveBeforeDisplay = "5:15 PM";
-  } else if (status.includes("7.30") || status.includes("19:30")) {
-    kickoffLabel = "7:30pm";
-    arriveBeforeTime = "17:00:00";
-    arriveBeforeDisplay = "5:00 PM";
-  } else if (status.includes("8.00") || status.includes("20:00") || status.includes("8pm")) {
-    kickoffLabel = "8:00pm";
-    arriveBeforeTime = "17:30:00";
-    arriveBeforeDisplay = "5:30 PM";
-  } else if (status.includes("7.00") || status.includes("19:00") || status.includes("7pm")) {
-    kickoffLabel = "7:00pm";
-    arriveBeforeTime = "16:30:00";
-    arriveBeforeDisplay = "4:30 PM";
-  } else if (status.includes("2.00") || status.includes("14:00") || status.includes("2pm")) {
-    kickoffLabel = "2:00pm";
-    arriveBeforeTime = "11:30:00";
-    arriveBeforeDisplay = "11:30 AM";
-  } else if (status.includes("1.00") || status.includes("13:00") || status.includes("1pm")) {
-    kickoffLabel = "1:00pm";
-    arriveBeforeTime = "10:30:00";
-    arriveBeforeDisplay = "10:30 AM";
-  } else if (status.includes("3.00") || status.includes("15:00") || status.includes("3pm")) {
-    kickoffLabel = "3:00pm";
-    arriveBeforeTime = "12:30:00";
-    arriveBeforeDisplay = "12:30 PM";
-  } else if (isMidweek) {
-    // Standard midweek non-league match kicks off at 7:45pm
-    kickoffLabel = "7:45pm";
-    arriveBeforeTime = "17:15:00";
-    arriveBeforeDisplay = "5:15 PM";
-  } else {
-    // Standard weekend kickoff is 3:00pm
-    kickoffLabel = "3:00pm";
-    arriveBeforeTime = "12:30:00";
-    arriveBeforeDisplay = "12:30 PM";
+  // Try parsing kickoff time dynamically from status string
+  if (rawStatus) {
+    const meridianMatch = rawStatus.match(/(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)/i);
+    if (meridianMatch) {
+      let h = parseInt(meridianMatch[1], 10);
+      const m = meridianMatch[2] ? parseInt(meridianMatch[2], 10) : 0;
+      const mer = meridianMatch[3].toLowerCase();
+      if (mer === "pm" && h < 12) h += 12;
+      if (mer === "am" && h === 12) h = 0;
+      kickoffHours = h;
+      kickoffMinutes = m;
+    } else {
+      const timeMatch = rawStatus.match(/\b(\d{1,2})[:.](\d{2})\b/);
+      if (timeMatch) {
+        let h = parseInt(timeMatch[1], 10);
+        const m = parseInt(timeMatch[2], 10);
+        if (h >= 1 && h <= 10) h += 12;
+        if (h >= 0 && h <= 23 && m >= 0 && m <= 59) {
+          kickoffHours = h;
+          kickoffMinutes = m;
+        }
+      }
+    }
   }
 
-  return { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay };
+  if (kickoffHours === null) {
+    const dateLow = String(dateStr || "").toLowerCase();
+    const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+    if (isMidweek) {
+      kickoffHours = 19;
+      kickoffMinutes = 45;
+    } else {
+      kickoffHours = 15;
+      kickoffMinutes = 0;
+    }
+  }
+
+  const dispHour = kickoffHours % 12 || 12;
+  const dispMeridian = kickoffHours >= 12 ? "pm" : "am";
+  const kickoffLabel = `${dispHour}:${String(kickoffMinutes).padStart(2, "0")}${dispMeridian}`;
+
+  // Plan departure ~3 hours and 15 minutes (195 minutes) before kickoff
+  // Giving fans ample time to make the journey, change trains, and reach the ground with time to spare.
+  let totalMinutes = kickoffHours * 60 + kickoffMinutes - 195;
+  if (totalMinutes < 0) totalMinutes += 24 * 60;
+
+  const departH = Math.floor(totalMinutes / 60);
+  const departM = totalMinutes % 60;
+  const departTime = `${String(departH).padStart(2, "0")}:${String(departM).padStart(2, "0")}:00`;
+
+  const departDispHour = departH % 12 || 12;
+  const departDispMeridian = departH >= 12 ? "PM" : "AM";
+  const departDisplay = `${departDispHour}:${String(departM).padStart(2, "0")} ${departDispMeridian}`;
+
+  return { kickoffLabel, departTime, departDisplay, arriveBeforeDisplay: departDisplay };
 }
 
 function getFixtureTrainInfo(fixture) {
   if (fixture.trainInfo) return fixture.trainInfo;
   const opponent = fixture.opponent || "";
   
-  const { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay } = getMatchKickoffAndArriveBeforeTime(fixture.date, fixture.scoreOrStatus);
-  const outwardDate = formatFixtureOutwardDate(fixture.date, arriveBeforeTime);
+  const { kickoffLabel, departTime, departDisplay } = getMatchKickoffAndArriveBeforeTime(fixture.date, fixture.scoreOrStatus);
+  const outwardDate = formatFixtureOutwardDate(fixture.date, departTime);
   const station = getOpponentStation(opponent);
 
+  // Exact parameter structure matching Trainline's verified live deep link schema:
+  // - journeySearchType: "openReturn"
+  // - origin: alphanumeric location URN (e.g. urn:trainline:generic:loc:NAN1247gb)
+  // - destination: alphanumeric location URN (e.g. urn:trainline:generic:loc:STA1268gb)
+  // - outwardDate: departure time ISO format
+  // - outwardDateType: "departAfter"
+  // - selectedTab: "train"
+  // - splitSave: "true"
+  // - lang: "en"
+  // - transportModes[]: "mixed"
+  // - directSearch: "false"
   const params = new URLSearchParams();
-  params.set("journeySearchType", "open-return");
-  params.set("origin", NANTWICH_TRAINLINE_URN);
+  params.set("journeySearchType", "openReturn");
+  params.set("origin", getNantwichOriginUrn());
   if (station && station.urn) {
     params.set("destination", station.urn);
   }
   params.set("outwardDate", outwardDate);
-  params.set("outwardDateType", "arriveBefore");
-  params.set("passengers[]", "1996-01-01");
+  params.set("outwardDateType", "departAfter");
+  params.set("selectedTab", "train");
+  params.set("splitSave", "true");
+  params.set("lang", "en");
+  params.set("transportModes[]", "mixed");
+  params.set("directSearch", "false");
 
   const url = `https://www.thetrainline.com/book/results?${params.toString()}`;
 
@@ -805,9 +809,9 @@ function getFixtureTrainInfo(fixture) {
       crs: station.crs,
       isFullyPreFilled: true,
       outwardDate,
-      journeySearchType: "open-return",
-      outwardDateType: "arriveBefore",
-      arriveBeforeDisplay,
+      journeySearchType: "openReturn",
+      departDisplay,
+      arriveBeforeDisplay: departDisplay,
       kickoffLabel,
     };
   }
@@ -818,9 +822,9 @@ function getFixtureTrainInfo(fixture) {
     crs: null,
     isFullyPreFilled: false,
     outwardDate,
-    journeySearchType: "open-return",
-    outwardDateType: "arriveBefore",
-    arriveBeforeDisplay,
+    journeySearchType: "openReturn",
+    departDisplay,
+    arriveBeforeDisplay: departDisplay,
     kickoffLabel,
   };
 }
@@ -1670,6 +1674,8 @@ function renderFixtures() {
     filtered = fixtures.filter((f) => completed(f)).reverse();
   } else if (state.fixtureFilter === "HOME") {
     filtered = fixtures.filter((f) => isHomeFixture(f));
+  } else if (state.fixtureFilter === "AWAY") {
+    filtered = fixtures.filter((f) => !isHomeFixture(f));
   }
 
   return `
@@ -1685,18 +1691,25 @@ function renderFixtures() {
         </a>
       </div>
 
-      <!-- Filter Tabs -->
+      <!-- Filter Tabs: Upcoming (Default), Results, All, Home Only, Away Only -->
       <div class="flex flex-wrap gap-1 rounded-2xl border border-charcoal-border bg-[#15251E] p-1.5">
-        ${[
-          { id: "ALL", label: `All (${fixtures.length})` },
-          { id: "UPCOMING", label: "Upcoming" },
-          { id: "RESULTS", label: "Results" },
-          { id: "HOME", label: "Home Only" },
-        ].map((f) => `
-          <button data-fixture-filter="${f.id}" class="rounded-xl px-3 py-1.5 text-xs font-bold transition ${state.fixtureFilter === f.id ? "bg-gold text-charcoal" : "text-[#AAB8AE] hover:text-white"}">
-            ${f.label}
-          </button>
-        `).join("")}
+        ${(() => {
+          const upcomingCount = fixtures.filter((f) => !completed(f)).length;
+          const resultsCount = fixtures.filter((f) => completed(f)).length;
+          const homeCount = fixtures.filter((f) => isHomeFixture(f)).length;
+          const awayCount = fixtures.filter((f) => !isHomeFixture(f)).length;
+          return [
+            { id: "UPCOMING", label: `Upcoming (${upcomingCount})` },
+            { id: "RESULTS", label: `Results (${resultsCount})` },
+            { id: "ALL", label: `All (${fixtures.length})` },
+            { id: "HOME", label: `Home Only (${homeCount})` },
+            { id: "AWAY", label: `Away Only (${awayCount})` },
+          ].map((f) => `
+            <button data-fixture-filter="${f.id}" class="rounded-xl px-3 py-1.5 text-xs font-bold transition ${state.fixtureFilter === f.id ? "bg-gold text-charcoal shadow-sm" : "text-[#AAB8AE] hover:text-white hover:bg-white/5"}">
+              ${f.label}
+            </button>
+          `).join("");
+        })()}
       </div>
 
       <!-- Fixtures List -->
@@ -1752,7 +1765,7 @@ function renderFixtures() {
                       target="_blank"
                       rel="noopener noreferrer"
                       class="inline-flex items-center gap-1 rounded-lg border border-teal-500/40 bg-teal-500/20 px-2.5 py-1 text-[11px] font-bold text-teal-300 hover:bg-teal-500/30 transition shadow-sm"
-                      title="Trainline Open Return from Nantwich to ${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}], arriving ~2.5h before kick-off (before ${escapeHtml(trainInfo.arriveBeforeDisplay || 'match')})"
+                      title="Trainline Open Return from Nantwich to ${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}], departing ~${escapeHtml(trainInfo.departDisplay || 'depart')} with time to spare for ${escapeHtml(trainInfo.kickoffLabel || 'kickoff')}"
                     >
                       ${icon("train", "h-3 w-3 text-teal-300")} Open Return (${escapeHtml(trainInfo.stationName)})
                     </a>
@@ -1762,7 +1775,7 @@ function renderFixtures() {
                       target="_blank"
                       rel="noopener noreferrer"
                       class="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-500/20 px-2.5 py-1 text-[11px] font-bold text-amber-300 hover:bg-amber-500/30 transition shadow-sm"
-                      title="Trainline Open Return from Nantwich arriving 2-3h before kick-off. Enter ${escapeHtml(fixture.opponent)} destination on Trainline."
+                      title="Trainline Open Return from Nantwich departing ~3h 15m before kick-off. Enter ${escapeHtml(fixture.opponent)} destination on Trainline."
                     >
                       ${icon("train", "h-3 w-3 text-amber-300")} Open Return — enter ${escapeHtml(fixture.opponent)} on Trainline
                     </a>
@@ -1786,8 +1799,8 @@ function renderFixtures() {
                 <div class="mt-2 flex items-center gap-1.5 text-[10px] ${trainInfo.isFullyPreFilled ? "text-teal-300/80" : "text-amber-300/80"}">
                   ${icon("info", "h-3 w-3 shrink-0")}
                   <span>${trainInfo.isFullyPreFilled
-                    ? `Trainline pre-filled with <strong>Open Return</strong> to <strong>${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}]</strong> arriving ~2-3 hrs before kick-off (before ${escapeHtml(trainInfo.arriveBeforeDisplay || '12:30 PM')}) — return travel flexible.`
-                    : `Cup tie travel: Origin pre-filled with Nantwich (Open Return arriving 2-3h before kick-off) — enter <strong>${escapeHtml(fixture.opponent)}</strong> destination on Trainline.`}</span>
+                    ? `Pre-filled from <strong>Nantwich (NAN)</strong> to <strong>${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}]</strong> departing ~${escapeHtml(trainInfo.departDisplay || '11:45 AM')} (scheduled ~3h 15m before kick-off so you arrive comfortably ahead of ${escapeHtml(trainInfo.kickoffLabel || 'match')} kick-off).`
+                    : `Cup tie travel: Origin pre-filled with Nantwich (departing ~3h 15m before kick-off) — enter <strong>${escapeHtml(fixture.opponent)}</strong> destination on Trainline.`}</span>
                 </div>
               ` : ""}
 
@@ -2121,12 +2134,17 @@ function renderClubMenuModal() {
                   <div class="mt-3">
                     <a
                       href="${(() => {
-                        const p = new URLSearchParams();
-                        p.set('journeySearchType', 'open-return');
-                        p.set('destination', NANTWICH_TRAINLINE_URN);
-                        p.set('outwardDate', new Date().toISOString().slice(0, 10) + 'T12:30:00');
-                        p.set('outwardDateType', 'arriveBefore');
-                        p.set('passengers[]', '1996-01-01');
+                        const p = new URLSearchParams({
+                          journeySearchType: 'openReturn',
+                          destination: getNantwichOriginUrn(),
+                          outwardDate: new Date().toISOString().slice(0, 10) + 'T12:30:00',
+                          outwardDateType: 'departAfter',
+                          selectedTab: 'train',
+                          splitSave: 'true',
+                          lang: 'en',
+                          'transportModes[]': 'mixed',
+                          directSearch: 'false'
+                        });
                         return 'https://www.thetrainline.com/book/results?' + p.toString();
                       })()}"
                       target="_blank"
@@ -2134,7 +2152,7 @@ function renderClubMenuModal() {
                       class="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-teal-500 transition shadow-md"
                     >
                       ${icon("train", "h-3.5 w-3.5")}
-                      Plan Train to Nantwich (Open Return)
+                      Open Return to Nantwich
                       ${icon("external", "h-3 w-3 ml-0.5")}
                     </a>
                   </div>
@@ -2142,22 +2160,27 @@ function renderClubMenuModal() {
                   ${(() => {
                     const stn = getOpponentStation(club.shortName || club.name);
                     const todayDate = new Date().toISOString().slice(0, 10) + "T12:30:00";
-                    const p = new URLSearchParams();
-                    p.set('journeySearchType', 'open-return');
-                    p.set('origin', NANTWICH_TRAINLINE_URN);
+                    const p = new URLSearchParams({
+                      journeySearchType: 'openReturn',
+                      origin: getNantwichOriginUrn(),
+                      outwardDate: todayDate,
+                      outwardDateType: 'departAfter',
+                      selectedTab: 'train',
+                      splitSave: 'true',
+                      lang: 'en',
+                      'transportModes[]': 'mixed',
+                      directSearch: 'false'
+                    });
                     if (stn && stn.urn) {
                       p.set('destination', stn.urn);
                     }
-                    p.set('outwardDate', todayDate);
-                    p.set('outwardDateType', 'arriveBefore');
-                    p.set('passengers[]', '1996-01-01');
                     const trainlineUrl = 'https://www.thetrainline.com/book/results?' + p.toString();
                     return `
                       <p class="text-xs text-[#D5E8D9] mt-1">
                         Nearest railway station: <strong>${escapeHtml(stn ? stn.stationName : "Local Station")}</strong> ${stn?.crs ? `<span class="rounded bg-black/40 border border-white/10 px-1.5 py-0.5 font-mono text-gold text-[11px] font-bold">[${escapeHtml(stn.crs)}]</span>` : ""}
                       </p>
                       <p class="text-xs text-[#AAB8AE] mt-0.5">
-                        ${stn ? `Direct deep link pre-fills an <strong>Open Return</strong> from Nantwich (NAN) to ${escapeHtml(stn.stationName)} [${escapeHtml(stn.crs)}] arriving ~2.5 hours before 3:00pm kick-off (before 12:30 PM).` : `Pre-fills origin from Nantwich (NAN) with an Open Return.`}
+                        ${stn ? `Direct deep link pre-fills an <strong>Open Return</strong> from Nantwich (NAN) to ${escapeHtml(stn.stationName)} [${escapeHtml(stn.crs)}] departing ~12:30 PM (flexible return journey).` : `Pre-fills origin from Nantwich (NAN) with Open Return departing ~12:30 PM.`}
                       </p>
                       <div class="mt-3">
                         <a
@@ -3285,6 +3308,7 @@ async function loadData() {
   const coreFetch = Promise.allSettled(tabs.map(async (tab) => [tab.id, await fetchData(tab.id)]));
   const auxFetch = Promise.allSettled([
     fetchData("media").then((d) => ["media", d]),
+    fetchData("stations").then((d) => ["stations", d]),
   ]);
 
   const [results, auxResults] = await Promise.all([coreFetch, auxFetch]);
