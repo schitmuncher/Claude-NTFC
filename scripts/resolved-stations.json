@@ -1,0 +1,200 @@
+{
+  "Nantwich Town": {
+    "club": "Nantwich Town",
+    "stationName": "Nantwich",
+    "crs": "NAN",
+    "stationId": "25844",
+    "urn": "urn:trainline:generic:loc:25844",
+    "ground": "The Swansway Stadium",
+    "postcode": "CW5 5BS"
+  },
+  "Bootle": {
+    "club": "Bootle",
+    "stationName": "Aintree",
+    "crs": "AIN",
+    "stationId": "24610",
+    "urn": "urn:trainline:generic:loc:24610",
+    "ground": "Berry Street Garage Stadium (Vesty Road)",
+    "postcode": "L30 1NY"
+  },
+  "Shifnal Town": {
+    "club": "Shifnal Town",
+    "stationName": "Shifnal",
+    "crs": "SFN",
+    "stationId": "26161",
+    "urn": "urn:trainline:generic:loc:26161",
+    "ground": "Acoustafoam Stadium (Coppice Green Lane)",
+    "postcode": "TF11 8PD"
+  },
+  "Wythenshawe": {
+    "club": "Wythenshawe",
+    "stationName": "Gatley",
+    "crs": "GTY",
+    "stationId": "25319",
+    "urn": "urn:trainline:generic:loc:25319",
+    "ground": "Hollyhedge Park (Sharston)",
+    "postcode": "M22 4NZ"
+  },
+  "Witton Albion": {
+    "club": "Witton Albion",
+    "stationName": "Lostock Gralam",
+    "crs": "LTG",
+    "stationId": "25734",
+    "urn": "urn:trainline:generic:loc:25734",
+    "ground": "The U Lock It Stadium (Wincham)",
+    "postcode": "CW9 6DA"
+  },
+  "Stafford Rangers": {
+    "club": "Stafford Rangers",
+    "stationName": "Stafford",
+    "crs": "STA",
+    "stationId": "8373",
+    "urn": "urn:trainline:generic:loc:8373",
+    "ground": "Stan Robinson Stadium (Marston Road)",
+    "postcode": "ST16 3UF"
+  },
+  "Prescot Cables": {
+    "club": "Prescot Cables",
+    "stationName": "Prescot",
+    "crs": "PSC",
+    "stationId": "26006",
+    "urn": "urn:trainline:generic:loc:26006",
+    "ground": "Valerie Park (Hope Street)",
+    "postcode": "L34 6HD"
+  },
+  "Runcorn Linnets": {
+    "club": "Runcorn Linnets",
+    "stationName": "Runcorn East",
+    "crs": "RUE",
+    "stationId": "7983",
+    "urn": "urn:trainline:generic:loc:7983",
+    "ground": "The APEC Taxis Stadium (Murdishaw Avenue)",
+    "postcode": "WA7 6GJ"
+  },
+  "Hanley Town": {
+    "club": "Hanley Town",
+    "stationName": "Stoke-On-Trent",
+    "crs": "SOT",
+    "stationId": "7856",
+    "urn": "urn:trainline:generic:loc:7856",
+    "ground": "Potteries Park (Abbey Lane, Bucknall)",
+    "postcode": "ST2 8AU"
+  },
+  "Vauxhall Motors": {
+    "club": "Vauxhall Motors",
+    "stationName": "Overpool",
+    "crs": "OVE",
+    "stationId": "25925",
+    "urn": "urn:trainline:generic:loc:25925",
+    "ground": "The VanEupen Arena (Rivacre Road)",
+    "postcode": "CH66 1NJ"
+  },
+  "Stalybridge Celtic": {
+    "club": "Stalybridge Celtic",
+    "stationName": "Stalybridge",
+    "crs": "SYB",
+    "stationId": "7855",
+    "urn": "urn:trainline:generic:loc:7855",
+    "ground": "Bower Fold (Mottram Road)",
+    "postcode": "SK15 2RT"
+  },
+  "Atherton Collieries": {
+    "club": "Atherton Collieries",
+    "stationName": "Atherton",
+    "crs": "ATN",
+    "stationId": "24678",
+    "urn": "urn:trainline:generic:loc:24678",
+    "ground": "The Skuna Stadium (Alder Street)",
+    "postcode": "M46 9EY"
+  },
+  "Clitheroe": {
+    "club": "Clitheroe",
+    "stationName": "Clitheroe",
+    "crs": "CLH",
+    "stationId": "25024",
+    "urn": "urn:trainline:generic:loc:25024",
+    "ground": "EcoGiants Stadium (Shawbridge)",
+    "postcode": "BB7 1LZ"
+  },
+  "Lower Breck": {
+    "club": "Lower Breck",
+    "stationName": "Kirkdale",
+    "crs": "KKD",
+    "stationId": "25613",
+    "urn": "urn:trainline:generic:loc:25613",
+    "ground": "Anfield Sports & Community Centre (Lower Breck Road)",
+    "postcode": "L6 0AG"
+  },
+  "Chasetown": {
+    "club": "Chasetown",
+    "stationName": "Cannock",
+    "crs": "CAO",
+    "stationId": "24938",
+    "urn": "urn:trainline:generic:loc:24938",
+    "ground": "The Scholars Ground (Church Street)",
+    "postcode": "WS7 3QL"
+  },
+  "Padiham": {
+    "club": "Padiham",
+    "stationName": "Rose Grove",
+    "crs": "RSG",
+    "stationId": "26082",
+    "urn": "urn:trainline:generic:loc:26082",
+    "ground": "The Arbories (Well Street)",
+    "postcode": "BB12 8LE"
+  },
+  "1874 Northwich": {
+    "club": "1874 Northwich",
+    "stationName": "Greenbank",
+    "crs": "GBK",
+    "stationId": "25365",
+    "urn": "urn:trainline:generic:loc:25365",
+    "ground": "The Townfield Ground (Barnton)",
+    "postcode": "CW8 4LH"
+  },
+  "Newcastle Town": {
+    "club": "Newcastle Town",
+    "stationName": "Stoke-On-Trent",
+    "crs": "SOT",
+    "stationId": "7856",
+    "urn": "urn:trainline:generic:loc:7856",
+    "ground": "The Lyme Valley Stadium (Clayton)",
+    "postcode": "ST5 3BX"
+  },
+  "Mossley": {
+    "club": "Mossley",
+    "stationName": "Mossley (Grtr Manchester)",
+    "crs": "MSL",
+    "stationId": "25827",
+    "urn": "urn:trainline:generic:loc:25827",
+    "ground": "Seel Park (Market Street)",
+    "postcode": "OL5 0ES"
+  },
+  "Kidsgrove Athletic": {
+    "club": "Kidsgrove Athletic",
+    "stationName": "Kidsgrove",
+    "crs": "KDG",
+    "stationId": "25589",
+    "urn": "urn:trainline:generic:loc:25589",
+    "ground": "Autonet Insurance Stadium (Hollinwood Road)",
+    "postcode": "ST7 1DQ"
+  },
+  "Congleton Town": {
+    "club": "Congleton Town",
+    "stationName": "Congleton",
+    "crs": "CNG",
+    "stationId": "8196",
+    "urn": "urn:trainline:generic:loc:8196",
+    "ground": "The Cleric Stadium (Booth Street)",
+    "postcode": "CW12 4DG"
+  },
+  "Lichfield City": {
+    "club": "Lichfield City",
+    "stationName": "Lichfield City",
+    "crs": "LIC",
+    "stationId": "25671",
+    "urn": "urn:trainline:generic:loc:25671",
+    "ground": "Trade Tyre Community Stadium (Brownsfield Park)",
+    "postcode": "WS13 7HQ"
+  }
+}

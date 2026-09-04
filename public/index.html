@@ -6,20 +6,20 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <script>
-      // Clear all legacy service worker registrations and browser caches
+      // Clear legacy service worker registrations and browser caches safely
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for (var reg of registrations) {
-            reg.unregister();
+          for (var i = 0; i < registrations.length; i++) {
+            registrations[i].unregister().catch(function() {});
           }
-        });
+        }).catch(function() {});
       }
       if ('caches' in window) {
         caches.keys().then(function(names) {
-          for (var name of names) {
-            caches.delete(name);
+          for (var i = 0; i < names.length; i++) {
+            caches.delete(names[i]).catch(function() {});
           }
-        });
+        }).catch(function() {});
       }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
@@ -153,7 +153,7 @@
   </head>
   <body class="text-ink antialiased">
     <div id="app"></div>
-    <script src="/features.js?v=3" defer></script>
-    <script src="/app.js?v=3" defer></script>
+    <script src="/features.js?v=4" defer></script>
+    <script src="/app.js?v=4" defer></script>
   </body>
 </html>

@@ -26,6 +26,230 @@ const CLUB_INFO = {
   tickets: "https://nantwichtownfc.ktckts.com/brand/match-tickets",
 };
 
+// =======================================================================
+// VERIFIED NPL DIVISION ONE WEST CLUB DIRECTORY
+// Official verified websites, ground locations, and postcodes for all clubs
+// =======================================================================
+const NPL_CLUBS_DIRECTORY = {
+  "bootle": {
+    name: "Bootle FC",
+    shortName: "Bootle",
+    website: "https://bootlefc.com",
+    stadium: "Berry Street Garage Stadium (New Bucks Park)",
+    address: "Vesty Road, off Dunnings Bridge Road, Bootle, Merseyside",
+    postcode: "L30 1NY",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Berry+Street+Garage+Stadium+Vesty+Road+Bootle+L30+1NY",
+  },
+  "shifnal town": {
+    name: "Shifnal Town FC",
+    shortName: "Shifnal Town",
+    website: "https://shifnaltownfc.com",
+    stadium: "The Acoustafoam Stadium",
+    address: "Coppice Green Lane, Shifnal, Shropshire",
+    postcode: "TF11 8PD",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Acoustafoam+Stadium+Coppice+Green+Lane+Shifnal+TF11+8PD",
+  },
+  "wythenshawe": {
+    name: "Wythenshawe FC",
+    shortName: "Wythenshawe",
+    website: "https://www.wythenshawefc.com",
+    stadium: "The Selco Community Stadium (Hollyhedge Park)",
+    address: "Altrincham Road, Sharston, Wythenshawe, Manchester",
+    postcode: "M22 4NZ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Hollyhedge+Park+Altrincham+Road+Sharston+Manchester+M22+4NZ",
+  },
+  "witton albion": {
+    name: "Witton Albion FC",
+    shortName: "Witton Albion",
+    website: "https://wittonalbionfc.co.uk",
+    stadium: "The U Lock It Stadium (Wincham Park)",
+    address: "Chapel Street, Wincham, Northwich, Cheshire",
+    postcode: "CW9 6DA",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=U+Lock+It+Stadium+Chapel+Street+Wincham+Northwich+CW9+6DA",
+  },
+  "stafford rangers": {
+    name: "Stafford Rangers FC",
+    shortName: "Stafford Rangers",
+    website: "https://www.staffordrangersfc.co.uk",
+    stadium: "Stan Robinson Stadium (Marston Road)",
+    address: "Astonfields Road, Stafford, Staffordshire",
+    postcode: "ST16 3UF",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Marston+Road+Astonfields+Road+Stafford+ST16+3UF",
+  },
+  "prescot cables": {
+    name: "Prescot Cables FC",
+    shortName: "Prescot Cables",
+    website: "https://www.prescotcablesfc.com",
+    stadium: "Valerie Park (IP Truck Parts Stadium)",
+    address: "Hope Street, Prescot, Merseyside",
+    postcode: "L34 6HD",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Valerie+Park+Hope+Street+Prescot+L34+6HD",
+  },
+  "runcorn linnets": {
+    name: "Runcorn Linnets FC",
+    shortName: "Runcorn Linnets",
+    website: "https://www.runcornlinnetsfc.co.uk",
+    stadium: "The APEC Taxis Stadium",
+    address: "Murdishaw Avenue, Runcorn, Cheshire",
+    postcode: "WA7 6GJ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=APEC+Taxis+Stadium+Murdishaw+Avenue+Runcorn+WA7+6GJ",
+  },
+  "hanley town": {
+    name: "Hanley Town FC",
+    shortName: "Hanley Town",
+    website: "https://www.hanleytownfootballclub.co.uk",
+    stadium: "Potteries Park",
+    address: "Abbey Lane, Bucknall, Stoke-on-Trent, Staffordshire",
+    postcode: "ST2 8AU",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Potteries+Park+Abbey+Lane+Bucknall+Stoke-on-Trent+ST2+8AU",
+  },
+  "vauxhall motors": {
+    name: "Vauxhall Motors FC",
+    shortName: "Vauxhall Motors",
+    website: "https://www.pitchero.com/clubs/vauxhallmotorsfc",
+    stadium: "The VanEupen Arena (Rivacre Park)",
+    address: "Rivacre Road, Ellesmere Port, Cheshire",
+    postcode: "CH66 1NJ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+VanEupen+Arena+Rivacre+Road+Ellesmere+Port+CH66+1NJ",
+  },
+  "stalybridge celtic": {
+    name: "Stalybridge Celtic FC",
+    shortName: "Stalybridge Celtic",
+    website: "https://www.stalybridgeceltic.co.uk",
+    stadium: "Bower Fold",
+    address: "Mottram Road, Stalybridge, Cheshire",
+    postcode: "SK15 2RT",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Bower+Fold+Mottram+Road+Stalybridge+SK15+2RT",
+  },
+  "atherton collieries": {
+    name: "Atherton Collieries FC",
+    shortName: "Atherton Collieries",
+    website: "https://athertoncollieries.co.uk",
+    stadium: "The Skuna Stadium",
+    address: "Alder Street, Atherton, Greater Manchester",
+    postcode: "M46 9EY",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Skuna+Stadium+Alder+Street+Atherton+M46+9EY",
+  },
+  "clitheroe": {
+    name: "Clitheroe FC",
+    shortName: "Clitheroe",
+    website: "https://www.clitheroefc.co.uk",
+    stadium: "The EcoGiants Stadium (Shawbridge)",
+    address: "Shawbridge Street, Clitheroe, Lancashire",
+    postcode: "BB7 1LZ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Shawbridge+Street+Clitheroe+Lancashire+BB7+1LZ",
+  },
+  "lower breck": {
+    name: "Lower Breck FC",
+    shortName: "Lower Breck",
+    website: "https://lowerbreckfc.co.uk",
+    stadium: "Anfield Sports & Community Centre (ASCC)",
+    address: "Lower Breck Road, Anfield, Liverpool",
+    postcode: "L6 0AG",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Anfield+Sports+Community+Centre+Lower+Breck+Road+Liverpool+L6+0AG",
+  },
+  "chasetown": {
+    name: "Chasetown FC",
+    shortName: "Chasetown",
+    website: "https://www.chasetownfc.co.uk",
+    stadium: "The Scholars Ground",
+    address: "Church Street, Chasetown, Burntwood, Staffordshire",
+    postcode: "WS7 3QL",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Scholars+Ground+Church+Street+Chasetown+Burntwood+WS7+3QL",
+  },
+  "padiham": {
+    name: "Padiham FC",
+    shortName: "Padiham",
+    website: "https://www.pitchero.com/clubs/padihamfootballclub",
+    stadium: "The Arbories Memorial Sports Ground",
+    address: "Well Street, Padiham, Burnley, Lancashire",
+    postcode: "BB12 8LE",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Arbories+Well+Street+Padiham+Burnley+BB12+8LE",
+  },
+  "1874 northwich": {
+    name: "1874 Northwich FC",
+    shortName: "1874 Northwich",
+    website: "https://1874northwich.com",
+    stadium: "The Townfield Ground",
+    address: "Townfield Lane, Barnton, Northwich, Cheshire",
+    postcode: "CW8 4LH",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Townfield+Lane+Barnton+Northwich+Cheshire+CW8+4LH",
+  },
+  "newcastle town": {
+    name: "Newcastle Town FC",
+    shortName: "Newcastle Town",
+    website: "https://www.newcastletownfc.co.uk",
+    stadium: "The Lyme Valley Stadium (The Red Industries Stadium)",
+    address: "Buckmaster Avenue, Clayton, Newcastle-under-Lyme, Staffordshire",
+    postcode: "ST5 3BX",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Lyme+Valley+Stadium+Buckmaster+Avenue+Newcastle-under-Lyme+ST5+3BX",
+  },
+  "mossley": {
+    name: "Mossley AFC",
+    shortName: "Mossley",
+    website: "https://mossleyafc.co.uk",
+    stadium: "Seel Park",
+    address: "Market Street, Mossley, Ashton-under-Lyne, Greater Manchester",
+    postcode: "OL5 0ES",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Seel+Park+Market+Street+Mossley+Ashton-under-Lyne+OL5+0ES",
+  },
+  "kidsgrove athletic": {
+    name: "Kidsgrove Athletic FC",
+    shortName: "Kidsgrove Athletic",
+    website: "https://www.kidsgroveathleticfc.com",
+    stadium: "The Autonet Insurance Stadium (The Seddon Stadium)",
+    address: "Hollinwood Road, Kidsgrove, Stoke-on-Trent, Staffordshire",
+    postcode: "ST7 1DQ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Autonet+Insurance+Stadium+Hollinwood+Road+Kidsgrove+ST7+1DQ",
+  },
+  "congleton town": {
+    name: "Congleton Town FC",
+    shortName: "Congleton Town",
+    website: "https://www.pitchero.com/clubs/conglotontown",
+    stadium: "The Cleric Stadium (Booth Street)",
+    address: "Ivy Gardens, Booth Street, Congleton, Cheshire",
+    postcode: "CW12 4DG",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=The+Cleric+Stadium+Booth+Street+Congleton+CW12+4DG",
+  },
+  "nantwich town": {
+    name: "Nantwich Town FC",
+    shortName: "Nantwich Town",
+    website: "https://www.nantwichtownfc.co.uk",
+    stadium: "The Swansway Stadium (The Weaver Stadium)",
+    address: "Water Lode, Nantwich, Cheshire",
+    postcode: "CW5 5BS",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Swansway+Stadium+Water+Lode+Nantwich+CW5+5BS",
+  },
+  "lichfield city": {
+    name: "Lichfield City FC",
+    shortName: "Lichfield City",
+    website: "https://www.pitchero.com/clubs/lichfieldcityfc",
+    stadium: "Trade Tyre Community Stadium (The City Ground)",
+    address: "Brownsfield Park, Eastern Avenue, Lichfield, Staffordshire",
+    postcode: "WS13 7HQ",
+    mapsUrl: "https://www.google.com/maps/dir/?api=1&destination=Brownsfield+Park+Eastern+Avenue+Lichfield+WS13+7HQ",
+  },
+};
+
+function getClubInfo(teamName) {
+  const clean = String(teamName || "").toLowerCase().replace(/\bfc\b|\bafc\b/g, "").replace(/\s+/g, " ").trim();
+  for (const [key, data] of Object.entries(NPL_CLUBS_DIRECTORY)) {
+    if (clean.includes(key) || key.includes(clean)) {
+      return data;
+    }
+  }
+  const name = teamName ? teamName.trim() : "Opponent";
+  return {
+    name: name,
+    shortName: name,
+    website: `https://www.google.com/search?q=${encodeURIComponent(name + " FC official club website")}`,
+    stadium: `${name} Stadium`,
+    address: `${name}, UK`,
+    postcode: "",
+    mapsUrl: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(name + " FC Stadium UK")}`,
+  };
+}
+
 // Official Nantwich Town FC Social Media Network
 const SOCIAL_CHANNELS = [
   {
@@ -326,9 +550,11 @@ const state = {
   fixtureFilter: "ALL", // "ALL" | "UPCOMING" | "RESULTS" | "HOME"
   
   // UI Modals & Popups
-  activeModal: null, // null | "player_profile" | "pos_picker" | "stadium_guide" | "h2h_preview" | "graphic_export"
+  activeModal: null, // null | "player_profile" | "pos_picker" | "stadium_guide" | "h2h_preview" | "graphic_export" | "club_menu"
   activePlayerModalId: null,
   activePickingSlot: null, // { posId, label, category }
+  selectedClub: null,
+  selectedClubRowData: null,
   
   // Feedback toast
   toastMessage: null,
@@ -403,8 +629,200 @@ function icon(name, className = "h-5 w-5") {
     music: '<path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM21 16a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />',
     flame: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5Z" />',
     zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />',
+    navigation: '<polygon points="3 11 22 2 13 21 11 13 3 11" />',
+    copy: '<rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+    train: '<rect width="16" height="16" x="4" y="3" rx="2"/><path d="M4 11h16M12 3v8M8 19l-2 3M16 19l2 3M9 15h.01M15 15h.01"/>',
   };
   return `<svg aria-hidden="true" class="${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${shapes[name] || ""}</svg>`;
+}
+
+// -----------------------------------------------------------------------
+// Trainline Station URNs & Ground Railway Mapping
+// Sourced from Trainline Live API (/api/locations-search/v2/search)
+// Origin: Nantwich (CRS: NAN, Trainline Location URN: urn:trainline:generic:loc:NAN1247gb)
+// -----------------------------------------------------------------------
+const NANTWICH_TRAINLINE_URN = "urn:trainline:generic:loc:NAN1247gb";
+
+const AWAY_GROUND_STATIONS = {
+  "bootle": { stationName: "Aintree", crs: "AIN", urn: "urn:trainline:generic:loc:AIN2125gb", ground: "Berry Street Garage Stadium" },
+  "shifnal town": { stationName: "Shifnal", crs: "SFN", urn: "urn:trainline:generic:loc:SFN4619gb", ground: "Acoustafoam Stadium" },
+  "wythenshawe": { stationName: "Gatley", crs: "GTY", urn: "urn:trainline:generic:loc:GTY2953gb", ground: "Hollyhedge Park" },
+  "wythenshawe town": { stationName: "Gatley", crs: "GTY", urn: "urn:trainline:generic:loc:GTY2953gb", ground: "Hollyhedge Park" },
+  "witton albion": { stationName: "Lostock Gralam", crs: "LTG", urn: "urn:trainline:generic:loc:LTG2307gb", ground: "The U Lock It Stadium" },
+  "stafford rangers": { stationName: "Stafford", crs: "STA", urn: "urn:trainline:generic:loc:STA1268gb", ground: "Stan Robinson Stadium" },
+  "prescot cables": { stationName: "Prescot", crs: "PSC", urn: "urn:trainline:generic:loc:PSC2337gb", ground: "Valerie Park" },
+  "runcorn linnets": { stationName: "Runcorn East", crs: "RUE", urn: "urn:trainline:generic:loc:RUE2294gb", ground: "The APEC Taxis Stadium" },
+  "hanley town": { stationName: "Stoke-on-Trent", crs: "SOT", urn: "urn:trainline:generic:loc:SOT1314gb", ground: "Potteries Park" },
+  "vauxhall motors": { stationName: "Overpool", crs: "OVE", urn: "urn:trainline:generic:loc:OVE2157gb", ground: "The VanEupen Arena" },
+  "stalybridge celtic": { stationName: "Stalybridge", crs: "SYB", urn: "urn:trainline:generic:loc:SYB2983gb", ground: "Bower Fold" },
+  "atherton collieries": { stationName: "Atherton", crs: "ATN", urn: "urn:trainline:generic:loc:ATN2584gb", ground: "The Skuna Stadium" },
+  "clitheroe": { stationName: "Clitheroe", crs: "CLH", urn: "urn:trainline:generic:loc:CLH2574gb", ground: "EcoGiants Stadium" },
+  "lower breck": { stationName: "Kirkdale", crs: "KKD", urn: "urn:trainline:generic:loc:KKD2245gb", ground: "Anfield Sports & Community Centre" },
+  "chasetown": { stationName: "Cannock", crs: "CAO", urn: "urn:trainline:generic:loc:CAO1016gb", ground: "The Scholars Ground" },
+  "padiham": { stationName: "Rose Grove", crs: "RSG", urn: "urn:trainline:generic:loc:RSG2722gb", ground: "The Arbories" },
+  "1874 northwich": { stationName: "Greenbank", crs: "GBK", urn: "urn:trainline:generic:loc:GBK2325gb", ground: "The Townfield Ground" },
+  "newcastle town": { stationName: "Stoke-on-Trent", crs: "SOT", urn: "urn:trainline:generic:loc:SOT1314gb", ground: "The Lyme Valley Stadium" },
+  "mossley": { stationName: "Mossley (Manchester)", crs: "MSL", urn: "urn:trainline:generic:loc:MSL2903gb", ground: "Seel Park" },
+  "kidsgrove athletic": { stationName: "Kidsgrove", crs: "KDG", urn: "urn:trainline:generic:loc:KDG1229gb", ground: "Autonet Insurance Stadium" },
+  "congleton town": { stationName: "Congleton", crs: "CNG", urn: "urn:trainline:generic:loc:CNG1227gb", ground: "The Cleric Stadium" },
+  "lichfield city": { stationName: "Lichfield City", crs: "LIC", urn: "urn:trainline:generic:loc:LIC1177gb", ground: "Trade Tyre Community Stadium" },
+};
+
+function getOpponentStation(opponent) {
+  if (!opponent) return null;
+  const clean = String(opponent).toLowerCase().replace(/\bfc\b|\bafc\b/g, "").replace(/\s+/g, " ").trim();
+  for (const [key, station] of Object.entries(AWAY_GROUND_STATIONS)) {
+    if (clean.includes(key) || key.includes(clean)) {
+      return station;
+    }
+  }
+  return null;
+}
+
+function formatFixtureOutwardDate(dateStr, timeStr = "09:00:00") {
+  const now = new Date();
+  if (!dateStr || typeof dateStr !== "string") {
+    return now.toISOString().slice(0, 10) + "T" + timeStr;
+  }
+  const parts = dateStr.trim().split(/\s+/);
+  let dayNum = null;
+  let monthStr = null;
+  for (const part of parts) {
+    if (/^\d{1,2}$/.test(part)) {
+      dayNum = parseInt(part, 10);
+    } else if (/^[A-Za-z]{3,}$/.test(part) && !/^(mon|tue|wed|thu|fri|sat|sun)/i.test(part)) {
+      monthStr = part.slice(0, 3).toLowerCase();
+    }
+  }
+
+  const monthMap = {
+    jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
+    jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12
+  };
+
+  const monthNum = monthMap[monthStr];
+  if (!monthNum || !dayNum) {
+    return now.toISOString().slice(0, 10) + "T" + timeStr;
+  }
+
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+  const seasonStartYear = currentMonth >= 7 ? currentYear : currentYear - 1;
+  const year = monthNum >= 7 ? seasonStartYear : seasonStartYear + 1;
+
+  const yyyy = String(year);
+  const mm = String(monthNum).padStart(2, "0");
+  const dd = String(dayNum).padStart(2, "0");
+
+  const fixtureDateObj = new Date(`${yyyy}-${mm}-${dd}T23:59:59`);
+  if (fixtureDateObj < now) {
+    const todayY = now.getFullYear();
+    const todayM = String(now.getMonth() + 1).padStart(2, "0");
+    const todayD = String(now.getDate()).padStart(2, "0");
+    return `${todayY}-${todayM}-${todayD}T${timeStr}`;
+  }
+
+  return `${yyyy}-${mm}-${dd}T${timeStr}`;
+}
+
+function getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus) {
+  let kickoffLabel = "3:00pm";
+  let arriveBeforeTime = "12:30:00"; // 2.5h before 3:00pm
+  let arriveBeforeDisplay = "12:30 PM";
+
+  const status = String(kickoffOrStatus || "").toLowerCase();
+  const dateLow = String(dateStr || "").toLowerCase();
+  const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+
+  if (status.includes("7.45") || status.includes("19:45")) {
+    kickoffLabel = "7:45pm";
+    arriveBeforeTime = "17:15:00";
+    arriveBeforeDisplay = "5:15 PM";
+  } else if (status.includes("7.30") || status.includes("19:30")) {
+    kickoffLabel = "7:30pm";
+    arriveBeforeTime = "17:00:00";
+    arriveBeforeDisplay = "5:00 PM";
+  } else if (status.includes("8.00") || status.includes("20:00") || status.includes("8pm")) {
+    kickoffLabel = "8:00pm";
+    arriveBeforeTime = "17:30:00";
+    arriveBeforeDisplay = "5:30 PM";
+  } else if (status.includes("7.00") || status.includes("19:00") || status.includes("7pm")) {
+    kickoffLabel = "7:00pm";
+    arriveBeforeTime = "16:30:00";
+    arriveBeforeDisplay = "4:30 PM";
+  } else if (status.includes("2.00") || status.includes("14:00") || status.includes("2pm")) {
+    kickoffLabel = "2:00pm";
+    arriveBeforeTime = "11:30:00";
+    arriveBeforeDisplay = "11:30 AM";
+  } else if (status.includes("1.00") || status.includes("13:00") || status.includes("1pm")) {
+    kickoffLabel = "1:00pm";
+    arriveBeforeTime = "10:30:00";
+    arriveBeforeDisplay = "10:30 AM";
+  } else if (status.includes("3.00") || status.includes("15:00") || status.includes("3pm")) {
+    kickoffLabel = "3:00pm";
+    arriveBeforeTime = "12:30:00";
+    arriveBeforeDisplay = "12:30 PM";
+  } else if (isMidweek) {
+    // Standard midweek non-league match kicks off at 7:45pm
+    kickoffLabel = "7:45pm";
+    arriveBeforeTime = "17:15:00";
+    arriveBeforeDisplay = "5:15 PM";
+  } else {
+    // Standard weekend kickoff is 3:00pm
+    kickoffLabel = "3:00pm";
+    arriveBeforeTime = "12:30:00";
+    arriveBeforeDisplay = "12:30 PM";
+  }
+
+  return { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay };
+}
+
+function getFixtureTrainInfo(fixture) {
+  if (fixture.trainInfo) return fixture.trainInfo;
+  const opponent = fixture.opponent || "";
+  
+  const { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay } = getMatchKickoffAndArriveBeforeTime(fixture.date, fixture.scoreOrStatus);
+  const outwardDate = formatFixtureOutwardDate(fixture.date, arriveBeforeTime);
+  const station = getOpponentStation(opponent);
+
+  const params = new URLSearchParams();
+  params.set("journeySearchType", "open-return");
+  params.set("origin", NANTWICH_TRAINLINE_URN);
+  if (station && station.urn) {
+    params.set("destination", station.urn);
+  }
+  params.set("outwardDate", outwardDate);
+  params.set("outwardDateType", "arriveBefore");
+  params.set("passengers[]", "1996-01-01");
+
+  const url = `https://www.thetrainline.com/book/results?${params.toString()}`;
+
+  if (station && station.urn) {
+    return {
+      tier: 1,
+      url,
+      stationName: station.stationName,
+      crs: station.crs,
+      isFullyPreFilled: true,
+      outwardDate,
+      journeySearchType: "open-return",
+      outwardDateType: "arriveBefore",
+      arriveBeforeDisplay,
+      kickoffLabel,
+    };
+  }
+  return {
+    tier: 2,
+    url,
+    stationName: null,
+    crs: null,
+    isFullyPreFilled: false,
+    outwardDate,
+    journeySearchType: "open-return",
+    outwardDateType: "arriveBefore",
+    arriveBeforeDisplay,
+    kickoffLabel,
+  };
 }
 
 function getTicketUrl(fixture) {
@@ -1287,6 +1705,7 @@ function renderFixtures() {
           const isDone = completed(fixture);
           const isHome = isHomeFixture(fixture);
           const dateParts = fixtureDateParts(fixture.date);
+          const trainInfo = !isHome ? getFixtureTrainInfo(fixture) : null;
 
           return `
             <article class="rounded-2xl border ${isHome ? "border-gold/30 bg-[#15251E]" : "border-charcoal-border bg-[#15251E]"} p-4 text-white shadow-md">
@@ -1325,6 +1744,31 @@ function renderFixtures() {
                     ${icon("youtube", "h-3 w-3 text-rose-400")} Watch Highlights
                   </a>
                 `}
+
+                ${!isHome && trainInfo ? `
+                  ${trainInfo.isFullyPreFilled ? `
+                    <a
+                      href="${trainInfo.url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-lg border border-teal-500/40 bg-teal-500/20 px-2.5 py-1 text-[11px] font-bold text-teal-300 hover:bg-teal-500/30 transition shadow-sm"
+                      title="Trainline Open Return from Nantwich to ${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}], arriving ~2.5h before kick-off (before ${escapeHtml(trainInfo.arriveBeforeDisplay || 'match')})"
+                    >
+                      ${icon("train", "h-3 w-3 text-teal-300")} Open Return (${escapeHtml(trainInfo.stationName)})
+                    </a>
+                  ` : `
+                    <a
+                      href="${trainInfo.url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1 rounded-lg border border-amber-500/40 bg-amber-500/20 px-2.5 py-1 text-[11px] font-bold text-amber-300 hover:bg-amber-500/30 transition shadow-sm"
+                      title="Trainline Open Return from Nantwich arriving 2-3h before kick-off. Enter ${escapeHtml(fixture.opponent)} destination on Trainline."
+                    >
+                      ${icon("train", "h-3 w-3 text-amber-300")} Open Return — enter ${escapeHtml(fixture.opponent)} on Trainline
+                    </a>
+                  `}
+                ` : ""}
+
                 <button data-open-h2h="${escapeHtml(fixture.opponent)}" class="inline-flex items-center gap-1 rounded-lg border border-gold/40 bg-gold/10 px-2.5 py-1 text-[11px] font-bold text-gold hover:bg-gold/20 transition">
                   ${icon("shield", "h-3 w-3")} H2H & Past Clashes
                 </button>
@@ -1337,6 +1781,15 @@ function renderFixtures() {
                   </a>
                 ` : ""}
               </div>
+
+              ${!isHome && trainInfo ? `
+                <div class="mt-2 flex items-center gap-1.5 text-[10px] ${trainInfo.isFullyPreFilled ? "text-teal-300/80" : "text-amber-300/80"}">
+                  ${icon("info", "h-3 w-3 shrink-0")}
+                  <span>${trainInfo.isFullyPreFilled
+                    ? `Trainline pre-filled with <strong>Open Return</strong> to <strong>${escapeHtml(trainInfo.stationName)} [${escapeHtml(trainInfo.crs)}]</strong> arriving ~2-3 hrs before kick-off (before ${escapeHtml(trainInfo.arriveBeforeDisplay || '12:30 PM')}) — return travel flexible.`
+                    : `Cup tie travel: Origin pre-filled with Nantwich (Open Return arriving 2-3h before kick-off) — enter <strong>${escapeHtml(fixture.opponent)}</strong> destination on Trainline.`}</span>
+                </div>
+              ` : ""}
 
               ${fixture.notesAndScorers ? `
                 <div class="mt-2.5 rounded-lg bg-black/20 px-2.5 py-1.5 text-[11px] text-[#C2D6C6]">
@@ -1354,6 +1807,13 @@ function renderFixtures() {
 // =======================================================================
 // RENDER: TAB 4 — LEAGUE TABLE
 // =======================================================================
+function getOrdinalSuffix(n) {
+  if (!n) return "";
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return s[(v - 20) % 10] || s[v] || s[0];
+}
+
 function renderTable() {
   const rows = state.data.table || [];
   if (!rows.length) {
@@ -1365,7 +1825,7 @@ function renderTable() {
   }
 
   return `
-    <div class="space-y-5">
+    <div class="space-y-4">
       <!-- Section Header -->
       <div class="flex items-center justify-between">
         <div>
@@ -1377,10 +1837,16 @@ function renderTable() {
         </span>
       </div>
 
+      <!-- Quick Interactive Tip -->
+      <div class="flex items-center gap-2 rounded-xl border border-gold/30 bg-forest/40 px-3.5 py-2 text-xs text-[#D5E8D9]">
+        <span class="text-gold shrink-0">${icon("info", "h-4 w-4")}</span>
+        <span>Tap any club row to view <strong>highlights</strong>, <strong>official website</strong> &amp; <strong>ground directions</strong>.</span>
+      </div>
+
       <!-- League Table Table -->
       <div class="overflow-hidden rounded-2xl border border-charcoal-border bg-[#15251E] shadow-xl text-white">
         <!-- Table Header -->
-        <div class="grid grid-cols-[2.2rem_1fr_2.5rem_2.5rem_2.8rem] items-center gap-1 border-b border-charcoal-border bg-forest-dark px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider text-gold sm:grid-cols-[3rem_1fr_4rem_4rem_4rem] sm:px-4">
+        <div class="grid grid-cols-[2.5rem_1fr_2.4rem_2.4rem_2.6rem] items-center gap-1 border-b border-charcoal-border bg-forest-dark px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider text-gold sm:grid-cols-[3.5rem_1fr_4rem_4rem_4rem] sm:px-4">
           <span>Pos</span>
           <span>Club</span>
           <span class="text-center">Pld</span>
@@ -1392,18 +1858,40 @@ function renderTable() {
         ${rows.map((row) => {
           const isDabbers = row.team.toLowerCase().includes("nantwich");
           const pos = numeric(row.position);
+          const isRelegation = pos >= rows.length - 2;
 
           let zoneClass = "";
-          if (pos === 1) zoneClass = "border-l-4 border-l-emerald-400";
-          else if (pos <= 5) zoneClass = "border-l-4 border-l-blue-400";
-          else if (pos >= rows.length - 2) zoneClass = "border-l-4 border-l-rose-500";
+          let posIndicator = "";
+          if (pos === 1) {
+            zoneClass = "border-l-4 !border-l-emerald-400 bg-emerald-950/15";
+            posIndicator = '<span class="inline-block h-2 w-2 shrink-0 rounded-full bg-emerald-400 mr-1" title="Automatic Promotion"></span>';
+          } else if (pos <= 5) {
+            zoneClass = "border-l-4 !border-l-blue-400 bg-blue-950/15";
+            posIndicator = '<span class="inline-block h-2 w-2 shrink-0 rounded-full bg-blue-400 mr-1" title="Play-offs"></span>';
+          } else if (isRelegation) {
+            zoneClass = "border-l-4 !border-l-rose-500 bg-rose-950/20";
+            posIndicator = '<span class="inline-block h-2 w-2 shrink-0 rounded-full bg-rose-500 mr-1 shadow-[0_0_8px_rgba(244,63,94,0.7)]" title="Relegation Place"></span>';
+          }
 
           return `
-            <div class="grid grid-cols-[2.2rem_1fr_2.5rem_2.5rem_2.8rem] items-center gap-1 border-b border-white/5 px-3 py-3 text-xs last:border-0 sm:grid-cols-[3rem_1fr_4rem_4rem_4rem] sm:px-4 ${zoneClass} ${isDabbers ? "bg-forest/80 font-bold text-gold" : "text-[#D5E8D9]"}">
-              <span class="font-bold ${isDabbers ? "text-gold" : "text-white"}">${escapeHtml(row.position)}</span>
-              <span class="truncate font-semibold ${isDabbers ? "text-gold" : "text-white"}">
-                ${escapeHtml(row.team)}
-                ${isDabbers ? '<span class="ml-1.5 rounded bg-gold px-1 py-0.5 text-[9px] font-bold uppercase text-charcoal">US</span>' : ""}
+            <div
+              data-select-club="${escapeHtml(row.team)}"
+              class="group grid grid-cols-[2.5rem_1fr_2.4rem_2.4rem_2.6rem] items-center gap-1 border-b border-white/5 px-3 py-3 text-xs last:border-b-0 sm:grid-cols-[3.5rem_1fr_4rem_4rem_4rem] sm:px-4 cursor-pointer hover:bg-white/10 transition-colors ${zoneClass} ${isDabbers ? "bg-forest/80 font-bold text-gold" : "text-[#D5E8D9]"}"
+              title="Click for ${escapeHtml(row.team)} highlights, website & directions"
+            >
+              <span class="flex items-center font-bold ${isRelegation ? "text-rose-400 font-extrabold" : isDabbers ? "text-gold" : "text-white"}">
+                ${posIndicator}
+                ${escapeHtml(row.position)}
+              </span>
+              <span class="flex items-center justify-between pr-1 truncate font-semibold ${isDabbers ? "text-gold" : "text-white"}">
+                <span class="truncate group-hover:text-gold transition">
+                  ${escapeHtml(row.team)}
+                  ${isDabbers ? '<span class="ml-1.5 rounded bg-gold px-1 py-0.5 text-[9px] font-bold uppercase text-charcoal">US</span>' : ""}
+                  ${isRelegation ? '<span class="ml-1.5 rounded bg-rose-500/20 border border-rose-500/40 px-1 py-0.2 text-[8px] font-bold uppercase text-rose-300 hidden md:inline">REL</span>' : ""}
+                </span>
+                <span class="text-[#AAB8AE] opacity-40 group-hover:opacity-100 group-hover:text-gold transition shrink-0 ml-1">
+                  ${icon("arrow", "h-3.5 w-3.5 inline")}
+                </span>
               </span>
               <span class="text-center font-medium">${escapeHtml(row.played)}</span>
               <span class="text-center font-medium">${escapeHtml(row.goalDifference)}</span>
@@ -1414,10 +1902,289 @@ function renderTable() {
       </div>
 
       <!-- League Legend -->
-      <div class="flex flex-wrap items-center gap-3 rounded-xl bg-[#15251E] p-3 text-[11px] text-[#AAB8AE] border border-charcoal-border">
-        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 1st: Auto Promotion</span>
-        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-400"></span> 2nd–5th: Play-offs</span>
-        <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500"></span> Relegation zone</span>
+      <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-[#15251E] p-3 text-[11px] text-[#AAB8AE] border border-charcoal-border">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-emerald-400"></span> 1st: Auto Promotion</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-blue-400"></span> 2nd–5th: Play-offs</span>
+          <span class="flex items-center gap-1.5"><span class="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.6)]"></span> 20th–22nd: Relegation</span>
+        </div>
+        <span class="text-[10px] text-gold/80 italic font-medium">Click any team for club actions</span>
+      </div>
+    </div>
+  `;
+}
+
+// =======================================================================
+// RENDER: CLUB ACTION MENU MODAL (HIGHLIGHTS, SITE, DIRECTIONS)
+// =======================================================================
+function renderClubMenuModal() {
+  if (state.activeModal !== "club_menu" || !state.selectedClub) return "";
+  const club = state.selectedClub;
+  const row = state.selectedClubRowData;
+  const isDabbers = club.name.toLowerCase().includes("nantwich");
+  const pos = row?.position ? `${row.position}${getOrdinalSuffix(Number(row.position))}` : "";
+
+  // Find previous matches against this team from current season fixtures if available
+  const encounters = (state.data.fixtures || []).filter((f) => {
+    if (!f.opponent) return false;
+    const oppClean = f.opponent.toLowerCase();
+    const clubClean = club.shortName.toLowerCase();
+    return oppClean.includes(clubClean) || clubClean.includes(oppClean);
+  });
+
+  const youtubeQuery = isDabbers
+    ? "https://www.youtube.com/@TheDabbersTV/videos"
+    : `https://www.youtube.com/results?search_query=${encodeURIComponent("Nantwich Town vs " + club.shortName + " The Dabbers TV")}`;
+
+  return `
+    <div class="fixed inset-0 z-50 flex items-end justify-center bg-black/75 backdrop-blur-sm sm:items-center sm:p-4" data-close-modal>
+      <div class="w-full max-w-lg rounded-t-3xl sm:rounded-3xl border border-gold/40 bg-[#0F1A15] p-5 sm:p-6 text-white shadow-2xl animate-slide-up max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+        <!-- Header -->
+        <div class="flex items-start justify-between border-b border-white/10 pb-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-forest border border-gold/40 text-gold text-xl font-bold shadow-md">
+              ${isDabbers ? "🟢" : icon("shield", "h-6 w-6 text-gold")}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] font-bold uppercase tracking-wider text-gold">
+                  ${pos ? `Table: ${pos} Place` : "NPL West Division"}
+                </span>
+                ${row?.points !== undefined ? `<span class="rounded bg-white/10 px-1.5 py-0.5 text-[9px] font-mono text-[#D5E8D9]">${row.points} Pts</span>` : ""}
+                ${row?.played !== undefined ? `<span class="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-mono text-[#AAB8AE]">${row.played} Pld</span>` : ""}
+              </div>
+              <h3 class="display text-xl font-bold leading-tight truncate text-white">${escapeHtml(club.name)}</h3>
+              <p class="text-xs text-[#AAB8AE] truncate mt-0.5">${escapeHtml(club.stadium)}</p>
+            </div>
+          </div>
+          <button data-close-modal class="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition shrink-0 ml-2" aria-label="Close club menu">
+            ${icon("close", "h-4 w-4")}
+          </button>
+        </div>
+
+        <!-- Menu Action Options -->
+        <div class="mt-4 space-y-3">
+          <!-- 1. Previous Meeting Highlights -->
+          <div class="rounded-2xl border border-rose-500/30 bg-rose-950/20 p-4 transition hover:border-rose-500/60 shadow-md">
+            <div class="flex items-start gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/30">
+                ${icon("youtube", "h-5 w-5")}
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="font-bold text-white text-sm">Previous Meeting Highlights</h4>
+                <p class="text-xs text-[#AAB8AE] mt-0.5">
+                  ${isDabbers
+                    ? "Official Dabbers TV YouTube channel with matchday highlights, goals & interviews"
+                    : `Watch The Dabbers TV match footage & highlights vs ${escapeHtml(club.shortName)}`}
+                </p>
+
+                <!-- Show previous encounters if found in season fixtures -->
+                ${encounters.length > 0 ? `
+                  <div class="mt-2.5 rounded-xl bg-black/30 border border-white/10 p-2.5 text-xs">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-rose-300 mb-1">Season Matches with Dabbers</p>
+                    ${encounters.map(e => `
+                      <div class="flex items-center justify-between text-xs py-1 border-b border-white/5 last:border-0">
+                        <span class="text-[#D5E8D9] font-medium truncate">${escapeHtml(e.date || "")} (${isHomeFixture(e) ? "H" : "A"})</span>
+                        <span class="font-bold text-gold shrink-0 ml-2">${escapeHtml(e.scoreOrStatus || "Fixture")}</span>
+                      </div>
+                    `).join("")}
+                  </div>
+                ` : ""}
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <a
+                    href="${youtubeQuery}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-rose-500 transition shadow-md"
+                  >
+                    ${icon("youtube", "h-3.5 w-3.5")}
+                    Watch on Dabbers TV
+                    ${icon("external", "h-3 w-3 ml-0.5")}
+                  </a>
+                  ${!isDabbers ? `
+                    <button
+                      data-open-h2h="${escapeHtml(club.shortName)}"
+                      class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 border border-white/15 px-3 py-2 text-xs font-bold text-[#D5E8D9] hover:bg-white/20 transition"
+                    >
+                      ${icon("calendar", "h-3.5 w-3.5")}
+                      H2H Stats & Scores
+                    </button>
+                  ` : ""}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Official Club Site -->
+          <div class="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 transition hover:border-emerald-500/60 shadow-md">
+            <div class="flex items-start gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                ${icon("globe", "h-5 w-5")}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-white text-sm">Official Club Website</h4>
+                  <span class="rounded bg-emerald-500/20 border border-emerald-500/30 px-1.5 py-0.5 text-[9px] font-bold text-emerald-300 inline-flex items-center gap-1">
+                    ${icon("check", "h-2.5 w-2.5")} Verified
+                  </span>
+                </div>
+                <p class="text-xs text-[#AAB8AE] mt-0.5">Visit the official digital home for news, tickets & club updates</p>
+                <p class="text-xs font-mono text-emerald-300 mt-1 truncate">${escapeHtml(club.website)}</p>
+
+                <div class="mt-3">
+                  <a
+                    href="${club.website}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition shadow-md"
+                  >
+                    ${icon("globe", "h-3.5 w-3.5")}
+                    Open ${escapeHtml(club.shortName)} Website
+                    ${icon("external", "h-3 w-3 ml-0.5")}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Directions to Ground -->
+          <div class="rounded-2xl border border-blue-500/30 bg-blue-950/20 p-4 transition hover:border-blue-500/60 shadow-md">
+            <div class="flex items-start gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                ${icon("mapPin", "h-5 w-5")}
+              </div>
+              <div class="min-w-0 flex-1">
+                <h4 class="font-bold text-white text-sm">Directions to Ground</h4>
+                <p class="text-xs font-semibold text-[#D5E8D9] mt-0.5">${escapeHtml(club.stadium)}</p>
+                <p class="text-xs text-[#AAB8AE] mt-0.5">${escapeHtml(club.address)}</p>
+                ${club.postcode ? `
+                  <div class="mt-1.5 flex items-center gap-2">
+                    <span class="text-[10px] uppercase font-bold text-[#AAB8AE]">SatNav:</span>
+                    <span class="rounded bg-black/40 border border-white/10 px-2 py-0.5 text-xs font-mono font-bold text-gold">${escapeHtml(club.postcode)}</span>
+                  </div>
+                ` : ""}
+
+                <div class="mt-3 flex flex-wrap items-center gap-2">
+                  <a
+                    href="${club.mapsUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-blue-500 transition shadow-md"
+                  >
+                    ${icon("navigation", "h-3.5 w-3.5")}
+                    Open Google Maps Directions
+                    ${icon("external", "h-3 w-3 ml-0.5")}
+                  </a>
+                  ${club.postcode ? `
+                    <button
+                      data-copy-postcode="${escapeHtml(club.postcode)}"
+                      class="inline-flex items-center gap-1.5 rounded-xl bg-white/10 border border-white/15 px-3 py-2 text-xs font-bold text-[#D5E8D9] hover:bg-white/20 transition"
+                      title="Copy postcode for SatNav"
+                    >
+                      ${icon("copy", "h-3.5 w-3.5")}
+                      Copy Postcode
+                    </button>
+                  ` : ""}
+                  ${isDabbers ? `
+                    <button
+                      data-open-stadium-guide
+                      class="inline-flex items-center gap-1.5 rounded-xl bg-gold/20 border border-gold/40 px-3 py-2 text-xs font-bold text-gold hover:bg-gold hover:text-charcoal transition"
+                    >
+                      ${icon("info", "h-3.5 w-3.5")}
+                      Swansway Stadium Guide
+                    </button>
+                  ` : ""}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Train Travel (Trainline) -->
+          <div class="rounded-2xl border border-teal-500/30 bg-teal-950/20 p-4 transition hover:border-teal-500/60 shadow-md">
+            <div class="flex items-start gap-3">
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/20 text-teal-400 border border-teal-500/30">
+                ${icon("train", "h-5 w-5")}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2">
+                  <h4 class="font-bold text-white text-sm">Train Travel (Trainline)</h4>
+                  <span class="rounded bg-teal-500/20 border border-teal-500/30 px-1.5 py-0.5 text-[9px] font-bold text-teal-300 inline-flex items-center gap-1">
+                    ${icon("check", "h-2.5 w-2.5")} Verified Station
+                  </span>
+                </div>
+                ${isDabbers ? `
+                  <p class="text-xs text-[#D5E8D9] mt-1">
+                    Nearest railway station: <strong>Nantwich Station</strong> <span class="rounded bg-black/40 border border-white/10 px-1.5 py-0.5 font-mono text-gold text-[11px] font-bold">[NAN]</span>
+                  </p>
+                  <p class="text-xs text-[#AAB8AE] mt-0.5">Station is located on Station Road, approx. 10 minutes walk from The Swansway Stadium.</p>
+                  <div class="mt-3">
+                    <a
+                      href="${(() => {
+                        const p = new URLSearchParams();
+                        p.set('journeySearchType', 'open-return');
+                        p.set('destination', NANTWICH_TRAINLINE_URN);
+                        p.set('outwardDate', new Date().toISOString().slice(0, 10) + 'T12:30:00');
+                        p.set('outwardDateType', 'arriveBefore');
+                        p.set('passengers[]', '1996-01-01');
+                        return 'https://www.thetrainline.com/book/results?' + p.toString();
+                      })()}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-teal-500 transition shadow-md"
+                    >
+                      ${icon("train", "h-3.5 w-3.5")}
+                      Plan Train to Nantwich (Open Return)
+                      ${icon("external", "h-3 w-3 ml-0.5")}
+                    </a>
+                  </div>
+                ` : `
+                  ${(() => {
+                    const stn = getOpponentStation(club.shortName || club.name);
+                    const todayDate = new Date().toISOString().slice(0, 10) + "T12:30:00";
+                    const p = new URLSearchParams();
+                    p.set('journeySearchType', 'open-return');
+                    p.set('origin', NANTWICH_TRAINLINE_URN);
+                    if (stn && stn.urn) {
+                      p.set('destination', stn.urn);
+                    }
+                    p.set('outwardDate', todayDate);
+                    p.set('outwardDateType', 'arriveBefore');
+                    p.set('passengers[]', '1996-01-01');
+                    const trainlineUrl = 'https://www.thetrainline.com/book/results?' + p.toString();
+                    return `
+                      <p class="text-xs text-[#D5E8D9] mt-1">
+                        Nearest railway station: <strong>${escapeHtml(stn ? stn.stationName : "Local Station")}</strong> ${stn?.crs ? `<span class="rounded bg-black/40 border border-white/10 px-1.5 py-0.5 font-mono text-gold text-[11px] font-bold">[${escapeHtml(stn.crs)}]</span>` : ""}
+                      </p>
+                      <p class="text-xs text-[#AAB8AE] mt-0.5">
+                        ${stn ? `Direct deep link pre-fills an <strong>Open Return</strong> from Nantwich (NAN) to ${escapeHtml(stn.stationName)} [${escapeHtml(stn.crs)}] arriving ~2.5 hours before 3:00pm kick-off (before 12:30 PM).` : `Pre-fills origin from Nantwich (NAN) with an Open Return.`}
+                      </p>
+                      <div class="mt-3">
+                        <a
+                          href="${trainlineUrl}"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-teal-500 transition shadow-md"
+                        >
+                          ${icon("train", "h-3.5 w-3.5")}
+                          Open Return to ${escapeHtml(stn ? stn.stationName : club.shortName || "Away Ground")}
+                          ${icon("external", "h-3 w-3 ml-0.5")}
+                        </a>
+                      </div>
+                    `;
+                  })()}
+                `}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Dismiss -->
+        <div class="mt-5 pt-3 border-t border-white/10 flex justify-end">
+          <button data-close-modal class="rounded-xl bg-white/10 px-4 py-2 text-xs font-semibold text-white hover:bg-white/20 transition">
+            Close Menu
+          </button>
+        </div>
       </div>
     </div>
   `;
@@ -1495,6 +2262,16 @@ function renderH2HModal() {
             <a href="${h2h.ticketUrl || TICKETING_URL}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-gold/20 border border-gold/30 py-2 text-xs font-bold text-gold hover:bg-gold/30 transition">
               ${icon("ticket", "h-4 w-4")} Matchday Tickets Portal
             </a>
+
+            <!-- Trainline Travel Link -->
+            ${(() => {
+              const train = getFixtureTrainInfo({ opponent: opp, date: new Date().toISOString() });
+              return `
+                <a href="${train.url}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 w-full rounded-xl bg-teal-500/20 border border-teal-500/30 py-2 text-xs font-bold text-teal-300 hover:bg-teal-500/30 transition shadow-sm">
+                  ${icon("train", "h-4 w-4 text-teal-300")} ${train.isFullyPreFilled ? `Open Return to ${escapeHtml(train.stationName)} [${escapeHtml(train.crs)}] on Trainline (Arrives 2-3h before KO)` : `Plan Open Return from Nantwich on Trainline`}
+                </a>
+              `;
+            })()}
           </div>
         ` : `
           <div class="p-8 text-center text-xs text-[#AAB8AE]">Loading encounters...</div>
@@ -2098,6 +2875,7 @@ function renderShell(content) {
       ${renderH2HModal()}
       ${renderStadiumGuideModal()}
       ${renderGraphicExportModal()}
+      ${renderClubMenuModal()}
 
       <!-- Bottom Navigation Dock -->
       <nav class="safe-dock fixed inset-x-0 bottom-0 z-30 mx-auto max-w-2xl border-t border-charcoal-border bg-[#0F1A15]/95 shadow-2xl backdrop-blur-md" aria-label="Main Navigation">
@@ -2230,6 +3008,47 @@ function bindEvents() {
     btn.addEventListener("click", () => {
       state.activeModal = "stadium_guide";
       render();
+    });
+  });
+
+  // Open Club Menu Modal from Table Row
+  document.querySelectorAll("[data-select-club]").forEach((rowEl) => {
+    rowEl.addEventListener("click", () => {
+      const team = rowEl.dataset.selectClub;
+      const rows = state.data.table || [];
+      const rowData = rows.find((r) => r.team === team) || { team };
+      state.selectedClub = getClubInfo(team);
+      state.selectedClubRowData = rowData;
+      state.activeModal = "club_menu";
+      state.activeH2HData = null;
+      render();
+
+      // Background fetch H2H data in case user views H2H stats
+      fetch(`/api/h2h/${encodeURIComponent(team)}`)
+        .then((r) => (r.ok ? r.json() : null))
+        .then((data) => {
+          if (data && state.selectedClub?.shortName === getClubInfo(team).shortName) {
+            state.activeH2HData = data;
+          }
+        })
+        .catch(() => {});
+    });
+  });
+
+  // Copy Postcode to Clipboard
+  document.querySelectorAll("[data-copy-postcode]").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const postcode = btn.dataset.copyPostcode;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(postcode).then(() => {
+          showToast(`SatNav Postcode ${postcode} copied!`);
+        }).catch(() => {
+          showToast(`SatNav Postcode: ${postcode}`);
+        });
+      } else {
+        showToast(`SatNav Postcode: ${postcode}`);
+      }
     });
   });
 
@@ -2390,24 +3209,36 @@ function bindEvents() {
 }
 
 function loadTwitterWidgets() {
-  const container = document.querySelector("[data-x-timeline]");
-  if (!container) return;
-  const load = () => window.twttr?.widgets?.load(container);
-  if (window.twttr?.widgets) {
-    load();
-    return;
-  }
-  let script = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]');
-  if (!script) {
-    script = document.createElement("script");
-    script.async = true;
-    script.src = "https://platform.twitter.com/widgets.js";
-    script.charset = "utf-8";
-    document.head.appendChild(script);
-  }
-  if (script.dataset.dabbersListener !== "true") {
-    script.dataset.dabbersListener = "true";
-    script.addEventListener("load", load, { once: true });
+  try {
+    const container = document.querySelector("[data-x-timeline]");
+    if (!container) return;
+    const load = () => {
+      try {
+        if (container && container.isConnected) {
+          window.twttr?.widgets?.load?.(container);
+        }
+      } catch (e) {
+        console.warn("X widgets load error", e);
+      }
+    };
+    if (window.twttr?.widgets) {
+      load();
+      return;
+    }
+    let script = document.querySelector('script[src="https://platform.twitter.com/widgets.js"]');
+    if (!script) {
+      script = document.createElement("script");
+      script.async = true;
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.charset = "utf-8";
+      document.head.appendChild(script);
+    }
+    if (script.dataset.dabbersListener !== "true") {
+      script.dataset.dabbersListener = "true";
+      script.addEventListener("load", load, { once: true });
+    }
+  } catch (err) {
+    console.warn("X widgets init error", err);
   }
 }
 

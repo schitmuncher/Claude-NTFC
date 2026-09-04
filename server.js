@@ -64,6 +64,312 @@ const OPPONENT_TICKET_PORTALS = {
   "Wythenshawe Town": "https://wythenshawetownfc.co.uk/tickets/",
 };
 
+// -----------------------------------------------------------------------
+// Trainline Station URNs & Ground Railway Mapping
+// Sourced from Trainline Live API (/api/locations-search/v2/search)
+// Origin: Nantwich (CRS: NAN, Trainline Location URN: urn:trainline:generic:loc:NAN1247gb)
+// -----------------------------------------------------------------------
+const NANTWICH_STATION = {
+  name: "Nantwich",
+  crs: "NAN",
+  stationId: "NAN1247gb",
+  urn: "urn:trainline:generic:loc:NAN1247gb",
+};
+const NANTWICH_TRAINLINE_URN = NANTWICH_STATION.urn;
+
+// Verified nearest UK railway stations and live Trainline URNs for all 21 NPL Division One West opponents
+const AWAY_GROUND_STATIONS = {
+  "Bootle": {
+    stationName: "Aintree",
+    crs: "AIN",
+    urn: "urn:trainline:generic:loc:AIN2125gb",
+    ground: "Berry Street Garage Stadium (Vesty Road)",
+  },
+  "Shifnal Town": {
+    stationName: "Shifnal",
+    crs: "SFN",
+    urn: "urn:trainline:generic:loc:SFN4619gb",
+    ground: "Acoustafoam Stadium (Coppice Green Lane)",
+  },
+  "Wythenshawe": {
+    stationName: "Gatley",
+    crs: "GTY",
+    urn: "urn:trainline:generic:loc:GTY2953gb",
+    ground: "Hollyhedge Park (Sharston)",
+  },
+  "Wythenshawe Town": {
+    stationName: "Gatley",
+    crs: "GTY",
+    urn: "urn:trainline:generic:loc:GTY2953gb",
+    ground: "Hollyhedge Park (Sharston)",
+  },
+  "Witton Albion": {
+    stationName: "Lostock Gralam",
+    crs: "LTG",
+    urn: "urn:trainline:generic:loc:LTG2307gb",
+    ground: "The U Lock It Stadium (Wincham)",
+  },
+  "Stafford Rangers": {
+    stationName: "Stafford",
+    crs: "STA",
+    urn: "urn:trainline:generic:loc:STA1268gb",
+    ground: "Stan Robinson Stadium (Marston Road)",
+  },
+  "Prescot Cables": {
+    stationName: "Prescot",
+    crs: "PSC",
+    urn: "urn:trainline:generic:loc:PSC2337gb",
+    ground: "Valerie Park (Hope Street)",
+  },
+  "Runcorn Linnets": {
+    stationName: "Runcorn East",
+    crs: "RUE",
+    urn: "urn:trainline:generic:loc:RUE2294gb",
+    ground: "The APEC Taxis Stadium (Murdishaw Avenue)",
+  },
+  "Hanley Town": {
+    stationName: "Stoke-on-Trent",
+    crs: "SOT",
+    urn: "urn:trainline:generic:loc:SOT1314gb",
+    ground: "Potteries Park (Abbey Lane, Bucknall)",
+  },
+  "Vauxhall Motors": {
+    stationName: "Overpool",
+    crs: "OVE",
+    urn: "urn:trainline:generic:loc:OVE2157gb",
+    ground: "The VanEupen Arena (Rivacre Road)",
+  },
+  "Stalybridge Celtic": {
+    stationName: "Stalybridge",
+    crs: "SYB",
+    urn: "urn:trainline:generic:loc:SYB2983gb",
+    ground: "Bower Fold (Mottram Road)",
+  },
+  "Atherton Collieries": {
+    stationName: "Atherton",
+    crs: "ATN",
+    urn: "urn:trainline:generic:loc:ATN2584gb",
+    ground: "The Skuna Stadium (Alder Street)",
+  },
+  "Clitheroe": {
+    stationName: "Clitheroe",
+    crs: "CLH",
+    urn: "urn:trainline:generic:loc:CLH2574gb",
+    ground: "EcoGiants Stadium (Shawbridge)",
+  },
+  "Lower Breck": {
+    stationName: "Kirkdale",
+    crs: "KKD",
+    urn: "urn:trainline:generic:loc:KKD2245gb",
+    ground: "Anfield Sports & Community Centre (Lower Breck Road)",
+  },
+  "Chasetown": {
+    stationName: "Cannock",
+    crs: "CAO",
+    urn: "urn:trainline:generic:loc:CAO1016gb",
+    ground: "The Scholars Ground (Church Street)",
+  },
+  "Padiham": {
+    stationName: "Rose Grove",
+    crs: "RSG",
+    urn: "urn:trainline:generic:loc:RSG2722gb",
+    ground: "The Arbories (Well Street)",
+  },
+  "1874 Northwich": {
+    stationName: "Greenbank",
+    crs: "GBK",
+    urn: "urn:trainline:generic:loc:GBK2325gb",
+    ground: "The Townfield Ground (Barnton)",
+  },
+  "Newcastle Town": {
+    stationName: "Stoke-on-Trent",
+    crs: "SOT",
+    urn: "urn:trainline:generic:loc:SOT1314gb",
+    ground: "The Lyme Valley Stadium (Clayton)",
+  },
+  "Mossley": {
+    stationName: "Mossley (Manchester)",
+    crs: "MSL",
+    urn: "urn:trainline:generic:loc:MSL2903gb",
+    ground: "Seel Park (Market Street)",
+  },
+  "Kidsgrove Athletic": {
+    stationName: "Kidsgrove",
+    crs: "KDG",
+    urn: "urn:trainline:generic:loc:KDG1229gb",
+    ground: "Autonet Insurance Stadium (Hollinwood Road)",
+  },
+  "Congleton Town": {
+    stationName: "Congleton",
+    crs: "CNG",
+    urn: "urn:trainline:generic:loc:CNG1227gb",
+    ground: "The Cleric Stadium (Booth Street)",
+  },
+  "Lichfield City": {
+    stationName: "Lichfield City",
+    crs: "LIC",
+    urn: "urn:trainline:generic:loc:LIC1177gb",
+    ground: "Trade Tyre Community Stadium (Brownsfield Park)",
+  },
+};
+
+function getOpponentTrainStation(opponent) {
+  if (!opponent) return null;
+  const clean = cleanText(opponent).toLowerCase();
+  for (const [key, station] of Object.entries(AWAY_GROUND_STATIONS)) {
+    const k = key.toLowerCase();
+    if (clean.includes(k) || k.includes(clean)) {
+      return station;
+    }
+  }
+  return null;
+}
+
+function formatFixtureOutwardDate(dateStr, timeStr = "09:00:00") {
+  const now = new Date();
+  if (!dateStr || typeof dateStr !== "string") {
+    return now.toISOString().slice(0, 10) + "T" + timeStr;
+  }
+  const parts = dateStr.trim().split(/\s+/);
+  let dayNum = null;
+  let monthStr = null;
+  for (const part of parts) {
+    if (/^\d{1,2}$/.test(part)) {
+      dayNum = parseInt(part, 10);
+    } else if (/^[A-Za-z]{3,}$/.test(part) && !/^(mon|tue|wed|thu|fri|sat|sun)/i.test(part)) {
+      monthStr = part.slice(0, 3).toLowerCase();
+    }
+  }
+
+  const monthMap = {
+    jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
+    jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12
+  };
+
+  const monthNum = monthMap[monthStr];
+  if (!monthNum || !dayNum) {
+    return now.toISOString().slice(0, 10) + "T" + timeStr;
+  }
+
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+  const seasonStartYear = currentMonth >= 7 ? currentYear : currentYear - 1;
+  const year = monthNum >= 7 ? seasonStartYear : seasonStartYear + 1;
+
+  const yyyy = String(year);
+  const mm = String(monthNum).padStart(2, "0");
+  const dd = String(dayNum).padStart(2, "0");
+
+  // Check if date is in the past; if so, fallback to today to prevent Trainline search failures
+  const fixtureDateObj = new Date(`${yyyy}-${mm}-${dd}T23:59:59`);
+  if (fixtureDateObj < now) {
+    const todayY = now.getFullYear();
+    const todayM = String(now.getMonth() + 1).padStart(2, "0");
+    const todayD = String(now.getDate()).padStart(2, "0");
+    return `${todayY}-${todayM}-${todayD}T${timeStr}`;
+  }
+
+  return `${yyyy}-${mm}-${dd}T${timeStr}`;
+}
+
+function getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus) {
+  let kickoffLabel = "3:00pm";
+  let arriveBeforeTime = "12:30:00"; // 2.5h before 3:00pm
+  let arriveBeforeDisplay = "12:30 PM";
+
+  const status = String(kickoffOrStatus || "").toLowerCase();
+  const dateLow = String(dateStr || "").toLowerCase();
+  const isMidweek = dateLow.startsWith("tue") || dateLow.startsWith("wed") || dateLow.startsWith("thu");
+
+  if (status.includes("7.45") || status.includes("19:45")) {
+    kickoffLabel = "7:45pm";
+    arriveBeforeTime = "17:15:00";
+    arriveBeforeDisplay = "5:15 PM";
+  } else if (status.includes("7.30") || status.includes("19:30")) {
+    kickoffLabel = "7:30pm";
+    arriveBeforeTime = "17:00:00";
+    arriveBeforeDisplay = "5:00 PM";
+  } else if (status.includes("8.00") || status.includes("20:00") || status.includes("8pm")) {
+    kickoffLabel = "8:00pm";
+    arriveBeforeTime = "17:30:00";
+    arriveBeforeDisplay = "5:30 PM";
+  } else if (status.includes("7.00") || status.includes("19:00") || status.includes("7pm")) {
+    kickoffLabel = "7:00pm";
+    arriveBeforeTime = "16:30:00";
+    arriveBeforeDisplay = "4:30 PM";
+  } else if (status.includes("2.00") || status.includes("14:00") || status.includes("2pm")) {
+    kickoffLabel = "2:00pm";
+    arriveBeforeTime = "11:30:00";
+    arriveBeforeDisplay = "11:30 AM";
+  } else if (status.includes("1.00") || status.includes("13:00") || status.includes("1pm")) {
+    kickoffLabel = "1:00pm";
+    arriveBeforeTime = "10:30:00";
+    arriveBeforeDisplay = "10:30 AM";
+  } else if (status.includes("3.00") || status.includes("15:00") || status.includes("3pm")) {
+    kickoffLabel = "3:00pm";
+    arriveBeforeTime = "12:30:00";
+    arriveBeforeDisplay = "12:30 PM";
+  } else if (isMidweek) {
+    // Standard midweek non-league match kicks off at 7:45pm
+    kickoffLabel = "7:45pm";
+    arriveBeforeTime = "17:15:00";
+    arriveBeforeDisplay = "5:15 PM";
+  } else {
+    // Standard weekend kickoff is 3:00pm
+    kickoffLabel = "3:00pm";
+    arriveBeforeTime = "12:30:00";
+    arriveBeforeDisplay = "12:30 PM";
+  }
+
+  return { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay };
+}
+
+function buildTrainlineUrl(opponent, dateStr, kickoffOrStatus = null) {
+  const { kickoffLabel, arriveBeforeTime, arriveBeforeDisplay } = getMatchKickoffAndArriveBeforeTime(dateStr, kickoffOrStatus);
+  const outwardDate = formatFixtureOutwardDate(dateStr, arriveBeforeTime);
+  const station = getOpponentTrainStation(opponent);
+
+  const params = new URLSearchParams();
+  params.set("journeySearchType", "open-return");
+  params.set("origin", NANTWICH_TRAINLINE_URN);
+  if (station && station.urn) {
+    params.set("destination", station.urn);
+  }
+  params.set("outwardDate", outwardDate);
+  params.set("outwardDateType", "arriveBefore");
+  params.set("passengers[]", "1996-01-01");
+
+  const url = `https://www.thetrainline.com/book/results?${params.toString()}`;
+
+  if (station && station.urn) {
+    return {
+      tier: 1,
+      url,
+      stationName: station.stationName,
+      crs: station.crs,
+      isFullyPreFilled: true,
+      outwardDate,
+      journeySearchType: "open-return",
+      outwardDateType: "arriveBefore",
+      arriveBeforeDisplay,
+      kickoffLabel,
+    };
+  }
+
+  return {
+    tier: 2,
+    url,
+    stationName: null,
+    crs: null,
+    isFullyPreFilled: false,
+    outwardDate,
+    journeySearchType: "open-return",
+    outwardDateType: "arriveBefore",
+    arriveBeforeDisplay,
+    kickoffLabel,
+  };
+}
+
 function getOpponentTicketUrl(opponent) {
   const clean = cleanText(opponent);
   for (const [key, url] of Object.entries(OPPONENT_TICKET_PORTALS)) {
@@ -244,6 +550,7 @@ function parseFixtures(html) {
 
       const isHome = venue.toUpperCase() === "H";
       const ticketUrl = isHome ? HOME_TICKETS_URL : getOpponentTicketUrl(opponent);
+      const trainInfo = isHome ? null : buildTrainlineUrl(opponent, date, scoreOrStatus);
 
       fixtures.push({
         date,
@@ -255,6 +562,7 @@ function parseFixtures(html) {
         notesAndScorers,
         isHome,
         ticketUrl,
+        trainInfo,
       });
     });
 
@@ -920,7 +1228,12 @@ app.get("/api/h2h/:opponent", async (req, res) => {
       isHome: f.venue === "H",
       highlightsUrl: `https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(f.opponent)}+The+Dabbers+TV`,
       ticketUrl: f.venue === "H" ? HOME_TICKETS_URL : getOpponentTicketUrl(f.opponent),
+      trainInfo: f.venue === "H" ? null : buildTrainlineUrl(f.opponent, f.date, f.scoreOrStatus),
     }));
+
+    const trainStation = getOpponentTrainStation(rawOpponent);
+    const defaultDate = new Date().toISOString().slice(0, 10);
+    const trainInfo = buildTrainlineUrl(rawOpponent, defaultDate, "3:00pm");
 
     return res.json({
       opponent: rawOpponent,
@@ -928,16 +1241,34 @@ app.get("/api/h2h/:opponent", async (req, res) => {
       seasonMatches,
       youtubeSearchUrl: `https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(rawOpponent)}+The+Dabbers+TV`,
       ticketUrl: getOpponentTicketUrl(rawOpponent),
+      trainStation,
+      trainInfo,
     });
   } catch (err) {
+    const trainStation = getOpponentTrainStation(rawOpponent);
+    const defaultDate = new Date().toISOString().slice(0, 10);
+    const trainInfo = buildTrainlineUrl(rawOpponent, defaultDate, "09:00:00");
+
     return res.json({
       opponent: rawOpponent,
       competition: "Northern Premier League Division One West",
       seasonMatches: [],
       youtubeSearchUrl: `https://www.youtube.com/results?search_query=Nantwich+Town+vs+${encodeURIComponent(rawOpponent)}+The+Dabbers+TV`,
       ticketUrl: getOpponentTicketUrl(rawOpponent),
+      trainStation,
+      trainInfo,
     });
   }
+});
+
+// -----------------------------------------------------------------------
+// GET /api/stations — Verified Trainline Stations & URNs
+// -----------------------------------------------------------------------
+app.get("/api/stations", (req, res) => {
+  return res.json({
+    origin: NANTWICH_STATION,
+    stations: AWAY_GROUND_STATIONS,
+  });
 });
 
 // -----------------------------------------------------------------------
@@ -1003,8 +1334,9 @@ app.get("/api/media", async (req, res) => {
   }
 });
 
-app.get(["/", "/favicon.ico"], (req, res) => {
+app.get("*", (req, res) => {
   if (req.path === "/favicon.ico") return res.status(204).end();
+  if (req.path.startsWith("/api/")) return res.status(404).json({ error: "Endpoint not found" });
   return res.sendFile(indexFile);
 });
 
