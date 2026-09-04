@@ -14,7 +14,7 @@ const sources = {
   table: "https://www.footballwebpages.co.uk/nantwich-town/league-table",
   fixtures: "https://www.footballwebpages.co.uk/nantwich-town/fixtures-results",
   squad: "https://www.footballwebpages.co.uk/nantwich-town/appearances",
-  live: "https://www.thenpl.co.uk/live",
+  live: "https://www.sofascore.com/football/team/nantwich-town/25933",
 };
 
 const requestConfig = {
@@ -76,7 +76,18 @@ function getOpponentTicketUrl(opponent) {
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(publicDir));
+app.use(
+  express.static(publicDir, {
+    etag: false,
+    lastModified: false,
+    setHeaders: (res) => {
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+      res.setHeader("Surrogate-Control", "no-store");
+    },
+  })
+);
 
 function cleanText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
@@ -568,7 +579,7 @@ app.get("/api/squad", async (req, res) => {
 });
 
 // -----------------------------------------------------------------------
-// GET /api/live
+// GET /api/live — SofaScore Live Match Scraper with Fixtures Fallback
 // -----------------------------------------------------------------------
 function firstText(container, selectors) {
   for (const selector of selectors) {
@@ -578,51 +589,168 @@ function firstText(container, selectors) {
   return "";
 }
 
-function parseLiveMatch($, container) {
-  const homeTeam = firstText(container, [
-    '[class*="home"] [class*="team"]',
-    '[class*="home"] [class*="name"]',
-    '[data-team="home"]',
-  ]);
-  const awayTeam = firstText(container, [
-    '[class*="away"] [class*="team"]',
-    '[class*="away"] [class*="name"]',
-    '[data-team="away"]',
-  ]);
-  const score = firstText(container, ['[class*="score"]', '[class*="result"]', "[data-score]"]);
-  const status = firstText(container, [
-    '[class*="status"]',
-    '[class*="minute"]',
-    '[class*="state"]',
-    "[data-status]",
-  ]);
+function parseNextDataLive(html) {
+  try {
+    const match = html.match(/<script id="__NEXT_DATA__" type="application\/json">([\s\S]*?)<\/script>/);
+    if (!match) return null;
+    const json = JSON.parse(match[1]);
+    const pageProps = json?.props?.pageProps;
+    if (!pageProps) return null;
 
-  if (!homeTeam && !awayTeam && !score && !status) return null;
-  return { homeTeam, awayTeam, score, status };
+    const candidateEvents = [];
+    if (pageProps.event) candidateEvents.push(pageProps.event);
+    if (pageProps.featuredEvent) candidateEvents.push(pageProps.featuredEvent);
+    if (pageProps.liveEvent) candidateEvents.push(pageProps.liveEvent);
+    if (Array.isArray(pageProps.events)) candidateEvents.push(...pageProps.events);
+    if (Array.isArray(pageProps.teamEvents)) candidateEvents.push(...pageProps.teamEvents);
+    if (pageProps.tournamentEvents && Array.isArray(pageProps.tournamentEvents.events)) {
+      candidateEvents.push(...pageProps.tournamentEvents.events);
+    }
+
+    for (const ev of candidateEvents) {
+      if (!ev) continue;
+      const statusType = (ev.status?.type || "").toLowerCase();
+      const statusDesc = ev.status?.description || "";
+      const isLive =
+        statusType === "inprogress" ||
+        statusType === "live" ||
+        /1st half|2nd half|extra time|penalties|halftime|\bht\b/i.test(statusDesc) ||
+        (typeof ev.status?.code === "number" && [6, 7, 31, 32, 33, 40].includes(ev.status.code));
+
+      if (isLive) {
+        const homeTeam = ev.homeTeam?.name || "Nantwich Town";
+        const awayTeam = ev.awayTeam?.name || "Opponent";
+        const homeScore = ev.homeScore?.current ?? ev.homeScore?.display ?? 0;
+        const awayScore = ev.awayScore?.current ?? ev.awayScore?.display ?? 0;
+        return {
+          homeTeam,
+          awayTeam,
+          score: `${homeScore} - ${awayScore}`,
+          status: statusDesc || "Live",
+          source: "sofascore",
+        };
+      }
+    }
+  } catch (_) {}
+  return null;
 }
 
-function parseLive(html) {
+function parseCheerioLive(html) {
   const $ = cheerio.load(html);
   const matches = [];
-  const seen = new Set();
-  const selectors = [
-    '[class*="live-match"]',
+
+  const cardSelectors = [
+    '[data-testid*="event"]',
+    '[data-testid*="match"]',
+    '[class*="EventCell"]',
+    '[class*="MatchCell"]',
+    '[class*="MatchCard"]',
+    '[class*="event-item"]',
     '[class*="match-container"]',
-    '[class*="match-card"]',
-    '[class*="fixture-card"]',
-    "[data-match-id]",
+    '[class*="live-match"]',
+    'a[href*="/football/match/"]',
   ];
 
-  $(selectors.join(",")).each((_index, element) => {
-    const match = parseLiveMatch($, $(element));
-    if (!match) return;
-    const key = JSON.stringify(match);
-    if (seen.has(key)) return;
-    seen.add(key);
-    matches.push(match);
+  $(cardSelectors.join(",")).each((_, el) => {
+    const container = $(el);
+    const text = container.text();
+    if (!/nantwich/i.test(text)) return;
+
+    const isLive =
+      /live|\bht\b|1st half|2nd half|in play|'\s*$/i.test(text) ||
+      container.find('[class*="live"], [class*="Live"], [class*="in-progress"], [class*="pulsing"]').length > 0;
+    if (!isLive) return;
+
+    let homeTeam = firstText(container, [
+      '[class*="home"] [class*="team"]',
+      '[class*="home"] [class*="name"]',
+      '[data-testid*="home-team"]',
+      '[class*="HomeTeam"]',
+      '[class*="teamHome"]',
+    ]);
+    let awayTeam = firstText(container, [
+      '[class*="away"] [class*="team"]',
+      '[class*="away"] [class*="name"]',
+      '[data-testid*="away-team"]',
+      '[class*="AwayTeam"]',
+      '[class*="teamAway"]',
+    ]);
+
+    if (!homeTeam || !awayTeam) {
+      const teamElements = container.find('[class*="team"], [class*="Team"], [data-testid*="team"]');
+      if (teamElements.length >= 2) {
+        homeTeam = cleanText($(teamElements[0]).text());
+        awayTeam = cleanText($(teamElements[1]).text());
+      }
+    }
+
+    const score =
+      firstText(container, [
+        '[class*="score"]',
+        '[class*="Score"]',
+        '[data-testid*="score"]',
+        '[class*="result"]',
+      ]) || "Live";
+
+    const status =
+      firstText(container, [
+        '[class*="status"]',
+        '[class*="Status"]',
+        '[class*="minute"]',
+        '[class*="Minute"]',
+        '[class*="time"]',
+        '[class*="Time"]',
+      ]) || "In Play";
+
+    if (homeTeam && awayTeam) {
+      matches.push({
+        homeTeam,
+        awayTeam,
+        score: cleanScore(score) || score,
+        status,
+        source: "sofascore",
+      });
+    }
   });
 
   return matches;
+}
+
+function parseSofaScoreLive(html) {
+  if (!html || typeof html !== "string") return [];
+  const nextMatch = parseNextDataLive(html);
+  if (nextMatch) return [nextMatch];
+  const domMatches = parseCheerioLive(html);
+  if (domMatches.length > 0) return domMatches;
+  return [];
+}
+
+const parseLive = parseSofaScoreLive;
+
+// Determines whether a given date falls within UK British Summer Time (BST).
+// BST runs from the last Sunday in March (01:00 UTC) to the last Sunday in October (01:00 UTC).
+function isUKBST(date = new Date()) {
+  const d = new Date(date);
+  const year = d.getUTCFullYear();
+
+  // Last Sunday in March: March has 31 days
+  const march31 = new Date(Date.UTC(year, 2, 31));
+  const lastSunMarch = 31 - march31.getUTCDay();
+  const bstStart = new Date(Date.UTC(year, 2, lastSunMarch, 1, 0, 0));
+
+  // Last Sunday in October: October has 31 days
+  const oct31 = new Date(Date.UTC(year, 9, 31));
+  const lastSunOct = 31 - oct31.getUTCDay();
+  const bstEnd = new Date(Date.UTC(year, 9, lastSunOct, 1, 0, 0));
+
+  return d.getTime() >= bstStart.getTime() && d.getTime() < bstEnd.getTime();
+}
+
+// Returns the current UK wall-clock time as a Date object by taking current UTC time
+// and adding 60 minutes if BST is in effect, 0 minutes otherwise (GMT).
+function getUKNow(date = new Date()) {
+  const isBst = isUKBST(date);
+  return new Date(date.getTime() + (isBst ? 60 : 0) * 60 * 1000);
 }
 
 function isFixtureToday(fixtureDateStr, now = new Date()) {
@@ -632,44 +760,47 @@ function isFixtureToday(fixtureDateStr, now = new Date()) {
   const day = parseInt(parts[1], 10);
   const monthAbbr = parts[2].toLowerCase();
 
+  // Use UK wall-clock time so comparison matches UK matchday dates
+  const ukNow = getUKNow(now);
   const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-  const currentMonthAbbr = months[now.getMonth()];
-  const currentDay = now.getDate();
+  const currentMonthAbbr = months[ukNow.getUTCMonth()];
+  const currentDay = ukNow.getUTCDate();
 
   return day === currentDay && monthAbbr === currentMonthAbbr;
 }
 
-function parseKickoffTime(timeStr, now = new Date()) {
+function parseKickoffTime(timeStr, ukNow = getUKNow()) {
   if (!timeStr) return null;
   const s = timeStr.toLowerCase().trim();
 
+  let hours = null;
+  let minutes = 0;
+
   const pmAmMatch = s.match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)$/);
   if (pmAmMatch) {
-    let hours = parseInt(pmAmMatch[1], 10);
-    const minutes = pmAmMatch[2] ? parseInt(pmAmMatch[2], 10) : 0;
+    hours = parseInt(pmAmMatch[1], 10);
+    minutes = pmAmMatch[2] ? parseInt(pmAmMatch[2], 10) : 0;
     const meridian = pmAmMatch[3];
     if (meridian === "pm" && hours < 12) hours += 12;
     if (meridian === "am" && hours === 12) hours = 0;
-
-    const kickoff = new Date(now);
-    kickoff.setHours(hours, minutes, 0, 0);
-    return kickoff;
+  } else {
+    const hr24Match = s.match(/^(\d{1,2})[:.](\d{2})$/);
+    if (hr24Match) {
+      hours = parseInt(hr24Match[1], 10);
+      minutes = parseInt(hr24Match[2], 10);
+    }
   }
 
-  const hr24Match = s.match(/^(\d{1,2})[:.](\d{2})$/);
-  if (hr24Match) {
-    const hours = parseInt(hr24Match[1], 10);
-    const minutes = parseInt(hr24Match[2], 10);
-    const kickoff = new Date(now);
-    kickoff.setHours(hours, minutes, 0, 0);
-    return kickoff;
-  }
+  if (hours === null) return null;
 
-  return null;
+  const kickoff = new Date(ukNow);
+  kickoff.setUTCHours(hours, minutes, 0, 0);
+  return kickoff;
 }
 
 function checkLiveMatch(fixture, now = new Date()) {
   if (!fixture || !fixture.date) return null;
+  const ukNow = getUKNow(now);
   if (!isFixtureToday(fixture.date, now)) return null;
 
   const scoreOrStatus = String(fixture.scoreOrStatus || "").trim();
@@ -678,10 +809,10 @@ function checkLiveMatch(fixture, now = new Date()) {
   // Postponed?
   if (/p\s*-\s*p/i.test(scoreOrStatus) || scoreOrStatus.toLowerCase().includes("postponed")) return null;
 
-  const kickoff = parseKickoffTime(scoreOrStatus, now);
+  const kickoff = parseKickoffTime(scoreOrStatus, ukNow);
   if (!kickoff) return null;
 
-  const elapsedMs = now.getTime() - kickoff.getTime();
+  const elapsedMs = ukNow.getTime() - kickoff.getTime();
   const maxMatchDurationMs = 130 * 60 * 1000; // ~2h 10m
 
   if (elapsedMs >= 0 && elapsedMs <= maxMatchDurationMs) {
@@ -714,10 +845,38 @@ async function getLiveMatchesFallback() {
   return [];
 }
 
+let sofaScoreBackoffUntil = 0;
+
+async function scrapeSofaScoreLiveSafe() {
+  const now = Date.now();
+  if (now < sofaScoreBackoffUntil) {
+    return [];
+  }
+
+  try {
+    const html = await fetchHtml(sources.live);
+    return parseSofaScoreLive(html);
+  } catch (err) {
+    const status = err.response?.status;
+    if (status === 403 || status === 429) {
+      // SofaScore blocked/rate-limited — back off for 10 minutes (600,000 ms)
+      sofaScoreBackoffUntil = Date.now() + 10 * 60 * 1000;
+      console.info(`[live] SofaScore returned ${status}; backing off and utilizing matchday fixtures fallback.`);
+    } else {
+      // General network/timeout error — back off for 2 minutes
+      sofaScoreBackoffUntil = Date.now() + 2 * 60 * 1000;
+      console.info(`[live] SofaScore scrape deferred to fallback (${err.message}).`);
+    }
+    return [];
+  }
+}
+
 app.get("/api/live", async (req, res) => {
   try {
-    // Real scrape attempt stays in case NPL ever adds server-rendered content or fixes the page
-    let matches = await withCache("live", 20_000, async () => parseLive(await fetchHtml(sources.live))).catch(() => []);
+    // Primary: SofaScore live match scrape attempt (cached for 25s, backed off if blocked)
+    let matches = await withCache("live", 25_000, scrapeSofaScoreLiveSafe);
+
+    // Secondary: Fixtures-based live match detection fallback (timezone-aware)
     if (!Array.isArray(matches) || matches.length === 0) {
       matches = await getLiveMatchesFallback();
     }

@@ -6,9 +6,9 @@
 
 const tabs = [
   { id: "live", label: "Matchday", icon: "pulse" },
-  { id: "squad", label: "Squad & XI", icon: "users" },
   { id: "fixtures", label: "Fixtures", icon: "calendar" },
   { id: "table", label: "Table", icon: "table" },
+  { id: "squad", label: "Squad & XI", icon: "users" },
 ];
 
 const TICKETING_URL = "https://nantwichtownfc.ktckts.com/brand/match-tickets";
@@ -448,6 +448,145 @@ function isHomeFixture(fixture) {
   return /^(h|home)$/i.test(String(fixture.venue || "").trim());
 }
 
+// Determines whether a given date falls within UK British Summer Time (BST).
+// BST runs from the last Sunday in March (01:00 UTC) to the last Sunday in October (01:00 UTC).
+function isUKBST(date = new Date()) {
+  const d = new Date(date);
+  const year = d.getUTCFullYear();
+
+  const march31 = new Date(Date.UTC(year, 2, 31));
+  const lastSunMarch = 31 - march31.getUTCDay();
+  const bstStart = new Date(Date.UTC(year, 2, lastSunMarch, 1, 0, 0));
+
+  const oct31 = new Date(Date.UTC(year, 9, 31));
+  const lastSunOct = 31 - oct31.getUTCDay();
+  const bstEnd = new Date(Date.UTC(year, 9, lastSunOct, 1, 0, 0));
+
+  return d.getTime() >= bstStart.getTime() && d.getTime() < bstEnd.getTime();
+}
+
+// Returns current UK wall-clock time by taking UTC time and adding 60 min if BST, 0 min if GMT.
+function getUKNow(date = new Date()) {
+  const isBst = isUKBST(date);
+  return new Date(date.getTime() + (isBst ? 60 : 0) * 60 * 1000);
+}
+
+function isFixtureToday(fixtureDateStr, now = new Date()) {
+  if (!fixtureDateStr) return false;
+  const parts = fixtureDateStr.trim().split(/\s+/);
+  if (parts.length < 3) return false;
+  const day = parseInt(parts[1], 10);
+  const monthAbbr = parts[2].toLowerCase();
+
+  const ukNow = getUKNow(now);
+  const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const currentMonthAbbr = months[ukNow.getUTCMonth()];
+  const currentDay = ukNow.getUTCDate();
+
+  return day === currentDay && monthAbbr === currentMonthAbbr;
+}
+
+function parseKickoffTime(timeStr, ukNow = getUKNow()) {
+  if (!timeStr) return null;
+  const s = timeStr.toLowerCase().trim();
+
+  let hours = null;
+  let minutes = 0;
+
+  const pmAmMatch = s.match(/^(\d{1,2})(?:[:.](\d{2}))?\s*(am|pm)$/);
+  if (pmAmMatch) {
+    hours = parseInt(pmAmMatch[1], 10);
+    minutes = pmAmMatch[2] ? parseInt(pmAmMatch[2], 10) : 0;
+    const meridian = pmAmMatch[3];
+    if (meridian === "pm" && hours < 12) hours += 12;
+    if (meridian === "am" && hours === 12) hours = 0;
+  } else {
+    const hr24Match = s.match(/^(\d{1,2})[:.](\d{2})$/);
+    if (hr24Match) {
+      hours = parseInt(hr24Match[1], 10);
+      minutes = parseInt(hr24Match[2], 10);
+    }
+  }
+
+  if (hours === null) return null;
+
+  const kickoff = new Date(ukNow);
+  kickoff.setUTCHours(hours, minutes, 0, 0);
+  return kickoff;
+}
+
+// Determines if there is a fixture today within the "matchday commentary window"
+// (between 2 hours 45 minutes before kickoff and kickoff + ~2h10m).
+function getMatchdayCommentaryFixture(now = new Date()) {
+  const fixtures = state.data.fixtures || [];
+  if (!fixtures.length) return null;
+
+  const ukNow = getUKNow(now);
+
+  for (const fixture of fixtures) {
+    if (!fixture || !fixture.date) continue;
+    if (!isFixtureToday(fixture.date, now)) continue;
+
+    const scoreOrStatus = String(fixture.scoreOrStatus || "").trim();
+    if (/p\s*-\s*p/i.test(scoreOrStatus) || scoreOrStatus.toLowerCase().includes("postponed")) continue;
+
+    let kickoff = parseKickoffTime(scoreOrStatus, ukNow);
+    if (!kickoff) {
+      const dayOfWeek = ukNow.getUTCDay();
+      const defaultHours = dayOfWeek === 6 ? 15 : 19;
+      const defaultMins = dayOfWeek === 6 ? 0 : 45;
+      kickoff = new Date(ukNow);
+      kickoff.setUTCHours(defaultHours, defaultMins, 0, 0);
+    }
+
+    const diffMs = ukNow.getTime() - kickoff.getTime();
+    const windowStartMs = -(2 * 60 + 45) * 60 * 1000; // 2h 45m before kickoff (-165 minutes)
+    const windowEndMs = (2 * 60 + 10) * 60 * 1000;     // ~2h 10m after kickoff (+130 minutes)
+
+    if (diffMs >= windowStartMs && diffMs <= windowEndMs) {
+      return {
+        fixture,
+        kickoff,
+        isLiveWindow: true,
+      };
+    }
+  }
+
+  return null;
+}
+
+function renderXFeedSection(isMatchdayWindow = false) {
+  const eyebrow = isMatchdayWindow
+    ? `<span class="text-[10px] font-bold uppercase tracking-wider text-gold flex items-center gap-1.5"><span class="h-2 w-2 animate-pulse rounded-full bg-rose-500"></span> Live Matchday Feed</span>`
+    : `<span class="text-[10px] font-bold uppercase tracking-wider text-gold">Club Commentary</span>`;
+
+  const title = isMatchdayWindow
+    ? "Live Commentary — @TheDabbers"
+    : "The Dabbers on X";
+
+  const cardBorder = isMatchdayWindow
+    ? "border-gold/40 shadow-xl"
+    : "border-charcoal-border";
+
+  return `
+    <!-- Live Commentary & X Feed -->
+    <div class="rounded-2xl border ${cardBorder} bg-[#15251E] p-5 text-white">
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          ${eyebrow}
+          <h3 class="display text-lg font-bold">${title}</h3>
+        </div>
+        <a href="${X_TIMELINE_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline">
+          Open Feed ${icon("arrow", "h-3 w-3")}
+        </a>
+      </div>
+      <div data-x-timeline class="min-h-[160px] overflow-hidden rounded-xl bg-white/5 p-3">
+        <a class="twitter-timeline" data-height="450" data-theme="dark" href="${X_TIMELINE_URL}">Tweets by TheDabbers</a>
+      </div>
+    </div>
+  `;
+}
+
 function nextUpcomingFixture() {
   return (state.data.fixtures || []).find((fixture) => !completed(fixture)) || null;
 }
@@ -534,6 +673,10 @@ function renderLive() {
   const media = state.data.media;
   const players = getPlayersList();
 
+  const commentaryWindow = getMatchdayCommentaryFixture();
+  const isMatchdayWindow = Boolean(commentaryWindow);
+  const xFeedMarkup = renderXFeedSection(isMatchdayWindow);
+
   const reloadButton = `<button data-refresh-live class="inline-flex h-8 items-center gap-1.5 rounded-lg bg-white/10 px-3 text-xs font-bold text-gold transition hover:bg-gold hover:text-charcoal" ${state.refreshing ? "disabled" : ""}><span class="${state.refreshing ? "animate-spin" : ""}">${icon("refresh", "h-3.5 w-3.5")}</span> Live Refresh</button>`;
 
   let liveMatchesMarkup = "";
@@ -590,6 +733,9 @@ function renderLive() {
       ` : ""}
 
       ${liveMatchesMarkup}
+
+      <!-- Matchday Live Commentary (Promoted to top during matchday commentary window) -->
+      ${isMatchdayWindow ? xFeedMarkup : ""}
 
       <!-- Next Match Countdown Hero Card -->
       ${next ? `
@@ -761,21 +907,8 @@ function renderLive() {
         </div>
       </div>
 
-      <!-- Live Commentary & X Feed -->
-      <div class="rounded-2xl border border-charcoal-border bg-[#15251E] p-5 text-white">
-        <div class="mb-4 flex items-center justify-between">
-          <div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-gold">Club Commentary</span>
-            <h3 class="display text-lg font-bold">The Dabbers on X</h3>
-          </div>
-          <a href="${X_TIMELINE_URL}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline">
-            Open Feed ${icon("arrow", "h-3 w-3")}
-          </a>
-        </div>
-        <div data-x-timeline class="min-h-[160px] overflow-hidden rounded-xl bg-white/5 p-3">
-          <a class="twitter-timeline" data-height="450" data-theme="dark" href="${X_TIMELINE_URL}">Tweets by TheDabbers</a>
-        </div>
-      </div>
+      <!-- Standard Club Commentary / X Feed (Shown at bottom outside commentary window) -->
+      ${!isMatchdayWindow ? xFeedMarkup : ""}
     </div>
   `;
 }
@@ -2372,15 +2505,6 @@ function startLiveRefresh() {
 
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden && state.activeTab === "live") loadLive();
-  });
-}
-
-// Service Worker Registration for PWA
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/service-worker.js").catch((err) => {
-      console.warn("Service worker registration failed:", err);
-    });
   });
 }
 
