@@ -496,6 +496,12 @@ function getPresetLineup(formationKey = "4-3-3") {
 
 // PWA Install Prompt State
 let deferredInstallPrompt = null;
+function checkIsStandalone() {
+  return (
+    (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+    (typeof navigator !== "undefined" && navigator.standalone === true)
+  );
+}
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredInstallPrompt = e;
@@ -2780,27 +2786,27 @@ function renderShell(content) {
 
           <div class="flex items-center gap-1.5">
             <!-- Social Quick Links in Header -->
-            <a href="https://twitter.com/TheDabbers" target="_blank" rel="noopener noreferrer" class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#1DA1F2] hover:bg-[#1DA1F2]/20 transition" title="Twitter / X (@TheDabbers)">
+            <a href="https://twitter.com/TheDabbers" target="_blank" rel="noopener noreferrer" class="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#1DA1F2] hover:bg-[#1DA1F2]/20 transition" title="Twitter / X (@TheDabbers)">
               ${icon("x_social", "h-3.5 w-3.5")}
             </a>
-            <a href="https://www.facebook.com/nantwichtownfc" target="_blank" rel="noopener noreferrer" class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#1877F2] hover:bg-[#1877F2]/20 transition" title="Facebook">
+            <a href="https://www.facebook.com/nantwichtownfc" target="_blank" rel="noopener noreferrer" class="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#1877F2] hover:bg-[#1877F2]/20 transition" title="Facebook">
               ${icon("facebook", "h-3.5 w-3.5")}
             </a>
-            <a href="https://www.instagram.com/nantwichtownfc" target="_blank" rel="noopener noreferrer" class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#E4405F] hover:bg-[#E4405F]/20 transition" title="Instagram">
+            <a href="https://www.instagram.com/nantwichtownfc" target="_blank" rel="noopener noreferrer" class="hidden sm:flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#E4405F] hover:bg-[#E4405F]/20 transition" title="Instagram">
               ${icon("instagram", "h-3.5 w-3.5")}
             </a>
             <a href="https://www.youtube.com/@TheDabbersTV" target="_blank" rel="noopener noreferrer" class="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-[#FF0000] hover:bg-[#FF0000]/20 transition" title="YouTube (The Dabbers TV)">
               ${icon("youtube", "h-3.5 w-3.5")}
             </a>
 
-            <button data-refresh-all class="flex h-8 w-8 items-center justify-center rounded-lg border border-gold/40 bg-gold/10 text-gold transition hover:bg-gold hover:text-charcoal ml-1" aria-label="Reload matchday data" title="Reload live data">
+            <button data-refresh-all class="flex h-8 w-8 items-center justify-center rounded-lg border border-gold/40 bg-gold/10 text-gold transition hover:bg-gold hover:text-charcoal ml-0.5" aria-label="Reload matchday data" title="Reload live data">
               <span class="${state.refreshing ? "animate-spin" : ""}">${icon("refresh", "h-3.5 w-3.5")}</span>
             </button>
 
-            ${deferredInstallPrompt ? `
-              <button data-install-pwa class="flex h-8 items-center gap-1.5 rounded-lg border border-gold/40 bg-gold/20 px-2.5 text-xs font-bold text-gold transition hover:bg-gold hover:text-charcoal ml-1" title="Install App to Home Screen">
-                ${icon("download", "h-3.5 w-3.5")}
-                <span class="hidden sm:inline">Install</span>
+            ${!checkIsStandalone() ? `
+              <button data-install-pwa class="flex flex-col items-center justify-center rounded-xl border border-gold/50 bg-gold/15 px-2 py-0.5 text-gold transition hover:bg-gold hover:text-charcoal active:scale-95 shadow-sm ml-0.5 group" title="Install to phone" aria-label="Install to phone">
+                ${icon("download", "h-3.5 w-3.5 text-gold group-hover:text-charcoal transition-colors")}
+                <span class="text-[8px] font-bold leading-none tracking-tight mt-0.5 whitespace-nowrap text-gold group-hover:text-charcoal transition-colors">Install to phone</span>
               </button>
             ` : ""}
           </div>
@@ -2822,11 +2828,12 @@ function renderShell(content) {
       <main class="safe-bottom px-4 pt-4 pb-8 sm:px-6">
         ${content}
 
-        ${deferredInstallPrompt ? `
+        ${!checkIsStandalone() ? `
           <div class="mt-8 flex items-center justify-between gap-3 rounded-2xl border border-gold/40 bg-[#15251E] p-4 text-white shadow-lg">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-forest border border-gold/40 text-gold">
+              <div class="flex flex-col items-center justify-center rounded-xl bg-forest border border-gold/40 text-gold px-2.5 py-1.5 shrink-0">
                 ${icon("download", "h-5 w-5")}
+                <span class="text-[8px] font-bold text-gold mt-1 tracking-tight whitespace-nowrap">Install to phone</span>
               </div>
               <div class="truncate">
                 <p class="font-bold text-white text-sm truncate">Install The Dabbers App</p>
@@ -3215,7 +3222,12 @@ function bindEvents() {
           render();
         }
       } else {
-        showToast("Tap your browser menu (⋮) and choose 'Install app' or 'Add to Home Screen'");
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          showToast("On iPhone: Tap Share (⎋) at the bottom & select 'Add to Home Screen'");
+        } else {
+          showToast("Tap browser menu (⋮) and select 'Install app' or 'Add to Home Screen'");
+        }
       }
     });
   });
